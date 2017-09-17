@@ -26,7 +26,7 @@ class Index
 {
     public function index()
     {
-        // 后面的数据库查询代码都放在这个位置
+        // 后面的数据库查询**相关代码**都放在这个位置
 	$data = Db::name('data')->find();
         $this->assign('result', $data);
         return $this->fetch();
