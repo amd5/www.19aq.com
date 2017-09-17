@@ -1,8 +1,8 @@
 ThinkPHP 5.0 学习日志
 ===============
 
-[![Blog From](http://www.19aq.com/)]
-[![c32's blog](http://www.19aq.com/)]
+[![Blog From](https://poser.pugx.org/topthink/think/downloads)](http://www.19aq.com/)
+[![c32's blog](https://poser.pugx.org/topthink/think/v/stable)](http://www.19aq.com/)
 
 ##2017-9-17 18:35:19
 学习了以`Model`模型查询和`Db`类查询
