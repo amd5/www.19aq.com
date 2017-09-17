@@ -5,9 +5,17 @@ ThinkPHP 5.0 学习日志
 [![c32's blog](https://poser.pugx.org/topthink/think/v/stable)](http://www.19aq.com/)
 [![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](http://www.19aq.com/)
 [![License](https://poser.pugx.org/topthink/think/license)](http://www.19aq.com/)
+[![ThinkPHP技术交流群](http://pub.idqqimg.com/wpa/images/group.png)](//shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
 
 日志对应教程 [点我进入](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart)
+
 有兴趣的可以一起学习~ [![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
+
+## ‎2017‎-9‎-‎14 ‏‎19:56:06 下载安装
+根目录`build.php`拷贝到`application`目录下
+执行`php think build --module demo`
+生成一个默认的`Index`控制器文件。
+相关教程详见上面的日志对应教程
 
 ## 2017-9-14 21:14:00 熟悉框架和写法
 #### 载入类库
