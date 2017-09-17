@@ -71,4 +71,5 @@ Db::name('data')
 	->delete();
 ~~~
 
+---
 更多细节参阅 [README.md](README.md)
