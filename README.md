@@ -3,8 +3,8 @@ ThinkPHP 5.0 学习日志
 
 [![Blog From](https://poser.pugx.org/topthink/think/downloads)](http://www.19aq.com/)
 [![c32's blog](https://poser.pugx.org/topthink/think/v/stable)](http://www.19aq.com/)
-[![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](https://packagist.org/packages/topthink/think)
-[![License](https://poser.pugx.org/topthink/think/license)](https://packagist.org/packages/topthink/think)
+[![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](http://www.19aq.com/)
+[![License](https://poser.pugx.org/topthink/think/license)](http://www.19aq.com/)
 
 
 有兴趣的可以一起学习~ [![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
