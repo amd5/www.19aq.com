@@ -9,12 +9,22 @@ ThinkPHP 5.0 学习日志
 
 有兴趣的可以一起学习~ [![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
 
-## 2017-9-17 18:51:03 熟悉框架
+## 2017-9-14 21:14:00 熟悉框架和写法
 熟悉tp5大概框架
 http://127.0.0.1/模型/控制器/应用操作
 
-
-
+```
+<?php
+namespace app\index\controller;
+use think\Db;
+class Index 
+{
+    public function index()
+    {
+        // 后面的数据库查询代码都放在这个位置
+    }
+}
+```
 
 ## 2017-9-17 18:35:19 数据查询
 学习了以`Model`模型查询和`Db`类查询
