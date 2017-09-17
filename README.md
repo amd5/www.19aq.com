@@ -23,7 +23,7 @@ class Index
     public function index()
     {
         // 后面的数据库查询代码都放在这个位置
-		$data = Db::name('data')->find();
+	$data = Db::name('data')->find();
         $this->assign('result', $data);
         return $this->fetch();
     }
@@ -33,6 +33,7 @@ class Index
     }
 }
 ```
+读取数据
 ```
 <html>
 <head>
