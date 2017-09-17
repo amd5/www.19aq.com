@@ -7,7 +7,7 @@ ThinkPHP 5.0 学习日志
 [![License](https://poser.pugx.org/topthink/think/license)](http://www.19aq.com/)
 [![ThinkPHP技术交流群](http://pub.idqqimg.com/wpa/images/group.png)](//shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
 
-有兴趣的可以一起学习~ [教程地址](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart) 击右上角的按钮加QQ群
+有兴趣的可以一起学习~ [教程地址](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart)   点击右上角的按钮加**QQ**群
 
 ## ‎2017‎-9‎-‎14 ‏‎19:56:06 下载安装ThinkPHP
 
@@ -50,7 +50,7 @@ class Index
     }
 }
 ```
-读取**数据**
+读取数据
 ```html
 <html>
 <head>
