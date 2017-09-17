@@ -11,7 +11,8 @@ ThinkPHP 5.0 学习日志
 
 ## 2017-9-14 21:14:00 熟悉框架和写法
 熟悉tp5大概框架
-http://127.0.0.1/模型/控制器/应用操作
+http://www.tp5.com/模型/控制器/应用操作
+http://www.tp5.com/
 
 ```
 <?php
@@ -22,8 +23,25 @@ class Index
     public function index()
     {
         // 后面的数据库查询代码都放在这个位置
+		$data = Db::name('data')->find();
+        $this->assign('result', $data);
+        return $this->fetch();
+    }
+	public function hello($name = 'World')
+    {
+        return 'Hello,' . $name . '!';
     }
 }
+```
+```
+<html>
+<head>
+<title>c32</title>
+</head>
+<body>
+{$result.id}--{$result.title}
+</body>
+</html>
 ```
 
 ## 2017-9-17 18:35:19 数据查询

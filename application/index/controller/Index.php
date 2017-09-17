@@ -6,10 +6,10 @@ use think\Db;
 
 class Index extends Controller
 {
-    public function index($name = 'thinkphp')
+    public function index()
     {
-        $data = Db::name('think_data')->find();
+        $data = Db::name('data')->find();
         $this->assign('result', $data);
-        return $this->fetch();	
+        return $this->fetch();
     }
 }
