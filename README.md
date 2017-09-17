@@ -18,7 +18,7 @@ ThinkPHP 5.0 学习日志
 
 > http://www.tp5.com/index.php/index/index/hello
 
-```
+```php
 <?php
 namespace app\index\controller;
 use think\Db;
@@ -38,7 +38,7 @@ class Index
 }
 ```
 读取数据
-```
+```html
 <html>
 <head>
 <title>c32</title>
@@ -51,7 +51,7 @@ class Index
 
 ## 2017-9-17 18:35:19 数据查询
 学习了以`Model模型`查询和`Db类`查询
-~~~
+~~~php
 //查询数据
 $list = Db::name('data')
 	->where('')   //where('id', 1)
