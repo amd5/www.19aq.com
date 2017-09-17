@@ -2,7 +2,7 @@ ThinkPHP 5.0 学习日志
 ===============
 
 [![Blog From](https://poser.pugx.org/topthink/think/downloads)](http://www.19aq.com/)
-[![c32's blog](https://poser.pugx.org/topthink/think/v/stable)](http://www.19aq.com/)
+[![c32's blog](https://secure.travis-ci.org/ThinkUpLLC/ThinkUp.png?branch=master)](http://www.19aq.com/)
 [![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](http://www.19aq.com/)
 [![License](https://poser.pugx.org/topthink/think/license)](http://www.19aq.com/)
 [![ThinkPHP技术交流群](http://pub.idqqimg.com/wpa/images/group.png)](//shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
