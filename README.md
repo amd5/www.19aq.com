@@ -10,7 +10,8 @@ ThinkPHP 5.0 学习日志
 有兴趣的可以一起学习~ [![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=d5effdf51b3f89a78965f95a9ee2a3c44e1c6850add29572818613f20fa6e635)
 
 ## 2017-9-14 21:14:00 熟悉框架和写法
-熟悉tp5大概框架
+熟悉tp5框架和语法
+
 > http://www.tp5.com/模型/控制器/应用操作
 > http://www.tp5.com/index.php/index/index/index
 > http://www.tp5.com/index.php/index/index/hello
