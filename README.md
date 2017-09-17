@@ -11,8 +11,9 @@ ThinkPHP 5.0 学习日志
 
 ## 2017-9-14 21:14:00 熟悉框架和写法
 熟悉tp5大概框架
-http://www.tp5.com/模型/控制器/应用操作
-http://www.tp5.com/
+> http://www.tp5.com/模型/控制器/应用操作
+> http://www.tp5.com/index.php/index/index/index
+> http://www.tp5.com/index.php/index/index/hello
 
 ```
 <?php
@@ -46,7 +47,7 @@ class Index
 ```
 
 ## 2017-9-17 18:35:19 数据查询
-学习了以`Model`模型查询和`Db`类查询
+学习了以`Model模型`查询和`Db类`查询
 ~~~
 //查询数据
 $list = Db::name('data')
