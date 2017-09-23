@@ -93,6 +93,14 @@ Db::name('data')
 	->delete();
 ~~~
 
+
+## 2017-9-23 22:09:56 U函数 后台基础逻辑熟悉
+熟悉了U函数，以及tp3.2.3的基础后台逻辑
+
+
+
+
+
 # 教程地址
 
 https://www.kancloud.cn/thinkphp/thinkphp5_quickstart
