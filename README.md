@@ -97,6 +97,39 @@ Db::name('data')
 ## 2017-9-23 22:09:56 U函数 后台基础逻辑熟悉
 熟悉了tp3.2.3的U函数、`URL_MODEL`、`Rewrite`、基础后台逻辑
 
+## 2017-9-24 13:31:42 整合H-ui后台
+开启调试模式
+`'app_debug'              => ture,`
+D:\wwwroot\thinkphp_5.0.10_full\application\config.php
+写入`D:\wwwroot\thinkphp_5.0.10_full\application\admin\controller\Index.php`
+内容为
+~~~php
+<?php
+namespace app\admin\controller;
+
+use think\Controller;
+//use think\Db;
+
+class Index extends Controller
+{
+    public function index()
+    {
+        return $this->fetch();
+		
+    }
+	
+}
+~~~
+模板下static目录css文件拷贝到public目录下
+
+## 2017-9-25 19:48:56 学习public目录定义
+学习了https://github.com/yuan1994/tpAdmin
+发现没有进行整体目录定义，模板跟随thinkphp的框架和写法，把每个html模板文件的加载全部重新写了一遍。
+{:\\think\\Url::build('./admin/index/welcome.html')}
+URL写法
+
+
+
 
 
 
