@@ -128,7 +128,8 @@ class Index extends Controller
 {:\\think\\Url::build('./admin/index/welcome.html')}
 URL写法
 
-
+## 2017-9-28 17:31:01
+熟悉驼峰写法
 
 
 

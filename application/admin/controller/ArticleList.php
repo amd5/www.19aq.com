@@ -4,7 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 //use think\Db;
 
-class Articlelist extends Controller
+class ArticleList extends Controller
 {
     public function index()
     {
