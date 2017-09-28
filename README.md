@@ -125,7 +125,9 @@ class Index extends Controller
 ## 2017-9-25 19:48:56 学习public目录定义
 学习了https://github.com/yuan1994/tpAdmin
 发现没有进行整体目录定义，模板跟随thinkphp的框架和写法，把每个html模板文件的加载全部重新写了一遍。
+
 {:\\think\\Url::build('./admin/index/welcome.html')}
+
 URL写法
 
 ## 2017-9-28 17:31:01
