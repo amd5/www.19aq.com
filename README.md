@@ -25,6 +25,8 @@ use think\Controller;
 
 #### 熟悉tp5框架和语法
 
+修改`database.php`内的`prefix`数据库表的前缀
+
 > http://www.tp5.com/模型/控制器/应用操作
 
 > http://www.tp5.com/index.php/index/index/index
@@ -132,6 +134,17 @@ URL写法
 
 ## 2017-9-28 17:31:01
 熟悉驼峰写法
+提示 `语法错误: unexpected '(', expecting ',' or ';'`
+参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)
+完成后台页面报错的解决
+Url新的写法`{:Url('/')}`
+熟悉了基础的模型查询   `use app\admin\model\User as UserModel;`
+~~~php
+		$user = UserModel::get($id);
+		echo $user->nickname . '<br/>';
+		echo $user->email . '<br/>';
+		echo date('Y/m/d', $user->birthday) . '<br/>';
+~~~
 
 
 
