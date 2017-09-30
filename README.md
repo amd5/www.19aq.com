@@ -12,16 +12,16 @@ ThinkPHP 5.0 学习日志
 ## ‎2017‎-9‎-‎14 ‏‎19:56:06 下载安装ThinkPHP
 
 根目录`build.php`拷贝到`application`目录下
-
+</br>
 执行`php think build --module demo`
-
+</br>
 生成一个默认的`Index`控制器文件。
-
+</br>
 [教程地址](#教程地址)点击左侧传送门进入
-
+</br>
 ## 2017-9-14 21:14:00 熟悉框架和写法
 #### 载入类库
-use think\Controller;
+`use think\Controller;`
 
 #### 熟悉tp5框架和语法
 
@@ -100,11 +100,11 @@ Db::name('data')
 熟悉了tp3.2.3的U函数、`URL_MODEL`、`Rewrite`、基础后台逻辑
 
 ## 2017-9-24 13:31:42 整合H-ui后台
-开启调试模式
-`'app_debug'              => ture,`
-D:\wwwroot\thinkphp_5.0.10_full\application\config.php
-写入`D:\wwwroot\thinkphp_5.0.10_full\application\admin\controller\Index.php`
-内容为
+开启调试模式</br>
+`'app_debug'              => ture,`</br>
+D:\wwwroot\thinkphp_5.0.10_full\application\config.php</br>
+写入`D:\wwwroot\thinkphp_5.0.10_full\application\admin\controller\Index.php`</br>
+内容为</br>
 ~~~php
 <?php
 namespace app\admin\controller;
@@ -135,11 +135,14 @@ URL写法
 ## 2017-9-28 17:31:01
 熟悉驼峰写法
 </br>
-提示 `语法错误: unexpected '(', expecting ',' or ';'`  
-
+提示 `语法错误: unexpected '(', expecting ',' or ';'`
+</br>
 参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)
+</br>
 完成后台页面报错的解决
+</br>
 Url新的写法`{:Url('/')}`
+</br>
 熟悉了基础的模型查询   `use app\admin\model\User as UserModel;`
 ~~~php
 		$user = UserModel::get($id);
@@ -150,6 +153,7 @@ Url新的写法`{:Url('/')}`
 
 ## 2017-9-30 15:50:23
 模型查询数据方法
+</br>
 
 
 
