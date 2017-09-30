@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\User as UserModel;  //载入模型 并设置别名
+use app\admin\model\Manageuser;
 use think\Controller;
 use think\Db;
 
@@ -206,19 +207,13 @@ class Index extends Controller
 	
 	public function article_list()
 	{
-		$adminlist = db('data');
-		$result = $adminlist->select();
-		
-		$start_time = '';
-		$end_time   = '';
-		
-		$this->assign([
-		'start_time' => $start_time,
-		'end_time'   => $end_time,
-		'adminlist'  => $adminlist
-		]);
-		
-		return $this->fetch('article_list');
+		// $result = new Manageuser();
+		$result = Manageuser::where('checked','=','y')->limit(10)->order('id', 'asc')->select();
+		$this->assign('result', $result);   //输出数组
+		return $this->fetch();
 	}
 	
+
 }
+
+

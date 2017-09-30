@@ -190,11 +190,61 @@ public function admin_list()   //管理员列表
 {/volist}							  <!--输出数组循环结束-->
 ~~~</br>
 
+`public` 表示全局，类内部外部子类都可以访问；</br>
+`private`表示私有的，只有本类内部可以使用；</br>
+`protected`表示受保护的，只有本类或子类或父类中可以访问；</br>
 
+~~~php
+// 静态调用
+$user = User::get(1);
+$user->name = 'thinkphp';
+$user->save();
 
+// 实例化模型
+$user = new User;
+$user->name= 'thinkphp';
+$user->save();
 
+// 使用 Loader 类实例化（单例）
+$user = Loader::model('User');
 
-# 教程地址
+// 或者使用助手函数`model`
+$user = model('User');
+$user->name= 'thinkphp';
+$user->save();
+~~~
+
+静态查询驻内存，常理上比动态快</br>
+动态使用完立即释放，而静态不行。</br>
+
+~~~php
+// 开启应用Trace调试
+'app_trace' =>  true,
+// 设置Trace显示方式
+'trace'     =>  [
+    // 在当前Html页面显示Trace信息
+    'type'  =>  'html',
+],
+~~~
+
+## 2017-9-30 22:17:38
+
+`$user = new UserModel;`  模型实例化
+`$result = UserModel::all();`  查询全部
+`$user = UserModel::get($id);`  传递ID值
+~~~php
+$user = User::get(function($query){   //执行查询
+    $query->where('name', 'thinkphp');
+});
+~~~
+具体模型实例化例子参照[ThinkPHP官方教程](https://www.kancloud.cn/manual/thinkphp5/135191)
+
+## 2017-9-30 22:54:58
+解决H-ui WdatePicker日历控件报错的问题</br>
+`WdatePicker({ minDate:'#F{ $dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })` 
+大括号后面加空格就可以了</br>
+
+## 教程地址
 
 https://www.kancloud.cn/thinkphp/thinkphp5_quickstart
 
