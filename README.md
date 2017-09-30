@@ -133,9 +133,9 @@ class Index extends Controller
 URL写法
 
 ## 2017-9-28 17:31:01
-熟悉驼峰写法
+熟悉驼峰写法  
 
-提示 `语法错误: unexpected '(', expecting ',' or ';'`
+提示 `语法错误: unexpected '(', expecting ',' or ';'`  
 
 参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)
 完成后台页面报错的解决
