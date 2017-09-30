@@ -134,7 +134,9 @@ URL写法
 
 ## 2017-9-28 17:31:01
 熟悉驼峰写法
+
 提示 `语法错误: unexpected '(', expecting ',' or ';'`
+
 参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)
 完成后台页面报错的解决
 Url新的写法`{:Url('/')}`
@@ -145,6 +147,11 @@ Url新的写法`{:Url('/')}`
 		echo $user->email . '<br/>';
 		echo date('Y/m/d', $user->birthday) . '<br/>';
 ~~~
+
+## 2017-9-30 15:50:23
+模型查询数据方法
+
+
 
 
 

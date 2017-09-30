@@ -92,6 +92,18 @@ class Index extends Controller
 	
 	public function admin_role()
     {
+		$result = UserModel::all();
+		foreach ($result as $data) {
+			echo $data->id . '<br/>';
+			echo $data->username . '<br/>';
+			echo $data->phone . '<br/>';
+			echo $data->email . '<br/>';
+			echo $data->role . '<br/>';
+			echo $data->status . '<br/>';
+		}
+
+		
+		
         return $this->fetch();
     }
 	
@@ -103,12 +115,18 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function admin_list()   //管理员列表
+	public function admin_list($id='')   //管理员列表
     {
 		$user = UserModel::get($id);
-		echo $user->nickname . '<br/>';
-		echo $user->email . '<br/>';
-		echo date('Y/m/d', $user->birthday) . '<br/>';
+		echo $user['id'] . '<br/>';
+		echo $user['username'] . '<br/>';
+		echo $user['phone'] . '<br/>';
+		echo $user['email'] . '<br/>';
+		echo $user['role'] . '<br/>';
+		echo $user['status'] . '<br/>';
+
+		echo $user['description'] . '<br/>';
+		echo date('Y/m/d', $user['last_login_time']) . '<br/>';
 	
 
 		
