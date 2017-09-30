@@ -153,6 +153,7 @@ public function admin_list($id='')
 ~~~
 
 ## 2017-9-30 15:50:23
+
 模型查询全部数据方法</br>
 首先在模型写好查询</br>
 ~~~php
@@ -171,7 +172,7 @@ public function admin_role()
     }
 ~~~</br>
 
-然后在控制器进行输出
+然后在控制器进行输出</br>
 
 ~~~php
 public function admin_list()   //管理员列表
