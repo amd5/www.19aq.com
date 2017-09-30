@@ -36,4 +36,21 @@ class User extends Model
     protected $name = 'manage_user';
 	
 	
+	
+	public function admin_list()   //管理员列表
+    {
+		$result = UserModel::all();
+		foreach ($result as $data) {
+			echo $data->id . '<br/>';
+			echo $data->username . '<br/>';
+			echo $data->phone . '<br/>';
+			echo $data->email . '<br/>';
+			echo $data->role . '<br/>';
+			echo $data->status . '<br/>';
+			
+		}
+        // return $this->fetch();
+    }
+	
+	
 }

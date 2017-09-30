@@ -153,7 +153,8 @@ public function admin_list($id='')
 ~~~
 
 ## 2017-9-30 15:50:23
-模型查询数据方法</br>
+模型查询全部数据方法</br>
+首先在模型写好查询</br>
 ~~~php
 public function admin_role()
     {
@@ -168,8 +169,26 @@ public function admin_role()
 		}
         return $this->fetch();
     }
-~~~
-
+~~~</br>
+然后在控制器进行输出
+~~~php
+public function admin_list()   //管理员列表
+    {
+		$result = UserModel::all();
+		$this->assign('result', $result);   //输出数组
+        return $this->fetch();
+    }
+~~~</br>
+最后传递到模板视图</br>
+~~~html
+{volist name="result" id="result" }   <!--输出数组循环开始-->
+	<td>{$result.id}</td>
+	<td>{$result.username}</td>
+	<td>{$result.phone}</td>
+	<td>{$result.email}</td>
+	<td>超级管理员{$result.role}</td>
+{/volist}							  <!--输出数组循环结束-->
+~~~</br>
 
 
 
