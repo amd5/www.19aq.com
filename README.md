@@ -170,8 +170,7 @@ public function admin_role()
 		}
         return $this->fetch();
     }
-~~~</br>
-
+~~~
 然后在控制器进行输出</br>
 
 ~~~php
