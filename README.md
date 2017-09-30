@@ -135,11 +135,21 @@ URL写法
 完成后台页面报错的解决</br>
 Url新的写法`{:Url('/')}`</br>
 熟悉了基础的模型查询   `use app\admin\model\User as UserModel;`
+带参数查询   `url/1` 或者`?id=1`
 ~~~php
-$user = UserModel::get($id);
-echo $user->nickname . '<br/>';
-echo $user->email . '<br/>';
-echo date('Y/m/d', $user->birthday) . '<br/>';
+public function admin_list($id='')   
+    {
+		$user = UserModel::get($id);
+		echo $user['id'] . '<br/>';
+		echo $user['username'] . '<br/>';
+		echo $user['phone'] . '<br/>';
+		echo $user['email'] . '<br/>';
+		echo $user['role'] . '<br/>';
+		echo $user['status'] . '<br/>';
+		echo $user['description'] . '<br/>';
+		echo date('Y/m/d', $user['last_login_time']) . '<br/>';
+        return $this->fetch();
+    }
 ~~~
 
 ## 2017-9-30 15:50:23

@@ -101,9 +101,6 @@ class Index extends Controller
 			echo $data->role . '<br/>';
 			echo $data->status . '<br/>';
 		}
-
-		
-		
         return $this->fetch();
     }
 	
@@ -124,15 +121,8 @@ class Index extends Controller
 		echo $user['email'] . '<br/>';
 		echo $user['role'] . '<br/>';
 		echo $user['status'] . '<br/>';
-
 		echo $user['description'] . '<br/>';
 		echo date('Y/m/d', $user['last_login_time']) . '<br/>';
-	
-
-		
-
-
-		
         return $this->fetch();
     }
 	
