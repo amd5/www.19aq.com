@@ -170,7 +170,9 @@ public function admin_role()
         return $this->fetch();
     }
 ~~~</br>
+
 然后在控制器进行输出
+
 ~~~php
 public function admin_list()   //管理员列表
     {
@@ -179,7 +181,9 @@ public function admin_list()   //管理员列表
         return $this->fetch();
     }
 ~~~</br>
+
 最后传递到模板视图</br>
+
 ~~~html
 {volist name="result" id="result" }   <!--输出数组循环开始-->
 	<td>{$result.id}</td>
