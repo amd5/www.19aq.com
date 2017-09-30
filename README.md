@@ -11,14 +11,10 @@ ThinkPHP 5.0 学习日志
 
 ## ‎2017‎-9‎-‎14 ‏‎19:56:06 下载安装ThinkPHP
 
-根目录`build.php`拷贝到`application`目录下
-</br>
-执行`php think build --module demo`
-</br>
-生成一个默认的`Index`控制器文件。
-</br>
-[教程地址](#教程地址)点击左侧传送门进入
-</br>
+根目录`build.php`拷贝到`application`目录下</br>
+执行`php think build --module demo`</br>
+生成一个默认的`Index`控制器文件。</br>
+[教程地址](#教程地址)点击左侧传送门进入</br>
 ## 2017-9-14 21:14:00 熟悉框架和写法
 #### 载入类库
 `use think\Controller;`
@@ -126,23 +122,18 @@ class Index extends Controller
 
 ## 2017-9-25 19:48:56 学习public目录定义
 学习了https://github.com/yuan1994/tpAdmin
-发现没有进行整体目录定义，模板跟随thinkphp的框架和写法，把每个html模板文件的加载全部重新写了一遍。
-
+发现没有进行整体目录定义，模板跟随thinkphp的框架和写法，把每个html模板文件的加载全部重新写了一遍。</br>
+~~~php
 {:\\think\\Url::build('./admin/index/welcome.html')}
-
+~~~
 URL写法
 
 ## 2017-9-28 17:31:01
-熟悉驼峰写法
-</br>
-提示 `语法错误: unexpected '(', expecting ',' or ';'`
-</br>
-参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)
-</br>
-完成后台页面报错的解决
-</br>
-Url新的写法`{:Url('/')}`
-</br>
+熟悉驼峰写法</br>
+提示 `语法错误: unexpected '(', expecting ',' or ';'`</br>
+参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)</br>
+完成后台页面报错的解决</br>
+Url新的写法`{:Url('/')}`</br>
 熟悉了基础的模型查询   `use app\admin\model\User as UserModel;`
 ~~~php
 		$user = UserModel::get($id);
