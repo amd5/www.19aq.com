@@ -172,7 +172,6 @@ public function admin_role()
     }
 ~~~
 然后在控制器进行输出</br>
-
 ~~~php
 public function admin_list()   //管理员列表
     {
@@ -180,10 +179,8 @@ public function admin_list()   //管理员列表
 		$this->assign('result', $result);   //输出数组
         return $this->fetch();
     }
-~~~</br>
-
+~~~
 最后传递到模板视图</br>
-
 ~~~html
 {volist name="result" id="result" }   <!--输出数组循环开始-->
 	<td>{$result.id}</td>
@@ -192,8 +189,7 @@ public function admin_list()   //管理员列表
 	<td>{$result.email}</td>
 	<td>超级管理员{$result.role}</td>
 {/volist}							  <!--输出数组循环结束-->
-~~~</br>
-
+~~~
 `public` 表示全局，类内部外部子类都可以访问；</br>
 `private`表示私有的，只有本类内部可以使用；</br>
 `protected`表示受保护的，只有本类或子类或父类中可以访问；</br>
