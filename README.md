@@ -136,16 +136,29 @@ URL写法
 Url新的写法`{:Url('/')}`</br>
 熟悉了基础的模型查询   `use app\admin\model\User as UserModel;`
 ~~~php
-		$user = UserModel::get($id);
-		echo $user->nickname . '<br/>';
-		echo $user->email . '<br/>';
-		echo date('Y/m/d', $user->birthday) . '<br/>';
+$user = UserModel::get($id);
+echo $user->nickname . '<br/>';
+echo $user->email . '<br/>';
+echo date('Y/m/d', $user->birthday) . '<br/>';
 ~~~
 
 ## 2017-9-30 15:50:23
-模型查询数据方法
-</br>
-
+模型查询数据方法</br>
+~~~php
+public function admin_role()
+    {
+		$result = UserModel::all();
+		foreach ($result as $data) {
+			echo $data->id . '<br/>';
+			echo $data->username . '<br/>';
+			echo $data->phone . '<br/>';
+			echo $data->email . '<br/>';
+			echo $data->role . '<br/>';
+			echo $data->status . '<br/>';
+		}
+        return $this->fetch();
+    }
+~~~
 
 
 
