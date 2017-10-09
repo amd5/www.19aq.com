@@ -209,7 +209,10 @@ class Index extends Controller
 	{
 		// $result = new Manageuser();
 		$result = Manageuser::where('checked','=','y')->limit(10)->order('id', 'asc')->select();
-		$this->assign('result', $result);   //输出数组
+		//$this->assign('result', $result);   //输出数组
+		$this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
+		//$this->assign('result',collection($result)->append(['sort'])->toArray());
+		
 		return $this->fetch();
 	}
 	

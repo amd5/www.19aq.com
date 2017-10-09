@@ -242,6 +242,9 @@ $user = User::get(function($query){   //执行查询
 `WdatePicker({ minDate:'#F{ $dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })` 
 大括号后面加空格就可以了</br>
 
+## 2017-10-4 解决修改器读取数据修改问题
+解决输出时间戳问题</br>
+
 
 
 ## 教程地址
