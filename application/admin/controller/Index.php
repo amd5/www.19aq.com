@@ -3,6 +3,8 @@ namespace app\admin\controller;
 
 use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Manageuser;
+use app\admin\model\Articlelist;
+use app\admin\model\Articlelistsortid;
 use think\Controller;
 use think\Db;
 
@@ -106,9 +108,9 @@ class Index extends Controller
 	
 	public function admin_list()   //管理员列表
     {
-		$result = UserModel::all();
-		$this->assign('result', $result);   //输出数组
-        return $this->fetch();
+		$result = Manageuser::all();
+		$this->assign('result',collection($result)->append(['role1'])->toArray());
+		return $this->fetch();
     }
 	
 	public function charts_1()
@@ -205,16 +207,31 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function article_list()
+	public function article_list()	//文章列表页
 	{
-		// $result = new Manageuser();
-		$result = Manageuser::where('checked','=','y')->limit(10)->order('id', 'asc')->select();
-		//$this->assign('result', $result);   //输出数组
+		$result = Articlelist::where('checked','=','y')->order('id', 'asc')->select();
 		$this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
-		//$this->assign('result',collection($result)->append(['sort'])->toArray());
+		// $relation = $result->books;
+		// $this->assign('result',collection($relation)->toArray());
 		
+		//获取分类
+		// $user = Articlelistsortid::all();
+		 // $books = $user->books;
+		 // dump($books);
+		// return $this->hasOne('Articlelistsortid','sortid','sid',['title'=>'pid','type'=>'alias']);
 		return $this->fetch();
+		// dump($result->profile);
 	}
+	
+	public function article_zhang()	//文章详情页
+    {
+		$data = Db::name('article')->find();
+        $this->assign('result', $data);
+        return $this->fetch();
+		
+        // return $this->fetch();
+    }
+
 	
 
 }
