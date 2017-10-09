@@ -244,6 +244,7 @@ $user = User::get(function($query){   //执行查询
 
 ## 2017-10-4 解决修改器读取数据修改问题
 解决输出时间戳问题</br>
+`{$result.date|date="Y-m-d h-i-s",###}`</br>
 
 ## 2017-10-9 22:04:14
 简单测试datatable插件使用</br>
