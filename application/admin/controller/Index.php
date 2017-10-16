@@ -208,14 +208,18 @@ class Index extends Controller
 		// $this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
 		// return $this->fetch();
 		
-		$result = Articlelist::table('think_article')
-		->alias('a')//给主表取别名
+		$result = Articlelist::table('think_article')->alias('a')//给主表取别名
 		->join('think_article_sort b','a.sortid = b.sid')
-		->where('checked','=','y')
-		->order('id', 'asc')
+		->join('think_manage_user c','a.author = c.id')
+		->where('think_article.status','=','1')
+		->field('a.*,b.*,c.id as id1,c.username as username')
+		// ->order('id', 'asc')
 		->select();
-		$this->assign('result',$result);
+		$this->assign('result',collection($result)->append(['status11'])->toArray());
 		return $this->fetch();
+		// echo $result;
+		// print $result;
+
 
 	}
 	
