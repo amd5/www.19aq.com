@@ -16,6 +16,12 @@ class Articlelist extends Model
 	$sortid = [-1 =>'A分类',2 =>'B分类',12 => 'C分类',14 =>'D分类',15 =>'F分类',17 =>'G分类'];
 	return $sortid[$data['sortid']];
 	}
+	//================================================-=================================
+	//================================================-=================================
+	// public function user123()
+    // {
+        // return $this->hasOne('ArticleSort', "sid", "sortid")->setAlias(["sid" => "uuid"]);
+    // }
 
 	
 }

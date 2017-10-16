@@ -250,6 +250,32 @@ $user = User::get(function($query){   //执行查询
 简单测试datatable插件使用</br>
 初步了解数据模型关联</br>
 
+## 2017-10-10 21:43:36
+了解模型关联  一对一  一对多  多对多关联</br>
+
+## 2017-10-14 17:54:30
+后台增加验证码和重置按钮</br>
+
+## 2017-10-16 18:53:35
+完成文章列表页 文章分类自动关联数据库分类
+使用的联表查询完成的，语句见下      `感谢QQ群316497602的群主973873838的帮助`
+```php
+public function article_list()
+	{
+		$result = Articlelist::table('think_article')
+		->alias('a')//给主表取别名
+		->join('think_article_sort b','a.sortid = b.sid')
+		->where('checked','=','y')
+		->order('id', 'asc')
+		->select();
+		$this->assign('result',$result);
+		return $this->fetch();
+
+	}
+```
+
+
+
 ## 教程地址
 
 https://www.kancloud.cn/thinkphp/thinkphp5_quickstart
