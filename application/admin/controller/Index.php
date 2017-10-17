@@ -3,8 +3,9 @@ namespace app\admin\controller;
 
 use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Manageuser;
-use app\admin\model\Articlelist;
+use app\admin\model\Article;
 use app\admin\model\ArticleSort;
+// use app\admin\model\ArticleAdd;
 use think\Controller;
 use think\Exception;
 use think\Session;
@@ -182,8 +183,39 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function article_add()
+	public function article_add()	//新建文章
     {
+		//创建要插入到表中的数据
+		$data['title'] = '我是标题';
+		
+		$data['date'] = date(time());
+		$data['content'] = '小沈阳';
+		$data['excerpt'] = '小';
+		$data['author'] = 1;
+		$data['sortid'] = 1;
+		$data['status'] = 1;
+		
+		//显示要添加到表中原始数据
+		echo '要添加到表中的数据如下:<br/>';
+		dump($data);
+		
+		//插入数据到表中，并返回受影响记录数量
+		$result = Article::insert($data);
+
+		//判断是否新增成功,成功则显示提示信息
+		echo $result ? "新增成功!<br />":'新增失败!<br />';  	
+	  
+		
+
+		
+		// $result = Manageuser::all();
+		// $this->assign('result',collection($result)->append(['role1'])->toArray());
+        return $this->fetch();
+    }
+	
+	public function article_edit()
+    {
+		// return '查看id=' . $id . '的内容';
         return $this->fetch();
     }
 	
@@ -208,19 +240,17 @@ class Index extends Controller
 		// $this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
 		// return $this->fetch();
 		
-		$result = Articlelist::table('think_article')->alias('a')//给主表取别名
+		$result = Article::table('think_article')->alias('a')//给主表取别名
 		->join('think_article_sort b','a.sortid = b.sid')
 		->join('think_manage_user c','a.author = c.id')
 		->where('think_article.status','=','1')
 		->field('a.*,b.*,c.id as id1,c.username as username')
-		// ->order('id', 'asc')
+		->order('id', 'asc')
 		->select();
 		$this->assign('result',collection($result)->append(['status11'])->toArray());
+		// dump('123123'); 
 		return $this->fetch();
-		// echo $result;
-		// print $result;
-
-
+		
 	}
 	
 	public function article_zhang()	//文章详情页

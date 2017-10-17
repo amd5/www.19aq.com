@@ -258,7 +258,8 @@ $user = User::get(function($query){   //执行查询
 
 ## 2017-10-16 18:53:35
 完成文章列表页 文章分类自动关联数据库分类</br>
-使用的联表查询完成的，语句见下      `感谢QQ群316497602的群主973873838的帮助`</br>
+使用的联表查询完成的，语句见下 </br>
+`感谢QQ群316497602的群主973873838的帮助`</br>
 ```php
 public function article_list()
 	{
@@ -275,9 +276,31 @@ public function article_list()
 ```
 
 ## 2017-10-16 22:02:06
-解决联表查询多字段重复的问题
+解决联表查询多字段重复的问题</br>
 ```->field('a.*,b.*,c.id as id1,c.username as username')```</br>
 
+## 2017-10-17 21:41:06
+初步编写新增文章，以及后台文章编辑功能</br>
+```php
+		$data['title'] = '我是标题';
+		
+		$data['date'] = date(time());       //date('Y-m-d',time()); 日期
+		$data['content'] = '小沈阳';
+		$data['excerpt'] = '小';
+		$data['author'] = 1;
+		$data['sortid'] = 1;
+		$data['status'] = 1;
+		
+		//显示要添加到表中原始数据
+		echo '要添加到表中的数据如下:<br/>';
+		dump($data);
+		
+		//插入数据到表中，并返回受影响记录数量
+		$result = Article::insert($data);
+
+		//判断是否新增成功,成功则显示提示信息
+		echo $result ? "新增成功!<br />":'新增失败!<br />';  
+```
 
 ## 教程地址
 
