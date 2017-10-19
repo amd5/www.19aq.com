@@ -302,6 +302,24 @@ public function article_list()
 		echo $result ? "新增成功!<br />":'新增失败!<br />';  
 ```
 
+## 2017-10-18 20:33:59
+处理好文章编辑按钮和获取文章标题</br>
+
+## 2017-10-19 23:01:54
+感谢QQ群316497602的群主973873838的帮助</br>
+以下是html表单post的输出调试方法</br>
+```php
+if($this->request->isPost()){
+			dump(input('post.'));
+			exit;
+		} else {
+			$result = Article::get($id);
+			return view('article_edit',['result'=>$result]);
+		}
+```
+一直提示错误 `article_save_submit is not defined`</br>
+
+
 ## 教程地址
 
 https://www.kancloud.cn/thinkphp/thinkphp5_quickstart
