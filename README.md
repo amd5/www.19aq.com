@@ -340,6 +340,7 @@ public function article_sort_edit($id)	//编辑分类
 
 ## 2017-10-21 18:36:20 添加编辑分类
 发布文章`添加数据`的二种写法</br>
+写法一：
 ```php
 public function article_sort_add()	//添加分类
     {
@@ -357,7 +358,8 @@ public function article_sort_add()	//添加分类
 			return $this->fetch();
 		}
     }
-```</br>
+```
+写法二：</br>
 
 ```php
 public function article_sort_add()	//添加分类
