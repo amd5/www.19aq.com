@@ -240,6 +240,7 @@ class Index extends Controller
 	public function article_sort()
     {
 		// if($this->request->isPost()){
+		// if($this->request->isAjax()){
 		if($this.title=="删除"){
 			echo "11111111111111";
 			$this->success("hello");
