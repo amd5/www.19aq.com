@@ -379,9 +379,9 @@ public function article_sort_add()	//添加分类
 		}
     }
 ```
-
 编辑`更新数据`的二种写法</br>
 写法一：</br>
+
 ```php
 public function article_sort_edit($id)	//编辑分类
     {
@@ -406,6 +406,7 @@ public function article_sort_edit($id)	//编辑分类
 ```
 </br>
 写法二：</br>
+
 ```php
 $result1 = ArticleSort::where('sid', $id)
 			->update([
