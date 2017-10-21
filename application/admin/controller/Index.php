@@ -34,11 +34,6 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function product_brand()
-    {
-        return $this->fetch();
-    }
-	
 	public function product_category()
     {
         return $this->fetch();
@@ -185,37 +180,66 @@ class Index extends Controller
 	
 	public function article_add()	//新建文章
     {
-		//创建要插入到表中的数据
-		$data['title'] = '我是标题';
-		
-		$data['date'] = date(time());
-		$data['content'] = '小沈阳';
-		$data['excerpt'] = '小';
-		$data['author'] = 1;
-		$data['sortid'] = 1;
-		$data['status'] = 1;
-		
-		//显示要添加到表中原始数据
-		echo '要添加到表中的数据如下:<br/>';
-		dump($data);
-		
-		//插入数据到表中，并返回受影响记录数量
-		$result = Article::insert($data);
+		if($this->request->isPost()){
+			// dump(input('post.'));  //输出页面post过来的数据
+			// exit;
+			
+			//https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/147279#_263  查询构造器插入数据
+			$data['title'] = $_POST["articletitle"];
+			$data['date'] = date(time());
+			$data['content'] = $_POST["content"];
+			$data['excerpt'] = '我是文章描述';
+			$data['sortid'] = '1';
+			$data['status'] = '1';
+			
+			//显示要添加到表中原始数据
+			// echo '要添加到表中的数据如下:<br/>';
+			//dump($data);
+			
+			//插入数据到表中，并返回受影响记录数量
+			$result = Article::insert($data);
+			
+			//判断是否新增成功,成功则显示提示信息
+			echo $result ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'发布失败!<br />';  	
 
-		//判断是否新增成功,成功则显示提示信息
-		echo $result ? "新增成功!<br />":'新增失败!<br />';  	
-	  
-		
+			// return $this->fetch();
+			
+		} else {
+			$result = Article::get($id);
+			return view('article_add',['result'=>$result]);
+		}
 
-		
-		// $result = Manageuser::all();
-		// $this->assign('result',collection($result)->append(['role1'])->toArray());
-        return $this->fetch();
     }
 	
-	public function article_edit()
+	public function article_edit($id)
     {
-		// return '查看id=' . $id . '的内容';
+		//读取页面传递过来的参数查询数据库对应内容
+		// $result = Article::get($id);   
+		//显示参数数据库内容到模板
+		// return view('article_edit',['result'=>$result]);
+		if($this->request->isPost()){
+			$result1 = Article::where('id', $id)
+			->update([
+			'title' => $_POST["articletitle"],
+			'content' => $_POST["content"],
+			]);
+			// echo '要添加到表中的数据如下:<br/>';
+			// dump(input('post.'));  //输出页面post过来的数据
+			//判断是否插入成功
+			echo $result1 ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'内容没有更新!<br />';  	
+
+		} else {
+			$result = Article::get($id);
+			return view('article_edit',['result'=>$result]);
+			
+		}
+
+    }
+	
+	public function article_sort()
+    {
+		$result = ArticleSort::order('taxis', 'asc')->select();
+		$this->assign('result', $result);
         return $this->fetch();
     }
 	
@@ -236,11 +260,7 @@ class Index extends Controller
 	
 	public function article_list()	//文章列表页           toJson();
 	{
-		// $result = Articlelist::where('checked','=','y')->order('id', 'asc')->select();
-		// $this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
-		// return $this->fetch();
-		
-		$result = Article::table('think_article')->alias('a')//给主表取别名
+		$result = Article::alias('a')//给主表取别名
 		->join('think_article_sort b','a.sortid = b.sid')
 		->join('think_manage_user c','a.author = c.id')
 		->where('think_article.status','=','1')
@@ -249,25 +269,73 @@ class Index extends Controller
 		->select();
 		$this->assign('result',collection($result)->append(['status11'])->toArray());
 		// dump('123123'); 
+		// dump($result);
 		return $this->fetch();
-		
 	}
-	
-	public function article_zhang()	//文章详情页
-    {
-		$data = Db::name('article')->find();
-        $this->assign('result', $data);
-        return $this->fetch();
+		// $result = Articlelist::where('checked','=','y')->order('id', 'asc')->select();
+		// $this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
+		// return $this->fetch();
 		
+		// echo $result;
+		// debug_end($result);
+		// return $this->fetch();
+	public function article($id)	//文章详情页
+    {
+		$result = Article::where('id','=',$id)->select();
+		// $result = Db::name('article')->where('id','=',$id)->select();
+        $this->assign('result', $result);
+        return $this->fetch();
+    }
+	
+	public function article_sort_add()	//添加分类
+    {
+		
+        return $this->fetch();
+    }
+	
+	public function article_sort_edit($id)	//编辑分类
+    {
+		dump(input('post.'));
+		//读取页面传递过来的参数查询数据库对应内容
+		$result = ArticleSort::get($id);   
+		//显示参数数据库内容到模板
+		dump($result);
+		return view('article_sort_edit',['result'=>$result]);
         // return $this->fetch();
+		
+		
+		if($this->request->isPost()){
+			$result1 = ArticleSort::where('sid', $id)
+			->update([
+			'taxis' => $_POST["sort_taxis"],          //分类排序
+			'sortname' => $_POST["sort_name"],        //分类名称
+			'alias' => $_POST["sort_alias"],          //分类别名
+			'template' => $_POST["sort_template"],    //分类模板
+			'description' => $_POST["description"],   //分类描述
+			]);
+			// echo '要添加到表中的数据如下:<br/>';
+			// dump(input('post.'));  //输出页面post过来的数据
+			//判断是否插入成功
+			echo $result1 ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'内容没有更新!<br />';  	
+
+		} else {
+			$result = ArticleSort::get($id);
+			return view('article_sort_edit',['result'=>$result]);
+			
+		}
+    }
+	
+	public function article1()
+    {
+        return $this->fetch();
     }
 
 	public function test()
     {
-		$users  = ArticleSort::select();
-		foreach ($users as $user) {
-			dump($user->items);
-		}
+		// $users  = ArticleSort::select();
+		// foreach ($users as $user) {
+			// dump($user->items);
+		// }
 
 		
 		

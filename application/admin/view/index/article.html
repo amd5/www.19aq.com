@@ -1,0 +1,21 @@
+{include file="index/_header" title="资讯列表" /}
+<!--Ueditor代码高亮样式 -->
+<script type="text/javascript" src="{:Url('/')}lib\ueditor/1.4.3/third-party/SyntaxHighlighter/shCore.js"></script>
+<link rel="stylesheet" type="text/css" href="{:Url('/')}lib/ueditor/1.4.3/third-party/SyntaxHighlighter/shCoreDefault.css">
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+<!--Ueditor代码高亮样式 -->
+
+{volist name="result" id="result" }
+
+
+
+<h1>文章内容页面</h1></br>
+标题:{$result.title}</br>
+内容:{$result.content}</br>
+
+{/volist}	
+
+</body>
+</html>

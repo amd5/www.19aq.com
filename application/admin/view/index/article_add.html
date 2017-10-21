@@ -1,9 +1,9 @@
 {include file="index/_header" title="发布文章" /}
 
 <article class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
+	<form class="form form-horizontal" id="form-article-add" method="post">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
+			<label class="form-label col-xs-4 col-sm-2" name="title"><span class="c-red">*</span>文章标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="articletitle" name="articletitle">
 			</div>
@@ -11,12 +11,12 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">文章内容：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
-				<script id="editor" type="text/plain" style="width:100%;height:400px;"></script> 
+				<script id="editor" type="text/plain" style="width:100%;height:400px;" name="content"></script> 
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
 				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 				
@@ -32,7 +32,7 @@
 				</select>
 				</span>
 				
-				<input type="text" class="input-text" style="width:350px" placeholder="文章标签,逗号或空格分隔" id="" name="">
+				<input type="text" class="input-text" style="width:350px" placeholder="文章标签,逗号或空格分隔">
 				
 				
 			</div>
@@ -68,52 +68,20 @@ $(function(){
 	$("#form-article-add").validate({
 		rules:{
 			articletitle:{
-				required:true,
+				required:true,   //必填项
 			},
-			articletitle2:{
-				required:true,
-			},
-			articlecolumn:{
-				required:true,
-			},
-			articletype:{
-				required:true,
-			},
-			articlesort:{
-				required:true,
-			},
-			keywords:{
-				required:true,
-			},
-			abstract:{
-				required:true,
-			},
-			author:{
-				required:true,
-			},
-			sources:{
-				required:true,
-			},
-			allowcomments:{
-				required:true,
-			},
-			commentdatemin:{
-				required:true,
-			},
-			commentdatemax:{
-				required:true,
-			},
-
+			
 		},
 		onkeyup:false,
 		focusCleanup:true,
 		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
+		<!-- submitHandler:function(form){ -->
+			<!-- //$(form).ajaxSubmit(); -->
+			<!-- var index = parent.layer.getFrameIndex(window.name); -->
+			<!-- //parent.$('.btn-refresh').click(); -->
+			<!-- parent.layer.close(index); -->
+		<!-- } -->
+
 	});
 	
 	$list = $("#fileList"),

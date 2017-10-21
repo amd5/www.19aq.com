@@ -318,6 +318,58 @@ if($this->request->isPost()){
 		}
 ```
 一直提示错误 `article_save_submit is not defined`</br>
+官方Demo也提示是这个错误</br>
+
+## 2017-10-20 17:24:47
+暂时性解决上面的post产生的错误</br>
+解决文章发布，文章编辑问题</br>
+解决`ueditor`文章内代码高亮的问题</br>
+备用   ps:查询并输出数据</br>
+```php
+public function article_sort_edit($id)	//编辑分类
+{
+	dump(input('post.'));  //输出post过来的数据
+	//读取页面传递过来的参数查询数据库对应内容
+	$result = ArticleSort::get($id);   
+	//显示参数数据库内容到模板
+	dump($result);
+	return view('article_sort_edit',['result'=>$result]);
+}
+```
+
+
+## 2017-10-21 18:36:20
+编辑`更新数据`的二种写法</br>
+写法一：</br>
+```php
+public function article_sort_edit($id)	//编辑分类
+    {
+		dump(input('post.'));  //输出post过来的数据
+		if($this->request->isPost()){
+			$result1 = ArticleSort::name('article_sort')
+			->where('sid', $id)
+			->update([
+			'title' => $_POST["title"],          //标题
+			]);
+			// echo '要添加到表中的数据如下:<br/>';
+			// dump(input('post.'));  //输出页面post过来的数据
+			//判断是否插入成功
+			echo $result1 ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'内容没有更新!<br />';  	
+
+		} else {
+			$result = ArticleSort::get($id);
+			return view('article_sort_edit',['result'=>$result]);
+			
+		}
+    }
+```
+</br>
+写法二：</br>
+```php
+$result1 = ArticleSort::where('sid', $id)
+			->update([
+			'title' => $_POST["title"],          //标题
+```
 
 
 ## 教程地址
