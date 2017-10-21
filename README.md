@@ -357,8 +357,8 @@ public function article_sort_add()	//添加分类
 			return $this->fetch();
 		}
     }
-```
-</br>
+```</br>
+
 ```php
 public function article_sort_add()	//添加分类
     {
