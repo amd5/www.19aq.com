@@ -279,7 +279,7 @@ public function article_list()
 解决联表查询多字段重复的问题</br>
 ```->field('a.*,b.*,c.id as id1,c.username as username')```</br>
 
-## 2017-10-17 21:41:06
+## 2017-10-17 21:41:06 添加编辑文章
 初步编写新增文章，以及后台文章编辑功能</br>
 ```php
 		$data['title'] = '我是标题';
@@ -302,7 +302,7 @@ public function article_list()
 		echo $result ? "新增成功!<br />":'新增失败!<br />';  
 ```
 
-## 2017-10-18 20:33:59
+## 2017-10-18 20:33:59 编辑文章
 处理好文章编辑按钮和获取文章标题</br>
 
 ## 2017-10-19 23:01:54
@@ -320,7 +320,7 @@ if($this->request->isPost()){
 一直提示错误 `article_save_submit is not defined`</br>
 官方Demo也提示是这个错误</br>
 
-## 2017-10-20 17:24:47
+## 2017-10-20 17:24:47 编辑分类
 暂时性解决上面的post产生的错误</br>
 解决文章发布，文章编辑问题</br>
 解决`ueditor`文章内代码高亮的问题</br>
@@ -338,7 +338,46 @@ public function article_sort_edit($id)	//编辑分类
 ```
 
 
-## 2017-10-21 18:36:20
+## 2017-10-21 18:36:20 添加编辑分类
+发布文章`添加数据`的二种写法</br>
+```php
+public function article_sort_add()	//添加分类
+    {
+		if($this->request->isPost()){
+			$result = ArticleSort::insert([
+			'taxis'=>$_POST["sort_taxis"],
+			'sortname'=>$_POST["sort_name"],
+			'alias'=>$_POST["sort_alias"],
+			'template'=>$_POST["sort_template"],
+			'description'=>$_POST["description"]
+			]);
+		echo $result ? "<center><font color='red'><h1>添加分类成功!</h1></font></center><br />":'发布失败!<br />';  
+			
+		}else {
+			return $this->fetch();
+		}
+    }
+```
+</br>
+```php
+public function article_sort_add()	//添加分类
+    {
+		if($this->request->isPost()){
+			$data['taxis'] = $_POST["sort_taxis"];
+			$data['sortname'] = $_POST["sort_name"];
+			$data['alias'] = $_POST["sort_alias"];
+			$data['template'] = $_POST["sort_template"];
+			$data['description'] = $_POST["description"];
+			$result = ArticleSort::insert($data);
+			// dump(input('post.'));
+			echo $result ? "<center><font color='red'><h1>添加分类成功!</h1></font></center><br />":'发布失败!<br />';  
+			
+		}else {
+			return $this->fetch();
+		}
+    }
+```
+
 编辑`更新数据`的二种写法</br>
 写法一：</br>
 ```php
@@ -370,6 +409,32 @@ $result1 = ArticleSort::where('sid', $id)
 			->update([
 			'title' => $_POST["title"],          //标题
 ```
+
+## 2017-10-22 01:20:34 删除分类
+ajax删除数据和提交到后台执行`以下代码仅做参考`
+```html
+<a title="删除" href="javascript:;" onclick="member_del(this,'{$result.sid}')" class="ml-5" style="text-decoration:none">
+```
+```php
+function member_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			//url: '',
+			url: "{:Url('')}" + ".html" + "?id=" + id,
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+```
+</br>
 
 
 ## 教程地址

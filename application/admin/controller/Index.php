@@ -178,6 +178,14 @@ class Index extends Controller
         return $this->fetch();
     }
 	
+	public function article($id)	//文章详情页
+    {
+		$result = Article::where('id','=',$id)->select();
+		// $result = Db::name('article')->where('id','=',$id)->select();
+        $this->assign('result', $result);
+        return $this->fetch();
+    }
+	
 	public function article_add()	//新建文章
     {
 		if($this->request->isPost()){
@@ -185,12 +193,12 @@ class Index extends Controller
 			// exit;
 			
 			//https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/147279#_263  查询构造器插入数据
-			$data['title'] = $_POST["articletitle"];
-			$data['date'] = date(time());
-			$data['content'] = $_POST["content"];
-			$data['excerpt'] = '我是文章描述';
-			$data['sortid'] = '1';
-			$data['status'] = '1';
+			$data['title'] 		= $_POST["articletitle"];
+			$data['date'] 		= date(time());
+			$data['content'] 	= $_POST["content"];
+			$data['excerpt'] 	= '我是文章描述';
+			$data['sortid'] 	= '1';
+			$data['status'] 	= '1';
 			
 			//显示要添加到表中原始数据
 			// echo '要添加到表中的数据如下:<br/>';
@@ -205,27 +213,20 @@ class Index extends Controller
 			// return $this->fetch();
 			
 		} else {
-			$result = Article::get($id);
-			return view('article_add',['result'=>$result]);
+			return $this->fetch();
 		}
 
     }
 	
 	public function article_edit($id)
     {
-		//读取页面传递过来的参数查询数据库对应内容
-		// $result = Article::get($id);   
-		//显示参数数据库内容到模板
-		// return view('article_edit',['result'=>$result]);
 		if($this->request->isPost()){
 			$result1 = Article::where('id', $id)
 			->update([
 			'title' => $_POST["articletitle"],
 			'content' => $_POST["content"],
 			]);
-			// echo '要添加到表中的数据如下:<br/>';
-			// dump(input('post.'));  //输出页面post过来的数据
-			//判断是否插入成功
+			
 			echo $result1 ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'内容没有更新!<br />';  	
 
 		} else {
@@ -238,10 +239,71 @@ class Index extends Controller
 	
 	public function article_sort()
     {
+		// if($this->request->isPost()){
+		if($this.title=="删除"){
+			echo "11111111111111";
+			$this->success("hello");
+			
+			$result = ArticleSort::where('sid', $id)->delete();
+			// dump($result);
+			
+			echo $result ? "<center><font color='red'><h1>文章删除成功!</h1></font></center><br />":'文章删除失败!<br />';  	
+			
+			
+			// dump($this);
+			// echo $_POST['data'];
+			// dump(input('post.'));
+			
+		}else {
+			$result = ArticleSort::order('taxis', 'asc')->select();
+			$this->assign('result', $result);
+			return $this->fetch();
+		}
+		
+    }
+	
+	public function article_sort_add()	//添加分类
+    {
+		if($this->request->isPost()){
+			$data['taxis']       = $_POST["sort_taxis"];		//分类排序
+			$data['sortname']    = $_POST["sort_name"];			//分类名称
+			$data['alias']       = $_POST["sort_alias"];		//分类别名
+			$data['template']    = $_POST["sort_template"];		//分类模板
+			$data['description'] = $_POST["description"];		//分类描述
+			$result = ArticleSort::insert($data);
+
+			echo $result ? "<center><font color='red'><h1>添加分类成功!</h1></font></center><br />":'发布失败!<br />';  
+			
+		}else {
+			return $this->fetch();
+		}
+    }
+	
+	public function article_sort_edit($id)	//编辑分类
+    {
+		if($this->request->isPost()){
+			$data['taxis']       = $_POST["sort_taxis"];		//分类排序
+			$data['sortname']    = $_POST["sort_name"];			//分类名称
+			$data['alias']       = $_POST["sort_alias"];		//分类别名
+			$data['template']    = $_POST["sort_template"];		//分类模板
+			$data['description'] = $_POST["description"];		//分类描述
+
+			$result = ArticleSort::where('sid', $id)->update($data);
+			echo $result ? "<center><font color='red'><h1>修改分类成功!</h1></font></center><br />":'内容没有更新!<br />';  	
+
+		} else {
+			$result = ArticleSort::get($id);
+			return view('article_sort_edit',['result'=>$result]);
+		}
+    }
+	
+	public function article_sort_del()
+    {
 		$result = ArticleSort::order('taxis', 'asc')->select();
 		$this->assign('result', $result);
         return $this->fetch();
     }
+	
 	
 	public function picture_add()
     {
@@ -279,51 +341,7 @@ class Index extends Controller
 		// echo $result;
 		// debug_end($result);
 		// return $this->fetch();
-	public function article($id)	//文章详情页
-    {
-		$result = Article::where('id','=',$id)->select();
-		// $result = Db::name('article')->where('id','=',$id)->select();
-        $this->assign('result', $result);
-        return $this->fetch();
-    }
 	
-	public function article_sort_add()	//添加分类
-    {
-		
-        return $this->fetch();
-    }
-	
-	public function article_sort_edit($id)	//编辑分类
-    {
-		dump(input('post.'));
-		//读取页面传递过来的参数查询数据库对应内容
-		$result = ArticleSort::get($id);   
-		//显示参数数据库内容到模板
-		dump($result);
-		return view('article_sort_edit',['result'=>$result]);
-        // return $this->fetch();
-		
-		
-		if($this->request->isPost()){
-			$result1 = ArticleSort::where('sid', $id)
-			->update([
-			'taxis' => $_POST["sort_taxis"],          //分类排序
-			'sortname' => $_POST["sort_name"],        //分类名称
-			'alias' => $_POST["sort_alias"],          //分类别名
-			'template' => $_POST["sort_template"],    //分类模板
-			'description' => $_POST["description"],   //分类描述
-			]);
-			// echo '要添加到表中的数据如下:<br/>';
-			// dump(input('post.'));  //输出页面post过来的数据
-			//判断是否插入成功
-			echo $result1 ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'内容没有更新!<br />';  	
-
-		} else {
-			$result = ArticleSort::get($id);
-			return view('article_sort_edit',['result'=>$result]);
-			
-		}
-    }
 	
 	public function article1()
     {

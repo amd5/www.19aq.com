@@ -5,28 +5,28 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类排序：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="sort_taxis" name="mobile" style="width:100px">
+				<input type="text" class="input-text" value="" placeholder="" id="sort_taxis" name="sort_taxis" style="width:100px">
 			</div>
 		</div>
 	
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="sort_name" name="username" style="width:200px">
+				<input type="text" class="input-text" value="" placeholder="" id="sort_name" name="sort_name" style="width:200px">
 			</div>
 		</div>
 		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类别名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="sort_alias" name="mobile" style="width:200px">
+				<input type="text" class="input-text" value="" placeholder="" id="sort_alias" name="sort_alias" style="width:200px">
 			</div>
 		</div>
 		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类模板：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="sort_template" name="mobile" style="width:200px">
+				<input type="text" class="input-text" value="" placeholder="" id="sort_template" name="sort_template" style="width:200px">
 			</div>
 		</div>
 		<div class="row cl">
@@ -47,7 +47,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">分类描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+				<textarea name="description" cols="" rows="" class="textarea""></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
 			</div>
 		</div>
@@ -91,21 +91,17 @@ $(function(){
 			sort_alias:{
 				required:true,
 			},
-			sort_template:{
-				required:true,
-				isMobile:true,
-			},
 			
 		},
 		onkeyup:false,
 		focusCleanup:true,
 		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
+		<!-- submitHandler:function(form){ -->
+			<!-- //$(form).ajaxSubmit(); -->
+			<!-- var index = parent.layer.getFrameIndex(window.name); -->
+			<!-- //parent.$('.btn-refresh').click(); -->
+			<!-- parent.layer.close(index); -->
+		<!-- } -->
 	});
 });
 </script> 
