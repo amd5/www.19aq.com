@@ -16,7 +16,8 @@ class Index extends Controller
 	
 	public function index()
     {
-        return $this->fetch();
+        // return $this->fetch(logincheck);	//默认进入登陆界面
+		return $this->fetch();
     }
 	
 	public function login()
