@@ -441,7 +441,7 @@ function member_del(obj,id){
 
 ## 2017-10-22 17:43:10 ajax删除
 解决ajax前台传值和后台删除数据的问题</br>
-`onclick="member_del(this,'123"`</br>
+`onclick="article_sort_del(this,'{$result.sid}')"`</br>
 
 ```html
 function member_del(obj,id){
