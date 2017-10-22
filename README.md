@@ -439,6 +439,50 @@ function member_del(obj,id){
 ```
 </br>
 
+## 2017-10-22 17:43:10 ajax删除
+解决ajax前台传值和后台删除数据的问题</br>
+`onclick="member_del(this,'123"`</br>
+
+```html
+function member_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			data: {"id":id},  
+			dataType: 'json',
+			success: function(data){
+				<!-- alert(data.msg); -->
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+```
+
+## 2017-10-22 20:24:14 系统提示
+增加系统提示并自动返回页面,并解决掉ajax文章删除</br>
+
+```php
+if($result){
+				$this->success("文章修改成功!");
+				
+			}else{
+				$this->error("内容没有更新!");
+			}
+```
+
+查询每个分类一共有多少文章</br>
+```mysql
+SELECT distinct sortname,sid,(SELECT count(*) FROM think_article where sortid=sid) FROM think_article_sort LEFT JOIN think_article ON think_article_sort.sid=think_article.sortid ORDER BY sid asc
+```
+
+## 2017-10-22 22:46:57
+调试ajax文章启用按钮 未成功</br>
 
 ## 教程地址
 

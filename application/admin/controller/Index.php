@@ -218,49 +218,49 @@ class Index extends Controller
 
     }
 	
-	public function article_edit($id)
+	public function article_edit($id)	//文章编辑
     {
 		if($this->request->isPost()){
-			$result1 = Article::where('id', $id)
+			$result = Article::where('id', $id)
 			->update([
 			'title' => $_POST["articletitle"],
 			'content' => $_POST["content"],
 			]);
 			
-			echo $result1 ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'内容没有更新!<br />';  	
-
+			if($result){
+				$this->success("文章修改成功!");
+				
+			}else{
+				$this->error("内容没有更新!");
+			}
 		} else {
 			$result = Article::get($id);
 			return view('article_edit',['result'=>$result]);
-			
 		}
 
     }
 	
-	public function article_sort()
+	public function article_del()	//文章删除
     {
-		// if($this->request->isPost()){
-		// if($this->request->isAjax()){
-		if($this.title=="删除"){
-			echo "11111111111111";
-			$this->success("hello");
-			
-			$result = ArticleSort::where('sid', $id)->delete();
-			// dump($result);
-			
-			echo $result ? "<center><font color='red'><h1>文章删除成功!</h1></font></center><br />":'文章删除失败!<br />';  	
-			
-			
-			// dump($this);
-			// echo $_POST['data'];
-			// dump(input('post.'));
-			
-		}else {
-			$result = ArticleSort::order('taxis', 'asc')->select();
-			$this->assign('result', $result);
-			return $this->fetch();
+        if($this->request->isAjax()){
+			$result = Article::where('id', $_POST['id'])->delete();
+			if($result){
+				$this->success("删除成功!");
+				
+			}else{
+				$this->error("删除失败");
+			}
+		}else{
+			return "请勿非法操作!";
 		}
-		
+    }
+	
+	public function article_sort()	//分类列表
+    {
+		$result = ArticleSort::order('taxis', 'asc')->select();
+		$this->assign('result', $result);
+		return $this->fetch();
+
     }
 	
 	public function article_sort_add()	//添加分类
@@ -272,12 +272,17 @@ class Index extends Controller
 			$data['template']    = $_POST["sort_template"];		//分类模板
 			$data['description'] = $_POST["description"];		//分类描述
 			$result = ArticleSort::insert($data);
-
-			echo $result ? "<center><font color='red'><h1>添加分类成功!</h1></font></center><br />":'发布失败!<br />';  
 			
+			if($result){
+				$this->success("添加成功!");
+				
+			}else{
+				$this->error("添加失败");
+			}
 		}else {
 			return $this->fetch();
 		}
+		
     }
 	
 	public function article_sort_edit($id)	//编辑分类
@@ -288,21 +293,61 @@ class Index extends Controller
 			$data['alias']       = $_POST["sort_alias"];		//分类别名
 			$data['template']    = $_POST["sort_template"];		//分类模板
 			$data['description'] = $_POST["description"];		//分类描述
-
+			// dump($data);
 			$result = ArticleSort::where('sid', $id)->update($data);
-			echo $result ? "<center><font color='red'><h1>修改分类成功!</h1></font></center><br />":'内容没有更新!<br />';  	
+			if($result){
+				$this->success("修改分类成功!");
+				
+			}else{
+				$this->error("内容没有更新!");
+			}	
 
 		} else {
 			$result = ArticleSort::get($id);
 			return view('article_sort_edit',['result'=>$result]);
+		}	
+    }
+	
+	public function article_sort_del()	//删除分类
+    {
+		if($this->request->isAjax()){
+			$result = ArticleSort::where('sid', $_POST['id'])->delete();
+			if($result){
+				$this->success("删除成功!");
+				
+			}else{
+				$this->error("删除失败");
+				// $this->getError();
+			}
+			
+		}else{
+			return "请勿非法操作!";
 		}
     }
 	
-	public function article_sort_del()
+	public function article_sort_status()	//状态更改
     {
-		$result = ArticleSort::order('taxis', 'asc')->select();
-		$this->assign('result', $result);
-        return $this->fetch();
+		// // dump ($_POST['id']);
+		// $result = ArticleSort::where('sid', $_POST['id'])->where('status', '1')->select();
+		// // dump($result);
+		// if($result == 1){
+			// $jinyong = ArticleSort::where('sid', $_POST['id'])->update(['status' => '0']);
+				// if($jinyong){
+					// $this->success("停用成功!");
+					
+				// }else{
+					// $this->error("停用失败");
+				// }
+		// }else{
+			// $qiyong = ArticleSort::where('sid', $_POST['id'])->update(['status' => '1']);
+				// if($qiyong){
+					// $this->success("启用成功!");
+					
+				// }else{
+					// $this->error("启用失败");
+				// }
+		// }
+		echo ("1111");
     }
 	
 	
