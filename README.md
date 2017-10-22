@@ -469,11 +469,10 @@ function member_del(obj,id){
 
 ```php
 if($result){
-				$this->success("文章修改成功!");
-				
-			}else{
-				$this->error("内容没有更新!");
-			}
+	$this->success("文章修改成功!");
+}else{
+	$this->error("内容没有更新!");
+}
 ```
 
 查询每个分类一共有多少文章</br>
