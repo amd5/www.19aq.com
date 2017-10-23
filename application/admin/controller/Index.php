@@ -179,6 +179,19 @@ class Index extends Controller
         return $this->fetch();
     }
 	
+	public function article_list()	//文章列表页           toJson();
+	{
+		$result = Article::alias('a')//给主表取别名
+		->join('think_article_sort b','a.sortid = b.sid')
+		->join('think_manage_user c','a.author = c.id')
+		->where('think_article.type','=','blog')
+		->field('a.*,b.*,c.id as id1,c.username as username,a.status as status')
+		->order('id', 'asc')
+		->select();
+		$this->assign('result',collection($result)->append(['status11'])->toArray());
+		return $this->fetch();
+	}
+	
 	public function article($id)	//文章详情页
     {
 		$result = Article::where('id','=',$id)->select();
@@ -244,7 +257,8 @@ class Index extends Controller
 	public function article_del()	//文章删除
     {
         if($this->request->isAjax()){
-			$result = Article::where('id', $_POST['id'])->delete();
+			// $result = Article::where('id', $_POST['id'])->delete();
+			$result = Article::where('id', $_POST['id'])->update(['status' => '0']);
 			if($result){
 				$this->success("删除成功!");
 				
@@ -254,6 +268,11 @@ class Index extends Controller
 		}else{
 			return "请勿非法操作!";
 		}
+    }
+	
+	public function article_del_hide()	//文章显示 文章隐藏
+    {
+        echo ("暂时还没写");
     }
 	
 	public function article_sort()	//分类列表
@@ -367,27 +386,7 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function article_list()	//文章列表页           toJson();
-	{
-		$result = Article::alias('a')//给主表取别名
-		->join('think_article_sort b','a.sortid = b.sid')
-		->join('think_manage_user c','a.author = c.id')
-		->where('think_article.status','=','1')
-		->field('a.*,b.*,c.id as id1,c.username as username')
-		->order('id', 'asc')
-		->select();
-		$this->assign('result',collection($result)->append(['status11'])->toArray());
-		// dump('123123'); 
-		// dump($result);
-		return $this->fetch();
-	}
-		// $result = Articlelist::where('checked','=','y')->order('id', 'asc')->select();
-		// $this->assign('result',collection($result)->append(['status1','sortid1'])->toArray());
-		// return $this->fetch();
-		
-		// echo $result;
-		// debug_end($result);
-		// return $this->fetch();
+	
 	
 	
 	public function article1()

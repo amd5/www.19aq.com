@@ -132,6 +132,8 @@ URL写法
 熟悉驼峰写法</br>
 提示 `语法错误: unexpected '(', expecting ',' or ';'`</br>
 参照tp5论坛`WdatePicker日历控件报错`解决方法  转载[c32's blog](http://www.19aq.com/)</br>
+`WdatePicker({ minDate:'#F{ $dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })`
+`如果提示语法不正确，就在大括号后面加空格就可以了。`
 完成后台页面报错的解决</br>
 Url新的写法`{:Url('/')}`</br>
 熟悉了基础的模型查询   `use app\admin\model\User as UserModel;`
@@ -482,6 +484,15 @@ SELECT distinct sortname,sid,(SELECT count(*) FROM think_article where sortid=si
 
 ## 2017-10-22 22:46:57
 调试ajax文章启用按钮 未成功</br>
+
+## 2017-10-23 19:11:40
+文章显示隐藏前台ajax做完，后台没开始</br>
+解决前台ajax删除文章，文章状态提示为已删除</br>
+```html
+$(obj).parents("tr").find("a:eq(1)").remove();
+```
+仅解决前台
+
 
 ## 教程地址
 
