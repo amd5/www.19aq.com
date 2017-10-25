@@ -22,14 +22,14 @@
 <title>分类管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 分类管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 分类中心 <span class="c-gray en">&gt;</span> 分类管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<!-- <div class="text-c"> 日期范围： -->
 		<!-- <input type="text" onfocus="{start_time}" id="datemin" class="input-text Wdate" style="width:120px;"> -->
 		<!-- - -->
 		<!-- <input type="text" onfocus="{end_time}" id="datemax" class="input-text Wdate" style="width:120px;"> -->
 		<!-- <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name=""> -->
-		<!-- <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button> -->
+		<!-- <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜分类</button> -->
 	<!-- </div> -->
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 	<span class="l">
@@ -57,6 +57,7 @@
 				<th width="80">查看分类</th>
 				<th width="60">文章数量</th>
 				<th>分类描述</th>
+				<th width="60">状态</th>
 				<th width="100">操作</th>
 			</tr>
 		</thead>
@@ -74,7 +75,16 @@
 				</td>
 				<td>10</td>
 				<td>{$result.description}</td>
+				
+				<td><span class="
+				{if 	condition="	($result.status11 == '删除')"/}label label-danger radius
+				{elseif condition="	($result.status11 == '隐藏')"/}label label-defaunt radius
+				{elseif condition="	($result.status11 == '正常')"/}label label-success radius
+				{else /}label label-warning radius
+				{/if}
+				">{$result.status11}</span></td>
 				<td class="td-manage">
+				
 				<a style="text-decoration:none" onClick="member_stop(this,'{$result.sid}')" href="javascript:;" title="停用">
 				<i class="Hui-iconfont">&#xe6e1;</i></a>
 				<a title="编辑" href="javascript:;" onclick="member_edit('标题','{:Url('/admin/index/')}article_sort_edit.html?id={$result.sid}','1','','510')" class="ml-5" style="text-decoration:none">
@@ -109,25 +119,25 @@ $(function(){
 	});
 	
 });
-/*用户-添加*/
+/*分类-添加*/
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
 }
-/*用户-查看*/
+/*分类-查看*/
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
-/*用户-停用*/
+/*分类-停用*/
 function member_stop(obj,id){
 	layer.confirm('确认要停用吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: 'article_sort_status.html',
-			data: {"id":id},  
+			url: 'article_sort_hide.html',
+			data: {"id":id,"action":"0"},  
 			dataType: 'json',
 			success: function(data){
 				<!-- alert(data.msg); -->
-				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a>');
+				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_start(this,{$result.sid})" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a>');
 				$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
 				$(obj).remove();
 				layer.msg('已停用!',{icon: 5,time:1000});
@@ -139,17 +149,17 @@ function member_stop(obj,id){
 	});
 }
 
-/*用户-启用*/
+/*分类-启用*/
 function member_start(obj,id){
 	layer.confirm('确认要启用吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: 'article_sort_status.html',
-			data: {"id":id},  
+			url: 'article_sort_hide.html',
+			data: {"id":id,"action":"1"},  
 			dataType: 'json',
 			success: function(data){
 				<!-- alert(data.msg); -->
-				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
+				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,{$result.sid})" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
 				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
 				$(obj).remove();
 				layer.msg('已启用!',{icon: 6,time:1000});
@@ -160,7 +170,7 @@ function member_start(obj,id){
 		});
 	});
 }
-/*用户-编辑*/
+/*分类-编辑*/
 function member_edit(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
@@ -168,13 +178,13 @@ function member_edit(title,url,id,w,h){
 function change_password(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
-/*用户-删除*/
+/*分类-删除*/
 function article_sort_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'POST',
 			url: 'article_sort_del.html',
-			data: {"id":id},  
+			data: {"id":id,"action":"-1"},  
 			dataType: 'json',
 			success: function(data){
 				<!-- alert(data.msg); -->

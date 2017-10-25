@@ -483,16 +483,44 @@ SELECT distinct sortname,sid,(SELECT count(*) FROM think_article where sortid=si
 ```
 
 ## 2017-10-22 22:46:57
-调试ajax文章启用按钮 未成功</br>
+调试ajax文章启用按钮</br>
 
 ## 2017-10-23 19:11:40
-文章显示隐藏前台ajax做完，后台没开始</br>
+文章显示隐藏前台ajax做完</br>
 解决前台ajax删除文章，文章状态提示为已删除</br>
 ```html
 $(obj).parents("tr").find("a:eq(1)").remove();
 ```
-仅解决前台
 
+## 2017-10-24 18:49:34
+解决文章显示隐藏删除ajax传递的id为空的问题</br>
+解决前台点击显示隐藏后台怎么执行判断的问题</br>
+解决分类列表点击显示隐藏的status问题，和点击删除后直接删除分类的问题</br>
+分类加入分类状态显示</br>
+分类和文章加入标签判断，根据状态不同显示不同颜色</br>
+```html
+{if condition="($result.status11 == '删除')"/}label label-defaunt radius
+{elseif condition="$result.status11 == '隐藏'"/}label label-defaunt radius
+{elseif condition="($result.status11 == '正常')"/}label label-success radius
+{else /} label-success radius
+{/if}
+```
+
+## 2017-10-24 22:09:43 
+解决文章时间戳显示和修改</br>
+学习文章内其他分类选择</br>
+
+## 2017-10-25 18:37:12 标签循环
+使用`foreach`标签循环</br>
+`exit;`执行到这里退出</br>
+解决文章下拉框分类的问题</br>
+编辑文章增加取消功能</br>
+UE编辑器处理自动加P标签的问题 使用 `enterTag : 'br'`处理</br>
+初步了解password_hash加密方式和效验方法
+
+
+
+QQ登陆
 
 ## 教程地址
 

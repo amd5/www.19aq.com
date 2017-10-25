@@ -24,7 +24,7 @@ class Index extends Controller
     {
         return $this->fetch();
     }
-    
+	
 	public function welcome()
     {
         return $this->fetch();
@@ -204,14 +204,14 @@ class Index extends Controller
     {
 		if($this->request->isPost()){
 			// dump(input('post.'));  //输出页面post过来的数据
-			// exit;
+			// 
 			
 			//https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/147279#_263  查询构造器插入数据
 			$data['title'] 		= $_POST["articletitle"];
 			$data['date'] 		= date(time());
 			$data['content'] 	= $_POST["content"];
+			$data['sortid'] 	= $_POST["brandclass"];
 			$data['excerpt'] 	= '我是文章描述';
-			$data['sortid'] 	= '1';
 			$data['status'] 	= '1';
 			
 			//显示要添加到表中原始数据
@@ -224,9 +224,11 @@ class Index extends Controller
 			//判断是否新增成功,成功则显示提示信息
 			echo $result ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'发布失败!<br />';  	
 
-			// return $this->fetch();
+			return $this->fetch();
 			
 		} else {
+			$sortname = ArticleSort::order('taxis', 'asc')->select();
+			$this->assign('sortname', $sortname);
 			return $this->fetch();
 		}
 
@@ -237,8 +239,11 @@ class Index extends Controller
 		if($this->request->isPost()){
 			$result = Article::where('id', $id)
 			->update([
-			'title' => $_POST["articletitle"],
-			'content' => $_POST["content"],
+			'title' 	=> $_POST["articletitle"],
+			'content' 	=> $_POST["content"],
+			'sortid'	=> $_POST["brandclass"],
+			'date' 		=> strtotime($_POST["datetime"]),
+			
 			]);
 			
 			if($result){
@@ -248,8 +253,22 @@ class Index extends Controller
 				$this->error("内容没有更新!");
 			}
 		} else {
-			$result = Article::get($id);
-			return view('article_edit',['result'=>$result]);
+			// $result = Article::get($id);
+			// return view('article_edit',['result'=>$result]);
+			//->field('a.*,b.*,c.id as id1,c.username as username,a.status as status')
+			
+			$result = Article::alias('a')	//给主表取别名
+			->join('think_article_sort b','a.sortid = b.sid')
+			->where('id',$id)
+			->field('a.*,b.*')
+			->order('id', 'asc')
+			->select();
+			
+			$sortname = ArticleSort::order('taxis', 'asc')->select();
+			
+			$this->assign('result', $result);
+			$this->assign('sortname', $sortname);
+			return $this->fetch();
 		}
 
     }
@@ -257,14 +276,22 @@ class Index extends Controller
 	public function article_del()	//文章删除
     {
         if($this->request->isAjax()){
-			// $result = Article::where('id', $_POST['id'])->delete();
-			$result = Article::where('id', $_POST['id'])->update(['status' => '0']);
-			if($result){
-				$this->success("删除成功!");
-				
-			}else{
-				$this->error("删除失败");
+			
+			$id		= $_POST['id'];
+			$action = $_POST['action'];
+			//-1 => '删除', 0 => '隐藏', 1 => '正常', 2 => '待审核'
+			
+			if($action == "-1"){
+				$result = Article::where('id', $id)->update(['status' => '-1']);
+				if($result){$this->success("删除成功!");}else{$this->error("删除失败");}
+			}elseif($action == "0"){
+				$result = Article::where('id', $id)->update(['status' => '0']);
+				if($result){$this->success("隐藏成功!");}else{$this->error("隐藏失败");}
+			}elseif($action == "1"){
+				$result = Article::where('id', $id)->update(['status' => '1']);
+				if($result){$this->success("显示成功!");}else{$this->error("显示失败");}
 			}
+			return $this->fetch();
 		}else{
 			return "请勿非法操作!";
 		}
@@ -278,7 +305,8 @@ class Index extends Controller
 	public function article_sort()	//分类列表
     {
 		$result = ArticleSort::order('taxis', 'asc')->select();
-		$this->assign('result', $result);
+		// $this->assign('result', $result);
+		$this->assign('result',collection($result)->append(['status11'])->toArray());
 		return $this->fetch();
 
     }
@@ -330,8 +358,9 @@ class Index extends Controller
 	
 	public function article_sort_del()	//删除分类
     {
+		$id		= $_POST['id'];
 		if($this->request->isAjax()){
-			$result = ArticleSort::where('sid', $_POST['id'])->delete();
+			$result = ArticleSort::where('sid', $id)->delete();
 			if($result){
 				$this->success("删除成功!");
 				
@@ -343,6 +372,30 @@ class Index extends Controller
 		}else{
 			return "请勿非法操作!";
 		}
+    }
+	
+	public function article_sort_hide()	//隐藏分类
+    {
+		if($this->request->isAjax()){
+			
+			$id		= $_POST['id'];
+			$action = $_POST['action'];
+			//-1 => '删除', 0 => '隐藏', 1 => '正常', 2 => '待审核'
+			if($action == "0"){
+				$result = ArticleSort::where('sid', $id)->update(['status' => '0']);
+				if($result){$this->success("隐藏成功!");}else{$this->error("隐藏失败");}
+			}elseif($action == "1"){
+				$result = ArticleSort::where('sid', $id)->update(['status' => '1']);
+				if($result){$this->success("显示成功!");}else{$this->error("显示失败");}
+			}
+			
+			
+			
+			return $this->fetch();
+		}else{
+			return "请勿非法操作!";
+		}
+
     }
 	
 	public function article_sort_status()	//状态更改
@@ -396,13 +449,10 @@ class Index extends Controller
 
 	public function test()
     {
-		// $users  = ArticleSort::select();
-		// foreach ($users as $user) {
-			// dump($user->items);
-		// }
 
-		
-		
+		$db1 = db('article');
+		$result = $db1->select();
+		dump($result);
         // return $this->fetch();
     }
 	
@@ -411,7 +461,7 @@ class Index extends Controller
      * 登录检测
      * @return \think\response\Json
      */
-    public function checkLogin()
+    public function checkLogin1()
     {
         if ($this->request->isAjax() && $this->request->isPost()) {
             $data = $this->request->post();

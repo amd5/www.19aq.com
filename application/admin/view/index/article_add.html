@@ -23,12 +23,10 @@
 				
 				<span class="select-box" style="width:150px">
 				<select class="select" name="brandclass" size="1">
-				<option value="0" selected>请选择分类</option>
-				<option value="1">全部栏目</option>
-				<option value="2">新闻资讯</option>
-				<option value="21">├行业动态</option>
-				<option value="22">├行业资讯</option>
-				<option value="23">├行业新闻</option>
+				<option value="15" selected>请选择分类</option>
+				{foreach name="sortname" item="vo"}
+				<option value="{$vo.taxis}">{$vo.sortname}</option>
+				{/foreach}
 				</select>
 				</span>
 				
