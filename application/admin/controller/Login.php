@@ -2,28 +2,56 @@
 namespace app\admin\controller;
 use app\admin\model\Manageuser;
 use think\Controller;
-use think\Exception;
 use think\Session;
-use think\Db;
+
+use app\admin\controller\Base;
+use think\Request;
 
 class Login extends Controller
 {
 	
-	public function checkLogin()	//登陆检测
+	public function checkLogin($username='',$password='')	//登陆检测
 	{
-		$captcha = $_POST['captcha'];
-		if($this->check_verify($captcha)==false){
-            $data['error']=1;
-            $data['msg']="验证码错误";
-            $this->ajaxReturn($data);
-        }
-		// echo($captcha);
+		$result = Manageuser::where('username', $username)->find();
+		$passok = password_verify($password,$result["password"]);
+		if($result){
+			
+			if($passok == ture){
+				
+				if($result["status"]=="y"){
+					$msg["status"] = "true";
+					Session::set('username',$result["username"]);
+					// $this->success('Session设置成功');
+					$msg["message"] = "登录成功"; 
+					// $this->success("登录成功",U('Index/index'));
+					// echo "1212";
+					// dump (input('session.'));
+				}else{
+					$msg["status"] = "false";  
+					$msg["message"] = "账号被锁定，请联系管理员！";  
+				}
+				
+			}else{
+				$msg["status"] = "false"; 
+				$msg["message"] = "密码错误"; 
+			}
+
+		}else{
+			$msg["status"] = "false";  
+            $msg["message"] = "账号不存在，请联系管理员";
+		}
+		echo json_encode($msg, JSON_UNESCAPED_UNICODE);  
+		// die();
+		// session('username',null); // 删除session
 	}
 	
 	
 	//视图显示
     public function Login($username='',$password='')
 	{
+		echo Session::get('username');
+		echo "</br>";
+		echo "12312";
 		$result = Manageuser::get([
 		'username'=>$username,
 		'password'=>$password
@@ -40,14 +68,15 @@ class Login extends Controller
 			echo '</br>';
 			echo $hash;
 		} else {  
-			return $this->error('登录失败');
+			// return $this->error('登录失败');
+			echo $hash;
 		}
 
 	
 		
     }
-	
-	// boolean password_verify (string $password , string $hash)
+	// $hash = password_hash($password, PASSWORD_BCRYPT);
+	// password_verify (string $password , string $hash)
 	// 
 	// echo $hash;
 	

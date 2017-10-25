@@ -516,7 +516,9 @@ $(obj).parents("tr").find("a:eq(1)").remove();
 解决文章下拉框分类的问题</br>
 编辑文章增加取消功能</br>
 UE编辑器处理自动加P标签的问题 使用 `enterTag : 'br'`处理</br>
-初步了解password_hash加密方式和效验方法
+初步了解password_hash加密方式和效验方法</br>
+完成password_hash密码验证方法</br>
+初步测试Session使用方法</br>
 
 
 
