@@ -520,6 +520,33 @@ UE编辑器处理自动加P标签的问题 使用 `enterTag : 'br'`处理</br>
 完成password_hash密码验证方法</br>
 初步测试Session使用方法</br>
 
+## 2017-10-26 19:27:53 MVC重构
+发现开发逻辑不对，计划重构MVC结构</br>
+
+## 2017-10-27 00:20:07 MVC重构
+重构管理员列表mvc逻辑</br>
+
+thinkphp5自带分页案例</br>
+```php
+// 查询分页数据
+$list = User::where('status', 1)->paginate();
+// 创建分页显示
+$this->assign('page', $list);
+// 模板渲染输出
+return $this->fetch();
+```
+
+```html
+<div>
+总记录数：{$page->total()}
+<ul>
+{volist name='page' id='user'}
+    <li> {$user.name}</li>
+{/volist}
+</ul>
+</div>
+{$page->render()}
+```
 
 
 QQ登陆

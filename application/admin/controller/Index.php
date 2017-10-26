@@ -2,10 +2,10 @@
 namespace app\admin\controller;
 
 use app\admin\model\User as UserModel;  //载入模型 并设置别名
-use app\admin\model\Manageuser;
 use app\admin\model\Article;
 use app\admin\model\ArticleSort;
-// use app\admin\model\ArticleAdd;
+use app\admin\model\Test;	//测试
+use app\admin\model\ManagerUser;
 use think\Controller;
 use think\Exception;
 use think\Session;
@@ -19,6 +19,7 @@ class Index extends Controller
         // return $this->fetch(logincheck);	//默认进入登陆界面
 		return $this->fetch();
     }
+	
 	
 	public function login()
     {
@@ -90,6 +91,15 @@ class Index extends Controller
         return $this->fetch();
     }
 	
+	// public function test($id)
+    // {
+		// echo ($_POST['id']);
+		// $result = new TestModel();
+		// return $result->index($id);
+		// $result->ccc();
+
+    // }
+	
 	public function admin_permission()
     {
 		$db1 = db('manage_user');
@@ -98,11 +108,20 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function admin_list()   //管理员列表
+	public function admin_list1()   //管理员列表
     {
-		$result = Manageuser::all();
-		$this->assign('result',collection($result)->append(['role1'])->toArray());
+		$result = new ManagerUser();
+		// $this->assign('result',collection($result)->append(['status11'])->toArray());
+		
+		$this->assign('result1', $result);
+		// echo ($result->ManagerUser());
+		// dump ($result->ManagerUser());
+		
 		return $this->fetch();
+		
+		// return json($result->ManagerUser($id));
+		// return view($result->ManagerUser($id));
+		// return $result->ManagerUser($id);
     }
 	
 	public function charts_1()
@@ -305,9 +324,12 @@ class Index extends Controller
 	public function article_sort()	//分类列表
     {
 		$result = ArticleSort::order('taxis', 'asc')->select();
+		// echo ($result);
+		// dump ($result);
 		// $this->assign('result', $result);
 		$this->assign('result',collection($result)->append(['status11'])->toArray());
 		return $this->fetch();
+		
 
     }
 	
@@ -447,13 +469,13 @@ class Index extends Controller
         return $this->fetch();
     }
 
-	public function test()
+	public function test($id)
     {
+		echo ($_POST['id']);
+		$result = new Test();
+		return $result->index($id);
+		$result->ccc();
 
-		$db1 = db('article');
-		$result = $db1->select();
-		dump($result);
-        // return $this->fetch();
     }
 	
 	

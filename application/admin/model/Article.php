@@ -18,4 +18,11 @@ class Article extends Model
 	return $status[$data['status']];
 	}
 	
+	public function index()
+    {
+        // return $this->fetch(logincheck);	//默认进入登陆界面
+		return $this->fetch();
+    }
+	
+	
 }
