@@ -14,43 +14,32 @@ use think\Model;
 use think\Exception;
 use think\Controller;
 
-class ManagerUser extends Model
+class ManageUser extends Model
 {
 	// protected $name = 'manage_user';
-	// status修改器
-    public function getRole1Attr($value,$data){
+	// role获取器
+    public function getRoleAttr($value,$data){
 	$role = ['admin' =>'超级管理员','admin' =>'普通管理员','writer' => '作者'];
 	return $role[$data['role']];
 	}
 	
 	
+	
+	
 	protected function initialize()
     {
-        //需要调用`Model`的`initialize`方法
+        // 需要调用`Model`的`initialize`方法
         parent::initialize();
-        //TODO:自定义的初始化
+        // TODO:自定义的初始化
     }
 	
-	
-	
-	public function index($id1)
+	public function ManageUser()
     {
-		// $id = "1";
-		// $id		= $_POST['id'];
-		echo ($_POST['id1']);
-		$result = Test::get($id1);
+		$result = ManageUser::all();
+		//// dump ($result);
 		return $result;
-
-    }
-	
-	public function ManagerUser()
-    {
-		$result = ManagerUser::all();
-		// $result = AdminList::select();
-		// $this->assign('result',collection($result)->append(['role1'])->toArray());
-		// $this->assign('result', $result);
-		// return $this->fetch();
-		return $result->toArray();
+		//// return $result->hasMany('ManageUserRole','role','id');
+		
     }
 	
 }

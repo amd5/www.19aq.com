@@ -5,7 +5,7 @@ use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Article;
 use app\admin\model\ArticleSort;
 use app\admin\model\Test;	//测试
-use app\admin\model\ManagerUser;
+use app\admin\model\ManageUser;
 use think\Controller;
 use think\Exception;
 use think\Session;
@@ -108,20 +108,14 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function admin_list1()   //管理员列表
+	public function admin_list()   //管理员列表
     {
-		$result = new ManagerUser();
-		// $this->assign('result',collection($result)->append(['status11'])->toArray());
-		
-		$this->assign('result1', $result);
-		// echo ($result->ManagerUser());
-		// dump ($result->ManagerUser());
-		
+		$result = new ManageUser();
+		$result = $result->ManageUser();
+		// $this->assign('result',collection($result)->append(['Role1'])->toArray());
+		$this->assign('result', $result);
 		return $this->fetch();
 		
-		// return json($result->ManagerUser($id));
-		// return view($result->ManagerUser($id));
-		// return $result->ManagerUser($id);
     }
 	
 	public function charts_1()
@@ -198,16 +192,30 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	public function article_list()	//文章列表页           toJson();
+	public function article_list()
+    {
+
+		$result = new Article();
+		
+		$result = $result->Article();
+		// dump ($result);
+		// $this->assign('result',collection($result)->append(['Role1'])->toArray());
+		$this->assign('result', $result);
+		return $this->fetch();
+		
+    }
+	
+	public function article_list2()	//文章列表页           toJson();
 	{
 		$result = Article::alias('a')//给主表取别名
-		->join('think_article_sort b','a.sortid = b.sid')
-		->join('think_manage_user c','a.author = c.id')
+		// ->join('think_article_sort b','a.sortid = b.sid')
+		// ->join('think_manage_user c','a.author = c.id')
 		->where('think_article.type','=','blog')
-		->field('a.*,b.*,c.id as id1,c.username as username,a.status as status')
+		// ->field('a.*,b.*,c.id as id1,c.username as username,a.status as status')
 		->order('id', 'asc')
 		->select();
-		$this->assign('result',collection($result)->append(['status11'])->toArray());
+		// $this->assign('result',collection($result)->append(['status'])->toArray());
+		$this->assign('result', $result);
 		return $this->fetch();
 	}
 	
@@ -327,7 +335,7 @@ class Index extends Controller
 		// echo ($result);
 		// dump ($result);
 		// $this->assign('result', $result);
-		$this->assign('result',collection($result)->append(['status11'])->toArray());
+		// $this->assign('result',collection($result)->append(['status11'])->toArray());
 		return $this->fetch();
 		
 

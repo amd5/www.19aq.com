@@ -44,17 +44,17 @@
 					<td><input type="checkbox" value="" name=""></td>
 					<td>{$result.id}</td>
 					<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','{:Url('/admin/index/')}article.html?id={$result.id}','10001')" title="查看">{$result.title}</u></td>
-					<td>{$result.sortname}</td>
-					<td>{$result.username}</td>
+					<td>{$result.sortid}</td>
+					<td>{$result.author}</td>
 					<td>{$result.date|date="Y-m-d h:i:s",###}</td>
 					<td>{$result.views}</td>
 					<td class="td-status"><span class="
-					{if 	condition="($result.status11 == '删除')"/}label label-danger radius
-					{elseif condition="($result.status11 == '隐藏')"/}label label-defaunt radius
-					{elseif condition="($result.status11 == '正常')"/}label label-success radius
+					{if 	condition="($result.status == '删除')"/}label label-danger radius
+					{elseif condition="($result.status == '隐藏')"/}label label-defaunt radius
+					{elseif condition="($result.status == '正常')"/}label label-success radius
 					{else /}label label-warning radius
 					{/if}
-					">{$result.status11}</span></td>
+					">{$result.status}</span></td>
 					<td class="f-14 td-manage">
 					<a style="text-decoration:none" onClick="article_hide(this,{$result.id})" href="javascript:;" title="隐藏">
 					<i class="Hui-iconfont">&#xe6e1;</i></a>
