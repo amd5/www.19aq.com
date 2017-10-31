@@ -1,11 +1,12 @@
 <?php
 namespace app\admin\controller;
 
-use app\admin\model\User as UserModel;  //载入模型 并设置别名
+//use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Article;
 use app\admin\model\ArticleSort;
-use app\admin\model\Test;	//测试
+//use app\admin\model\Test;	//测试
 use app\admin\model\ManageUser;
+
 use think\Controller;
 use think\Exception;
 use think\Session;
@@ -20,7 +21,6 @@ class Index extends Controller
 		return $this->fetch();
     }
 	
-	
 	public function login()
     {
         return $this->fetch();
@@ -30,75 +30,6 @@ class Index extends Controller
     {
         return $this->fetch();
     }
-	
-	public function picture_list()        //WdatePicker日历控件报错
-    {
-        return $this->fetch();
-    }
-	
-	public function product_category()
-    {
-        return $this->fetch();
-    }
-	
-	public function product_category_add()
-    {
-        return $this->fetch();
-    }
-	
-	public function feedback_list()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_list()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_del()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_level()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_scoreoperation()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_record_browse()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_record_download()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_record_share()
-    {
-        return $this->fetch();
-    }
-	
-	public function admin_role()
-    {
-        return $this->fetch();
-    }
-	
-	// public function test($id)
-    // {
-		// echo ($_POST['id']);
-		// $result = new TestModel();
-		// return $result->index($id);
-		// $result->ccc();
-
-    // }
 	
 	public function admin_permission()
     {
@@ -115,114 +46,20 @@ class Index extends Controller
 		// $this->assign('result',collection($result)->append(['Role1'])->toArray());
 		$this->assign('result', $result);
 		return $this->fetch();
-		
     }
 	
-	public function charts_1()
+	public function article_list()	//文章列表页           toJson();
     {
-        return $this->fetch();
-    }
-	
-	public function charts_2()
-    {
-		$user = UserModel::get($id);
-		echo $user['id'] . '<br/>';
-		echo $user['username'] . '<br/>';
-		echo $user['phone'] . '<br/>';
-		echo $user['email'] . '<br/>';
-		echo $user['role'] . '<br/>';
-		echo $user['status'] . '<br/>';
-		echo $user['description'] . '<br/>';
-		echo date('Y/m/d', $user['last_login_time']) . '<br/>';
-        return $this->fetch();
-    }
-	
-	public function charts_3()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_4()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_5()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_6()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_7()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_base()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_category()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_data()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_shielding()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_log()
-    {
-        return $this->fetch();
-    }
-	
-	public function product_list()
-    {
-        return $this->fetch();
-    }
-	
-	public function article_list()
-    {
-
 		$result = new Article();
-		
-		$result = $result->Article();
-		// dump ($result);
-		// $this->assign('result',collection($result)->append(['Role1'])->toArray());
+		$result = $result->ArticleList();
 		$this->assign('result', $result);
 		return $this->fetch();
-		
     }
-	
-	public function article_list2()	//文章列表页           toJson();
-	{
-		$result = Article::alias('a')//给主表取别名
-		// ->join('think_article_sort b','a.sortid = b.sid')
-		// ->join('think_manage_user c','a.author = c.id')
-		->where('think_article.type','=','blog')
-		// ->field('a.*,b.*,c.id as id1,c.username as username,a.status as status')
-		->order('id', 'asc')
-		->select();
-		// $this->assign('result',collection($result)->append(['status'])->toArray());
-		$this->assign('result', $result);
-		return $this->fetch();
-	}
 	
 	public function article($id)	//文章详情页
     {
-		$result = Article::where('id','=',$id)->select();
-		// $result = Db::name('article')->where('id','=',$id)->select();
+		$result = new Article();
+		$result = $result->Article($id);
         $this->assign('result', $result);
         return $this->fetch();
     }
@@ -230,32 +67,15 @@ class Index extends Controller
 	public function article_add()	//新建文章
     {
 		if($this->request->isPost()){
-			// dump(input('post.'));  //输出页面post过来的数据
-			// 
-			
-			//https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/147279#_263  查询构造器插入数据
-			$data['title'] 		= $_POST["articletitle"];
-			$data['date'] 		= date(time());
-			$data['content'] 	= $_POST["content"];
-			$data['sortid'] 	= $_POST["brandclass"];
-			$data['excerpt'] 	= '我是文章描述';
-			$data['status'] 	= '1';
-			
-			//显示要添加到表中原始数据
-			// echo '要添加到表中的数据如下:<br/>';
-			//dump($data);
-			
-			//插入数据到表中，并返回受影响记录数量
-			$result = Article::insert($data);
-			
-			//判断是否新增成功,成功则显示提示信息
+			//dump(input('post.'));  //输出页面post过来的数据
+			$result = new Article();
+			$result = $result->ArticleAdd();
 			echo $result ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'发布失败!<br />';  	
-
-			return $this->fetch();
 			
 		} else {
-			$sortname = ArticleSort::order('taxis', 'asc')->select();
-			$this->assign('sortname', $sortname);
+			$result = new ArticleSort();
+			$result = $result->ArticleSort();
+			$this->assign('sortname', $result);
 			return $this->fetch();
 		}
 
@@ -264,15 +84,8 @@ class Index extends Controller
 	public function article_edit($id)	//文章编辑
     {
 		if($this->request->isPost()){
-			$result = Article::where('id', $id)
-			->update([
-			'title' 	=> $_POST["articletitle"],
-			'content' 	=> $_POST["content"],
-			'sortid'	=> $_POST["brandclass"],
-			'date' 		=> strtotime($_POST["datetime"]),
-			
-			]);
-			
+			$result = new Article();
+			$result = $result->ArticleEdit($id);
 			if($result){
 				$this->success("文章修改成功!");
 				
@@ -280,22 +93,14 @@ class Index extends Controller
 				$this->error("内容没有更新!");
 			}
 		} else {
-			// $result = Article::get($id);
-			// return view('article_edit',['result'=>$result]);
-			//->field('a.*,b.*,c.id as id1,c.username as username,a.status as status')
-			
-			$result = Article::alias('a')	//给主表取别名
-			->join('think_article_sort b','a.sortid = b.sid')
-			->where('id',$id)
-			->field('a.*,b.*')
-			->order('id', 'asc')
-			->select();
-			
-			$sortname = ArticleSort::order('taxis', 'asc')->select();
-			
+			$result = new Article();
+			$sort	= new ArticleSort();
+			$result = $result->Article($id);
+			$sort 	= $sort->ArticleSort();
 			$this->assign('result', $result);
-			$this->assign('sortname', $sortname);
+			$this->assign('sortname', $sort);
 			return $this->fetch();
+
 		}
 
     }
@@ -303,11 +108,9 @@ class Index extends Controller
 	public function article_del()	//文章删除
     {
         if($this->request->isAjax()){
-			
 			$id		= $_POST['id'];
 			$action = $_POST['action'];
 			//-1 => '删除', 0 => '隐藏', 1 => '正常', 2 => '待审核'
-			
 			if($action == "-1"){
 				$result = Article::where('id', $id)->update(['status' => '-1']);
 				if($result){$this->success("删除成功!");}else{$this->error("删除失败");}
@@ -319,6 +122,7 @@ class Index extends Controller
 				if($result){$this->success("显示成功!");}else{$this->error("显示失败");}
 			}
 			return $this->fetch();
+			
 		}else{
 			return "请勿非法操作!";
 		}
@@ -331,12 +135,12 @@ class Index extends Controller
 	
 	public function article_sort()	//分类列表
     {
-		$result = ArticleSort::order('taxis', 'asc')->select();
-		// echo ($result);
-		// dump ($result);
-		// $this->assign('result', $result);
-		// $this->assign('result',collection($result)->append(['status11'])->toArray());
-		return $this->fetch();
+		$result = new ArticleSort();
+		$result = $result->ArticleSort();
+        $this->assign('result', $result);
+        return $this->fetch();
+		
+
 		
 
     }
@@ -344,13 +148,8 @@ class Index extends Controller
 	public function article_sort_add()	//添加分类
     {
 		if($this->request->isPost()){
-			$data['taxis']       = $_POST["sort_taxis"];		//分类排序
-			$data['sortname']    = $_POST["sort_name"];			//分类名称
-			$data['alias']       = $_POST["sort_alias"];		//分类别名
-			$data['template']    = $_POST["sort_template"];		//分类模板
-			$data['description'] = $_POST["description"];		//分类描述
-			$result = ArticleSort::insert($data);
-			
+			$result = new ArticleSort();
+			$result = $result->ArticleSortAdd();
 			if($result){
 				$this->success("添加成功!");
 				
@@ -366,13 +165,8 @@ class Index extends Controller
 	public function article_sort_edit($id)	//编辑分类
     {
 		if($this->request->isPost()){
-			$data['taxis']       = $_POST["sort_taxis"];		//分类排序
-			$data['sortname']    = $_POST["sort_name"];			//分类名称
-			$data['alias']       = $_POST["sort_alias"];		//分类别名
-			$data['template']    = $_POST["sort_template"];		//分类模板
-			$data['description'] = $_POST["description"];		//分类描述
-			// dump($data);
-			$result = ArticleSort::where('sid', $id)->update($data);
+			$result = new ArticleSort();
+			$result = $result->ArticleSortEdit($id);
 			if($result){
 				$this->success("修改分类成功!");
 				
@@ -381,9 +175,11 @@ class Index extends Controller
 			}	
 
 		} else {
+			
 			$result = ArticleSort::get($id);
 			return view('article_sort_edit',['result'=>$result]);
 		}	
+
     }
 	
 	public function article_sort_del()	//删除分类
@@ -485,6 +281,142 @@ class Index extends Controller
 		$result->ccc();
 
     }
+	
+	public function picture_list()        //WdatePicker日历控件报错
+    {
+        return $this->fetch();
+    }
+	
+	public function product_category()
+    {
+        return $this->fetch();
+    }
+	
+	public function product_category_add()
+    {
+        return $this->fetch();
+    }
+	
+	public function feedback_list()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_list()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_del()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_level()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_scoreoperation()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_record_browse()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_record_download()
+    {
+        return $this->fetch();
+    }
+	
+	public function member_record_share()
+    {
+        return $this->fetch();
+    }
+	
+	public function admin_role()
+    {
+        return $this->fetch();
+    }
+	
+	public function charts_1()
+    {
+        return $this->fetch();
+    }
+	
+	public function charts_2()
+    {
+		$user = UserModel::get($id);
+		echo $user['id'] . '<br/>';
+		echo $user['username'] . '<br/>';
+		echo $user['phone'] . '<br/>';
+		echo $user['email'] . '<br/>';
+		echo $user['role'] . '<br/>';
+		echo $user['status'] . '<br/>';
+		echo $user['description'] . '<br/>';
+		echo date('Y/m/d', $user['last_login_time']) . '<br/>';
+        return $this->fetch();
+    }
+	
+	public function charts_3()
+    {
+        return $this->fetch();
+    }
+	
+	public function charts_4()
+    {
+        return $this->fetch();
+    }
+	
+	public function charts_5()
+    {
+        return $this->fetch();
+    }
+	
+	public function charts_6()
+    {
+        return $this->fetch();
+    }
+	
+	public function charts_7()
+    {
+        return $this->fetch();
+    }
+	
+	public function system_base()
+    {
+        return $this->fetch();
+    }
+	
+	public function system_category()
+    {
+        return $this->fetch();
+    }
+	
+	public function system_data()
+    {
+        return $this->fetch();
+    }
+	
+	public function system_shielding()
+    {
+        return $this->fetch();
+    }
+	
+	public function system_log()
+    {
+        return $this->fetch();
+    }
+	
+	public function product_list()
+    {
+        return $this->fetch();
+    }
+	
+	
 	
 	
 	/**

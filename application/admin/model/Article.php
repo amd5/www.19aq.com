@@ -1,6 +1,6 @@
 <?php
 # #########################################
-# #Function:    文档功能
+# #Function:    文章功能
 # #Blog:        http://www.19aq.com/
 # #Datetime:    2017-10-24 18:40:33
 # #Author:		c32
@@ -8,7 +8,13 @@
 # #########################################
 namespace app\admin\model;
 
+use think\Db;
 use think\Model;
+
+use think\Controller;
+use think\Exception;
+use app\admin\model\ArticleSort;
+
 
 class Article extends Model
 {
@@ -25,11 +31,51 @@ class Article extends Model
 		// return $this->fetch();
     // }
 	
-	public function Article()
+	public function ArticleList()
     {
 		$result = Article::all();
 		return $result;
-		
     }
+	
+	public function Article($id)
+    {
+		$result = Article::where('id','=',$id)->select();
+		return $result;
+    }
+	
+	public function ArticleAdd()
+    {
+		$data['title'] 		= $_POST["articletitle"];
+		$data['date'] 		= date(time());
+		$data['content'] 	= $_POST["content"];
+		$data['sortid'] 	= $_POST["brandclass"];
+		$data['excerpt'] 	= '我是文章描述';
+		$data['status'] 	= '1';
+		$result = Article::insert($data);
+		return $result;
+    }
+	
+	public function ArticleEdit($id)
+    {
+		$result = Article::where('id', $id)
+			->update([
+			'title' 	=> $_POST["articletitle"],
+			'content' 	=> $_POST["content"],
+			'sortid'	=> $_POST["brandclass"],
+			'date' 		=> strtotime($_POST["datetime"]),
+			
+			]);
+			
+		return $result;
+    }
+	
+	public function ArticleDel($id,$action)  //未解决
+    {
+		echo "123";
+    }
+	
+	
+	
+	
 	
 }
