@@ -7,6 +7,8 @@ use app\admin\model\ArticleSort;
 //use app\admin\model\Test;	//测试
 use app\admin\model\ManageUser;
 
+// use think\Loader;
+// use app\extra;
 use think\Controller;
 use think\Exception;
 use think\Session;
@@ -273,14 +275,42 @@ class Index extends Controller
         return $this->fetch();
     }
 
-	public function test($id)
+	public function sms()
     {
-		echo ($_POST['id']);
-		$result = new Test();
-		return $result->index($id);
-		$result->ccc();
+		$code = "666666";
+		$min  = "6";
+		$phone= "15024267536";
+		$test = sendTemplateSMS("15024267536",array($code,$min . "分钟"),"178711");
+		
+		// $test = send_verify();
 
+		
+		echo "123";
+		dump ($_POST['id']);
+
+	
     }
+	
+	public function verify_sms($telphone, $method)
+	{
+		if(!$method) $this->error('缺少验证方法');
+        if(!$telphone) $this->error('请输入手机号码');
+		
+		
+		// 解析短信模板并发送
+        if($sms_template = json_decode(C('MOBILESMS_TEMPLATE_VERIFY'), true)){
+            preg_match_all('#{\$[^{}$]+}#', $sms_template['content'], $matches);
+            $temp = implode('$-$', $matches[0]);
+            // 替换模板内容
+            $temp = str_replace('{$verify', $verify, $temp);
+            $temp = str_replace('{$time', '10分钟内', $temp);
+            $temp = preg_replace('#{\$|}#', '', $temp);
+            //=========================
+            $sms_content = explode('$-$', $temp);
+            sendSMS($telphone, $sms_content, $sms_template['templateId']);
+        }
+        $this->success('短信验证码已发送');
+	}
 	
 	public function picture_list()        //WdatePicker日历控件报错
     {
