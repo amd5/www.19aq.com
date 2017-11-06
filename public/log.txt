@@ -250,3 +250,16 @@ response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <statusMsg>验证码超出同模板同号码天发送上限</statusMsg>
 </Response>
 
+request body = <TemplateSMS>
+                    <to>15024267536</to> 
+                    <appId>8a216da85a362949015c1b147d0b3aec</appId>
+                    <templateId>178711</templateId>
+                    <datas><data>666666</data><data>6分钟</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a216da85a362949015c1b147ced3aeb/SMS/TemplateSMS?sig=CD50E4F0BCB2C9B945A99FFDE5564BE2
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Response>
+    <statusCode>160040</statusCode>
+    <statusMsg>验证码超出同模板同号码天发送上限</statusMsg>
+</Response>
+
