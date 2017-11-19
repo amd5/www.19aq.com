@@ -14,10 +14,10 @@ class ArticleSort extends Model
 {
 
 
-	public function ArticleSort()
-    {
+	// public function ArticleSort()
+ //    {
 
-    }
+ //    }
 
 	
 	

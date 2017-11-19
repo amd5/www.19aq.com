@@ -111,39 +111,22 @@
 	</dl>
 	<dl>
 	<dt>分类</dt><dd>
-	<ul id="blogsort">
-		<li>
-	<a href="http://www.19aq.com/sort/VB_NET">VB_NET(3)</a>
-	<a href="http://www.19aq.com/rss.php?sort=16"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
-
+		<ul id="blogsort">
+			{volist name="articlesort" id="v" }
+			<li>
+				<a href="http://www.19aq.com/sort/{$v.alias}">{$v.sortname}(文章数量)</a>
+				<a href="http://www.19aq.com/rss.php?sort={$v.taxis}"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
 			</li>
-		<li>
-	<a href="http://www.19aq.com/sort/Thinkphp">Thinkphp(5)</a>
-	<a href="http://www.19aq.com/rss.php?sort=17"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
-			</li>
-		<li>
-	<a href="http://www.19aq.com/sort/Linux">Linux(148)</a>
-	<a href="http://www.19aq.com/rss.php?sort=12"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
-			</li>
-		<li>
-	<a href="http://www.19aq.com/sort/Metasploit">Metasploit(10)</a>
-	<a href="http://www.19aq.com/rss.php?sort=13"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
-			</li>
-		<li>
-	<a href="http://www.19aq.com/sort/other">other(11)</a>
-	<a href="http://www.19aq.com/rss.php?sort=15"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
-			</li>
-			</ul>
+			{/volist}
+		</ul>
 	</dd>
 	</dl>
 	<dl>
 	<dt>存档</dt><dd>
 	<ul id="record">
-		<li><a href="http://www.19aq.com/record/201402">2014年2月(1)</a></li>
-		<li><a href="http://www.19aq.com/record/201401">2014年1月(3)</a></li>
-		<li><a href="http://www.19aq.com/record/201312">2013年12月(23)</a></li>
-		<li><a href="http://www.19aq.com/record/201311">2013年11月(21)</a></li>
-			<div class="clear"></div>
+		{volist name="archives" id="v" }
+		<li><a href="http://www.19aq.com/record/201402">{$v.days}({$v.COUNT})</a></li>
+		{/volist}
 	</ul>
 	</dd>
 	</dl>

@@ -2,15 +2,33 @@
 namespace app\index\controller;
 use think\Controller;
 use app\index\model\Article;
+use app\index\model\ArticleSort;
 
 class Index	extends Controller
 {
     public function index()
     {
+    	//文章列表
 		$result = Article::order('id','desc')
 		->limit(15)
 		->paginate();
 		$page = $result->render();   //获取分页显示
+
+		//分类列表
+		$articlesort = ArticleSort::where('status','=','1')
+		->select();
+		// dump($articlesort);
+		
+		//存档列表
+		//SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
+		$archives = Article::order('days','desc')
+		->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
+		->GROUP(days)
+		->select();
+
+		//输出
+		$this->assign('archives', $archives);
+		$this->assign('articlesort', $articlesort);
 		$this->assign('result', $result);
 		$this->assign('page', $page);
 		return $this->fetch();
@@ -24,6 +42,7 @@ class Index	extends Controller
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
+
 	
 	
 }
