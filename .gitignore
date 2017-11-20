@@ -2,3 +2,5 @@
 composer.lock
 *.log
 thinkphp
+sftp-config.json
+thinkphp_5.0.10_full.zip
