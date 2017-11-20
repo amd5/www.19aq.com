@@ -254,7 +254,13 @@ class Index extends Controller
 	
 	public function picture_add()
     {
-        return $this->fetch();
+    	// $result = Article::get(1);
+    	$result = Article::order('id desc')
+    	->where('status=1 and (sortid=1 or views=49 or checked="y")')
+    	->select();
+		dump ($result);
+		// $this->assign('result', $result);
+        // return $this->fetch();
     }
 	
 	public function product_add()

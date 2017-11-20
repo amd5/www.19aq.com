@@ -8,6 +8,10 @@ use think\Session;
 
 class Base extends Controller
 {
+	public function index()
+	{
+		echo "12";
+	}
 
     public function _initialize()
     {
