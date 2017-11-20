@@ -133,8 +133,9 @@
 	<dl>
 	<dt>Links</dt><dd>
 	<ul id="link">
-		<li><a href="https://github.com/amd5" title="c32's blog" target="_blank">c32's blog</a></li>
-		<li><a href="https://s.click.taobao.com/jM0gjew" title="cew's blog" target="_blank">ceqwzw's blog</a></li>
+		{volist name="links" id="v" }
+		<li><a href="{$v.siteurl}" title="{$v.sitename}" target="_blank">{$v.sitename}</a></li>
+		{/volist}
 		</ul>
 	</dd>
 	</dl>
