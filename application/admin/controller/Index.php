@@ -4,22 +4,21 @@ namespace app\admin\controller;
 //use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Article;
 use app\admin\model\ArticleSort;
-//use app\admin\model\Test;	//测试
 use app\admin\model\ManageUser;
-
 // use think\Loader;
-// use app\extra;
+use app\extra;
 use think\Controller;
 use think\Exception;
 use think\Session;
 use think\Db;
 
-class Index extends Controller
+class Index extends BaseController
 {
 	
 	public function index()
     {
         // return $this->fetch(logincheck);	//默认进入登陆界面
+		// return $this->fetch('index/login');
 		return $this->fetch();
     }
 	
@@ -452,7 +451,50 @@ class Index extends Controller
         return $this->fetch();
     }
 	
-	
+
+	public function checkLogin($username='',$password='')	//登陆检测
+	{
+		// dump(input('post.'));
+		$result = Manageuser::where('username', $username)->find();
+		$passok = password_verify($password,$result["password"]);
+		if($result){
+			
+			if($passok == ture){
+				
+				if($result["status"]=="y"){
+					$msg["status"] = "true";
+					Session::set('username',$result["username"]);
+					// Session::delete('username',$result["username"]);
+					// $this->success('Session设置成功');
+					$msg["message"] = "登录成功"; 
+					// $this->success("登录成功",U('Index/index'));
+					// echo "1212";
+					// 保存登录信息
+					$update['username'] = $_POST['username'];
+					$update['content'] = "管理员后台登录账户";
+			        $update['last_login_time'] = time();
+			        $update['last_login_ip'] = $this->request->ip();
+			        Db::name("SystemLog")->insert($update);
+					
+				}else{
+					$msg["status"] = "false";  
+					$msg["message"] = "账号被锁定，请联系管理员！";  
+				}
+				
+			}else{
+				$msg["status"] = "false"; 
+				$msg["message"] = "密码错误"; 
+				//密码错误也要记录数据库
+			}
+
+		}else{
+			$msg["status"] = "false";  
+            $msg["message"] = "账号不存在，请联系管理员";
+		}
+		echo json_encode($msg, JSON_UNESCAPED_UNICODE);  
+		// die();
+		// session('username',null); // 删除session
+	}
 	
 	
 	/**

@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-use app\admin\model\Manageuser;
+use app\admin\model\ManageUser;
 use think\Controller;
 use think\Session;
 
@@ -12,37 +12,37 @@ class Login extends Controller
 	
 	public function checkLogin($username='',$password='')	//登陆检测
 	{
-		$result = Manageuser::where('username', $username)->find();
-		$passok = password_verify($password,$result["password"]);
-		if($result){
+		// $result = Manageuser::where('username', $username)->find();
+		// $passok = password_verify($password,$result["password"]);
+		// if($result){
 			
-			if($passok == ture){
+		// 	if($passok == ture){
 				
-				if($result["status"]=="y"){
-					$msg["status"] = "true";
-					Session::set('username',$result["username"]);
-					// $this->success('Session设置成功');
-					$msg["message"] = "登录成功"; 
-					// $this->success("登录成功",U('Index/index'));
-					// echo "1212";
-					// dump (input('session.'));
-				}else{
-					$msg["status"] = "false";  
-					$msg["message"] = "账号被锁定，请联系管理员！";  
-				}
+		// 		if($result["status"]=="y"){
+		// 			$msg["status"] = "true";
+		// 			Session::set('username',$result["username"]);
+		// 			// $this->success('Session设置成功');
+		// 			$msg["message"] = "登录成功"; 
+		// 			// $this->success("登录成功",U('Index/index'));
+		// 			// echo "1212";
+		// 			// dump (input('session.'));
+		// 		}else{
+		// 			$msg["status"] = "false";  
+		// 			$msg["message"] = "账号被锁定，请联系管理员！";  
+		// 		}
 				
-			}else{
-				$msg["status"] = "false"; 
-				$msg["message"] = "密码错误"; 
-			}
+		// 	}else{
+		// 		$msg["status"] = "false"; 
+		// 		$msg["message"] = "密码错误"; 
+		// 	}
 
-		}else{
-			$msg["status"] = "false";  
-            $msg["message"] = "账号不存在，请联系管理员";
-		}
-		echo json_encode($msg, JSON_UNESCAPED_UNICODE);  
-		// die();
-		// session('username',null); // 删除session
+		// }else{
+		// 	$msg["status"] = "false";  
+  //           $msg["message"] = "账号不存在，请联系管理员";
+		// }
+		// echo json_encode($msg, JSON_UNESCAPED_UNICODE);  
+		// // die();
+		// // session('username',null); // 删除session
 	}
 	
 	
@@ -52,15 +52,16 @@ class Login extends Controller
 		echo Session::get('username');
 		echo "</br>";
 		echo "12312";
-		$result = Manageuser::get([
-		'username'=>$username,
-		'password'=>$password
-		]);
+		// $result = Manageuser::get([
+		// 'username'=>$username,
+		// 'password'=>$password
+		// ]);
 		$hash = password_hash($password, PASSWORD_BCRYPT);
+		echo "$hash";
 		
 		// $PHPASS = new password_hash(8, true);
-		// $password = $PHPASS->password_hash($password);
-		// $userData['password'] = $password;
+		$password = $PHPASS->password_hash($password);
+		$userData['password'] = $password;
 		
 		if (password_verify($password,'$2y$10$rH5nwLWoGo/mSWwQZS0gH.9ic2UDaMTgmPe.ac3BP5BownWAkGdp6')) 
 		{ 
