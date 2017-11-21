@@ -1,5 +1,5 @@
 ﻿
-{include file="index/_header" title="资讯列表" /}
+{include file="index/_header" title="Admin" /}
 
 <input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header"></div>
@@ -22,8 +22,8 @@
         <div class="formControls col-xs-8 col-xs-offset-3">
           <!-- <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;"> -->
 		  <input name="captcha" class="input-text size-L" type="text" placeholder="验证码" style="width:150px;min-width: auto" datatype="*" nullmsg="请填写验证码">
-          <img id="captcha" src="{:/captcha_src()}" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px">
-          <img id="captcha" src="{:../../vendor/topthink/think-captcha/src/captcha_src()}" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px">
+          <img id="captcha" src="../../captcha" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px">
+          <!-- <img id="captcha" src="{:/captcha_src()}" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px"> -->
 		  <!-- <a id="kanbuq" href="javascript:;">看不清，换一张</a>  -->
 		</div>
       </div>
@@ -31,7 +31,7 @@
         <div class="formControls col-xs-8 col-xs-offset-3">
           <label for="online">
             <input type="checkbox" name="online" id="online" value="">
-            使我保持登录状态2</label>
+            使我保持登录状态</label>
         </div>
       </div>
       <div class="row cl">
@@ -68,7 +68,8 @@
                     }
                 } else {
                     layer.msg("登录成功！");
-                    location.href = '{$Request.get.callback ?: \\think\\Url::build("Index/index")}';
+                    // location.href = '{$Request.get.callback ?: \\think\\Url::build("index")}';
+                    // location.href = {:Url('/')};
                 }
             }
         });

@@ -2,29 +2,34 @@
 //感谢github作者zjw710
 namespace app\admin\controller;
 
-use app\index\model\User;
+// use app\index\model\User;
+use app\admin\model\ManageUser;
 use think\Controller;
 use think\Request;
 use think\Session;
 
 class BaseController extends Controller
 {
-	public function _initialize(){
+	public function _initialize()
+    {
         $sid = session('username');
-        //取值并删除Session
-        Session::pull('username');
-        // Session::set('username',$result["username"]);
-        // dump(session('username'));
+        $logintime = session('logintime');
         //判断用户是否登陆
         if(!isset($sid)) {
-        	echo "nooooooooo";
-        	// $this->redirect('index/login');
-        	$this->redirect('./admin/index/login');die();   //所有admin/index方法重复执行了这个地方，导致重定向过多，无法访问
-        	// 
-            // redirect('Index/login');
+            //如果Session为空进入后台登录界面
+        	$this->redirect('./admin/login');
         }else{
-        	echo "you";
+            if((time() - $logintime) > 7200)  //Session有效期 秒
+            {
+                Session::delete('username');
+                Session::delete('logintime');
+            }
+        	echo "Session ok </br>";
+            echo("Session开始时间".$logintime);
+            //当Session正常且未过期自动进入后台主页
         }
     }
+
+
 
 }

@@ -12,23 +12,36 @@ use think\Exception;
 use think\Session;
 use think\Db;
 
+//全局变量
+$user = Session::has('username');
+
 class Index extends BaseController
 {
-	
+	// private $accessKeyId = 'LTAIJ7jxMyfxE9nw';
 	public function index()
     {
-        // return $this->fetch(logincheck);	//默认进入登陆界面
-		// return $this->fetch('index/login');
+		global $user;
+		// echo ($this->accessKeyId);
+		if($user == null){
+			echo "空";
+		}
+		echo "you session";
+		$result = ManageUser::where('id', $user)->find();
+		// dump($result);
+		$this->assign('result', $result);
 		return $this->fetch();
     }
 	
 	public function login()
     {
-        return $this->fetch();
+        // return $this->fetch();
     }
 	
 	public function welcome()
     {
+    	$user = Session::has('username');
+    	$result = ManageUser::where('id', $user)->find();
+		$this->assign('result', $result);
         return $this->fetch();
     }
 	
@@ -280,7 +293,7 @@ class Index extends BaseController
         return $this->fetch();
     }
 
-	public function sms()
+	public function smsyun()	//融联云通信
     {
 		$code = "666666";
 		$min  = "6";
@@ -291,30 +304,45 @@ class Index extends BaseController
 
 		
 		echo "123";
-		dump ($_POST['id']);
+		// dump ($_POST['id']);
 
 	
     }
 	
-	public function verify_sms($telphone, $method)
+	public function verify_sms()
 	{
-		if(!$method) $this->error('缺少验证方法');
-        if(!$telphone) $this->error('请输入手机号码');
-		
-		
-		// 解析短信模板并发送
-        if($sms_template = json_decode(C('MOBILESMS_TEMPLATE_VERIFY'), true)){
-            preg_match_all('#{\$[^{}$]+}#', $sms_template['content'], $matches);
-            $temp = implode('$-$', $matches[0]);
-            // 替换模板内容
-            $temp = str_replace('{$verify', $verify, $temp);
-            $temp = str_replace('{$time', '10分钟内', $temp);
-            $temp = preg_replace('#{\$|}#', '', $temp);
-            //=========================
-            $sms_content = explode('$-$', $temp);
-            sendSMS($telphone, $sms_content, $sms_template['templateId']);
-        }
-        $this->success('短信验证码已发送');
+		//$accessKeyId = 'LTAIJ7jxMyfxE9nw';
+		//$accessKeySecret = '6QVo3Ibosh2OujQ9GUWOE4K70dOPX0';
+		//$signName = '104965380';
+		//$templateCode = 'SMS_109355085';
+		//
+		set_time_limit(0);
+		header('Content-Type: text/plain; charset=utf-8');
+
+		$response = SmsDemo::sendSms(
+		    "短名", // 短信签名
+		    "SMS_109355085", // 短信模板编号
+		    "15024267536", // 短信接收者
+		    Array(  // 短信模板中字段的值
+		        "code"=>"12345"
+		    ),
+		    "123"   // 流水号,选填
+		);
+		echo "发送短信(sendSms)接口返回的结果:\n";
+		print_r($response);
+
+		sleep(2);
+
+		$response = SmsDemo::queryDetails(
+		    "15024267536",  // phoneNumbers 电话号码
+		    "20170718", // sendDate 发送时间
+		    10, // pageSize 分页大小
+		    1 // currentPage 当前页码
+		    // "abcd" // bizId 短信发送流水号，选填
+		);
+		echo "查询短信发送情况(queryDetails)接口返回的结果:\n";
+		print_r($response);
+
 	}
 	
 	public function picture_list()        //WdatePicker日历控件报错
@@ -452,49 +480,7 @@ class Index extends BaseController
     }
 	
 
-	public function checkLogin($username='',$password='')	//登陆检测
-	{
-		// dump(input('post.'));
-		$result = Manageuser::where('username', $username)->find();
-		$passok = password_verify($password,$result["password"]);
-		if($result){
-			
-			if($passok == ture){
-				
-				if($result["status"]=="y"){
-					$msg["status"] = "true";
-					Session::set('username',$result["username"]);
-					// Session::delete('username',$result["username"]);
-					// $this->success('Session设置成功');
-					$msg["message"] = "登录成功"; 
-					// $this->success("登录成功",U('Index/index'));
-					// echo "1212";
-					// 保存登录信息
-					$update['username'] = $_POST['username'];
-					$update['content'] = "管理员后台登录账户";
-			        $update['last_login_time'] = time();
-			        $update['last_login_ip'] = $this->request->ip();
-			        Db::name("SystemLog")->insert($update);
-					
-				}else{
-					$msg["status"] = "false";  
-					$msg["message"] = "账号被锁定，请联系管理员！";  
-				}
-				
-			}else{
-				$msg["status"] = "false"; 
-				$msg["message"] = "密码错误"; 
-				//密码错误也要记录数据库
-			}
-
-		}else{
-			$msg["status"] = "false";  
-            $msg["message"] = "账号不存在，请联系管理员";
-		}
-		echo json_encode($msg, JSON_UNESCAPED_UNICODE);  
-		// die();
-		// session('username',null); // 删除session
-	}
+	
 	
 	
 	/**
