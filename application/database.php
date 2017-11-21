@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'c.19aq.com',
+    'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'c_19aq_com',
+    'database'        => 'demo',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => 'c3253220.',
+    'password'        => 'root',
     // 端口
     'hostport'        => '',
     // 连接dsn
