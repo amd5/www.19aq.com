@@ -9,6 +9,10 @@ use think\Request;
 
 class Login extends Controller
 {
+	public function index()
+    {
+        return $this->fetch();
+    }
 	
 	public function checkLogin($username='',$password='')	//登陆检测
 	{
