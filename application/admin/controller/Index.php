@@ -6,21 +6,19 @@ use app\admin\model\Article;
 use app\admin\model\ArticleSort;
 use app\admin\model\ManageUser;
 // use think\Loader;
+use app\extra\api_demo\SmsDemo;
 use app\extra;
 use think\Controller;
 use think\Exception;
 use think\Session;
 use think\Db;
 
-//全局变量
-$user = Session::has('username');
-
 class Index extends BaseController
 {
 	// private $accessKeyId = 'LTAIJ7jxMyfxE9nw';
 	public function index()
     {
-		global $user;
+		$user = Session::has('username');
 		// echo ($this->accessKeyId);
 		if($user == null){
 			echo "空";
@@ -290,58 +288,48 @@ class Index extends BaseController
 	
 	public function article1()
     {
-        return $this->fetch();
+        // return $this->fetch();
     }
 
-	public function smsyun()	//融联云通信
+	public function yunsms()	//融联云通信
     {
 		$code = "666666";
 		$min  = "6";
 		$phone= "15024267536";
 		$test = sendTemplateSMS("15024267536",array($code,$min . "分钟"),"178711");
-		
 		// $test = send_verify();
-
-		
 		echo "123";
 		// dump ($_POST['id']);
-
-	
     }
 	
-	public function verify_sms()
+	public function alisms()
 	{
-		//$accessKeyId = 'LTAIJ7jxMyfxE9nw';
-		//$accessKeySecret = '6QVo3Ibosh2OujQ9GUWOE4K70dOPX0';
-		//$signName = '104965380';
-		//$templateCode = 'SMS_109355085';
-		//
 		set_time_limit(0);
+		echo "</br>";
+		// 调用示例：
 		header('Content-Type: text/plain; charset=utf-8');
 
-		$response = SmsDemo::sendSms(
-		    "短名", // 短信签名
-		    "SMS_109355085", // 短信模板编号
-		    "15024267536", // 短信接收者
-		    Array(  // 短信模板中字段的值
-		        "code"=>"12345"
-		    ),
-		    "123"   // 流水号,选填
+		$demo = new SmsDemo(
+		    "LTAIJ7jxMyfxE9nw",
+		    "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
 		);
-		echo "发送短信(sendSms)接口返回的结果:\n";
-		print_r($response);
 
-		sleep(2);
-
-		$response = SmsDemo::queryDetails(
-		    "15024267536",  // phoneNumbers 电话号码
-		    "20170718", // sendDate 发送时间
-		    10, // pageSize 分页大小
-		    1 // currentPage 当前页码
-		    // "abcd" // bizId 短信发送流水号，选填
+		echo "SmsDemo::sendSms\n";
+		$response = $demo->sendSms("陈全","SMS_109355085","15024267536",Array("code"=>"666666","product"=>"dsd"),
+		    "123"
 		);
-		echo "查询短信发送情况(queryDetails)接口返回的结果:\n";
 		print_r($response);
+		//查询短信接口
+		// echo "SmsDemo::queryDetails\n";
+		// $response = $demo->queryDetails(
+		//     "SMS_109355085",  // phoneNumbers 电话号码
+		//     "20170718", // sendDate 发送时间
+		//     10, // pageSize 分页大小
+		//     1 // currentPage 当前页码
+		//     // "abcd" // bizId 短信发送流水号，选填
+		// );
+
+		// print_r($response);
 
 	}
 	
