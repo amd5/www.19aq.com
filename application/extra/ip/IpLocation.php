@@ -12,10 +12,10 @@
 namespace app\extra\ip;;
 
 /**
- *  IP 地理位置查询类 修改自 CoolCode.CN
- *  由于使用UTF8编码 如果使用纯真IP地址库的话 需要对返回结果进行编码转换
+ *  IP 地理位置查询类
+ *  自行到IP纯真官网下载后，用系统记事本打开保存为UTF8格式即可
  * @author    liu21st <liu21st@gmail.com>
- * 修改日期 2015.4.27 明天见 386117932
+ * 修改日期 2017-11-23 21:46:49 c32's blog    www.19aq.com
  */
 class IpLocation
 {
@@ -53,7 +53,7 @@ class IpLocation
      * @param string $filename
      * @return IpLocation
      */
-    public function __construct($filename = "UTFWry.dat")
+    public function __construct($filename = "qqwry.dat")
     {
         $this->fp = 0;
         if (($this->fp = fopen(dirname(__FILE__) . '/' . $filename, 'rb')) !== false) {
