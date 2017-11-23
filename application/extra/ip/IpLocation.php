@@ -13,7 +13,7 @@ namespace app\extra\ip;;
 
 /**
  *  IP 地理位置查询类
- *  自行到IP纯真官网下载后，用系统记事本打开保存为UTF8格式即可
+ *  IP纯真数据库
  * @author    liu21st <liu21st@gmail.com>
  * 修改日期 2017-11-23 21:46:49 c32's blog    www.19aq.com
  */
@@ -53,7 +53,7 @@ class IpLocation
      * @param string $filename
      * @return IpLocation
      */
-    public function __construct($filename = "qqwry.dat")
+    public function __construct($filename = "UTFWry.dat")
     {
         $this->fp = 0;
         if (($this->fp = fopen(dirname(__FILE__) . '/' . $filename, 'rb')) !== false) {

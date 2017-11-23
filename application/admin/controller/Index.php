@@ -293,6 +293,7 @@ class Index extends BaseController
 		// return $ip->get_client_ip();
 		// dump($ip->get_client_ip());
 		//返回所在区域
+
 		dump( $ip->getlocation('219.139.33.7'));
         // return $this->fetch();
     }
