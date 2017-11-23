@@ -25,7 +25,7 @@ class BaseController extends Controller
                 Session::delete('logintime');
             }
         	echo "Session ok </br>";
-            echo("Session开始时间".$logintime);
+            echo("Session开始时间".  date("Y-m-d h-i-s",$logintime));
             //当Session正常且未过期自动进入后台主页
         }
     }

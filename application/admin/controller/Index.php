@@ -7,11 +7,13 @@ use app\admin\model\ArticleSort;
 use app\admin\model\ManageUser;
 // use think\Loader;
 use app\extra\api_demo\SmsDemo;
+use app\extra\ip\IpLocation;
 use app\extra;
 use think\Controller;
 use think\Exception;
 use think\Session;
 use think\Db;
+
 
 class Index extends BaseController
 {
@@ -283,7 +285,17 @@ class Index extends BaseController
         return $this->fetch();
     }
 	
-	
+	public function ip()
+    {
+    	$ip=new IpLocation();
+    	echo "</br>";
+    	//返回IP地址
+		// return $ip->get_client_ip();
+		// dump($ip->get_client_ip());
+		//返回所在区域
+		dump( $ip->getlocation('219.139.33.7'));
+        // return $this->fetch();
+    }
 	
 	
 	public function article1()
@@ -315,7 +327,7 @@ class Index extends BaseController
 		);
 
 		echo "SmsDemo::sendSms\n";
-		$response = $demo->sendSms("陈全","SMS_109355085","15024267536",Array("code"=>"666666","product"=>"dsd"),
+		$response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>"123.456.789.666","product"=>"dsd"),
 		    "123"
 		);
 		print_r($response);
