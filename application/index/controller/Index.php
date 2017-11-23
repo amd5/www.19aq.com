@@ -1,19 +1,42 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
+/*模块*/
 use app\index\model\Article;
 use app\index\model\ArticleSort;
 use app\index\model\Link;
+/*后台继承*/
+use app\admin\controller\BaseController;
 
-class Index	extends Controller
+class Index	extends BaseController
 {
     public function index()
     {
-    	//文章列表
-		$result = Article::order('id','desc')
-		->limit(15)
-		->paginate();
-		$page = $result->render();   //获取分页显示
+    	if(!session('username'))
+    	{
+    		//文章列表  不是管理员显示没有密码的文章
+			$result = Article::order('id','desc')
+			->where('password','=','')
+			->limit(15)
+			->paginate();
+			$page = $result->render();   //获取分页显示
+    	}elseif(session('username') == "1")
+    	{
+    		//管理员ID不是1
+			$result = Article::order('id','desc')
+			->where('password','=','')
+			->limit(15)
+			->paginate();
+			$page = $result->render();
+    	}else
+    	{
+    		//文章列表  管理员显示全部文章
+			$result = Article::order('id','desc')
+			->limit(15)
+			->paginate();
+			$page = $result->render();
+    	}
+    	
 
 		//分类列表
 		$articlesort = ArticleSort::where('status','=','1')

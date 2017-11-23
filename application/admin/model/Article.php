@@ -10,7 +10,7 @@ namespace app\admin\model;
 
 use think\Db;
 use think\Model;
-
+use think\Request;
 use think\Controller;
 use think\Exception;
 use app\admin\model\ArticleSort;
@@ -43,17 +43,28 @@ class Article extends Model
 		return $result;
     }
 	
-	public function ArticleAdd()
-    {
-		$data['title'] 		= $_POST["articletitle"];
-		$data['date'] 		= date(time());
-		$data['content'] 	= $_POST["content"];
-		$data['sortid'] 	= $_POST["brandclass"];
-		$data['excerpt'] 	= '我是文章描述';
-		$data['status'] 	= '1';
-		$result = Article::insert($data);
-		return $result;
-    }
+	// public function ArticleAdda()
+ //    {
+	// 	$data['title'] 		= $_POST["articletitle"];
+	// 	$data['date'] 		= date(time());
+	// 	$data['content'] 	= $_POST["content"];
+	// 	$data['sortid'] 	= $_POST["brandclass"];
+	// 	$data['excerpt'] 	= '我是文章描述';
+	// 	$data['status'] 	= '1';
+	// 	$result = Article::insert($data);
+
+	// 	$update['username'] 		= session('username');
+	// 	$update['content']  		= $_POST["articletitle"]."文章发布成功！";
+ //        $update['last_login_time']	= date(time());
+ //        $update['last_login_ip']	= $this->request->ip();
+ //        $update['login_status']		= "4";
+
+ //        Db::name("SystemLog")->insert($update);
+
+ //        dump($update);
+
+	// 	// return $result;
+ //    }
 	
 	public function ArticleEdit($id)
     {

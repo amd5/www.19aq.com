@@ -12,6 +12,7 @@ use app\extra;
 use think\Controller;
 use think\Exception;
 use think\Session;
+use think\Request;
 use think\Db;
 
 
@@ -21,15 +22,20 @@ class Index extends BaseController
 	public function index()
     {
 		$user = Session::has('username');
+		$id   = Session::has('id');
 		// echo ($this->accessKeyId);
-		if($user == null){
-			echo "空";
+		if($user == null)
+		{
+			echo "Session 空";
+			$this->redirect('./admin/login');
+		}else
+		{
+			echo "you session";
+			$result = ManageUser::where('id', $user)->find();
+			// dump($result);
+			$this->assign('result', $result);
+			return $this->fetch();
 		}
-		echo "you session";
-		$result = ManageUser::where('id', $user)->find();
-		// dump($result);
-		$this->assign('result', $result);
-		return $this->fetch();
     }
 	
 	public function login()
@@ -82,14 +88,30 @@ class Index extends BaseController
     {
 		if($this->request->isPost()){
 			//dump(input('post.'));  //输出页面post过来的数据
-			$result = new Article();
-			$result = $result->ArticleAdd();
+			// $result = new Article();
+			// $result = $result->ArticleAdd();
+			$data['title'] 		= $_POST["articletitle"];
+			$data['date'] 		= date(time());
+			$data['content'] 	= $_POST["content"];
+			$data['sortid'] 	= $_POST["brandclass"];
+			$data['excerpt'] 	= $this->request->ip();
+			$data['status'] 	= '1';
+			$result = Article::insert($data);
+
+			$update['username'] 		= session('username');
+			$update['content']  		= $_POST["content"] ."文章发布成功！";
+	        $update['last_login_time']	= date(time());
+	        $update['last_login_ip']	= $this->request->ip();
+	        $update['login_status']		= "4";
+	        Db::name("SystemLog")->insert($update);
+
 			echo $result ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'发布失败!<br />';  	
 			
 		} else {
 			$result = new ArticleSort();
 			$result = $result->ArticleSort();
 			$this->assign('sortname', $result);
+			// echo $this->request->domain();
 			return $this->fetch();
 		}
 
@@ -98,8 +120,23 @@ class Index extends BaseController
 	public function article_edit($id)	//文章编辑
     {
 		if($this->request->isPost()){
-			$result = new Article();
-			$result = $result->ArticleEdit($id);
+			// $result = new Article();
+			// $result = $result->ArticleEdit($id);
+			$result = Article::where('id', $id)
+			->update([
+			'title' 	=> $_POST["articletitle"],
+			'content' 	=> $_POST["content"],
+			'sortid'	=> $_POST["brandclass"],
+			'date' 		=> strtotime($_POST["datetime"]),
+			]);
+
+			$update['username'] 		= session('username');
+			$update['content']  		= $_POST["articletitle"] ."文章修改成功！";
+	        $update['last_login_time']	= date(time());
+	        $update['last_login_ip']	= $this->request->ip();
+	        $update['login_status']		= "5";
+	        Db::name("SystemLog")->insert($update);
+
 			if($result){
 				$this->success("文章修改成功!");
 				
@@ -107,10 +144,13 @@ class Index extends BaseController
 				$this->error("内容没有更新!");
 			}
 		} else {
-			$result = new Article();
-			$sort	= new ArticleSort();
-			$result = $result->Article($id);
-			$sort 	= $sort->ArticleSort();
+			$result = Article::where('id', $id)
+			->select();
+			$sort   = ArticleSort::select();
+			// $result = new Article();
+			// $sort	= new ArticleSort();
+			// $result = $result->Article($id);
+			// $sort 	= $sort->ArticleSort();
 			$this->assign('result', $result);
 			$this->assign('sortname', $sort);
 			return $this->fetch();
@@ -508,24 +548,6 @@ class Index extends BaseController
                 if ($auth_info['password'] != password_hash_tp($data['password'])) {
                     return ajax_return_adv_error('密码错误！');
                 }
-
-                // 生成session信息
-                Session::set(Config::get('rbac.user_auth_key'), $auth_info['id']);
-                Session::set('user_name', $auth_info['account']);
-                Session::set('real_name', $auth_info['realname']);
-                Session::set('last_login_ip', $auth_info['last_login_ip']);
-                Session::set('last_login_time', $auth_info['last_login_time']);
-
-                // 超级管理员标记
-                if ($auth_info['id'] == 1) {
-                    Session::set(Config::get('rbac.admin_auth_key'), true);
-                }
-
-                // 保存登录信息
-                $update['last_login_time'] = time();
-                $update['login_count'] = ['exp', 'login_count+1'];
-                $update['last_login_ip'] = $this->request->ip();
-                Db::name("AdminUser")->where('id', $auth_info['id'])->update($update);
 
                 // 记录登录日志
                 $log['uid'] = $auth_info['id'];

@@ -26,12 +26,17 @@ class Login extends Controller
 		$passok = password_verify($password,$result["password"]);
 		if($result){
 			
-			if($passok == ture){
+			if($passok == true){
 				
 				if($result["status"]=="y"){
 					$msg["status"] = "true";
-					Session::set('username',$result["username"]);
+					//如果管理员ID=1则设置以下Session
+					if ($result['id'] == 1) 
+					{
+					Session::set('id',$result["id"]);
+                    Session::set('username',$result["username"]);
 					Session::set('logintime',time());	//设置session开始时间
+					Session::set('last_login_ip',$this->request->ip());
 					// Session::delete('username',$result["username"]);
 					// $this->success('Session设置成功');
 					$msg["message"] = "登录成功"; 
@@ -44,10 +49,14 @@ class Login extends Controller
 			        $update['last_login_ip'] = $this->request->ip();
 			        $update['login_status'] = "1";
 			        $time['last_login_time'] = time();
+			        //保存登录信息
 			        Db::name("ManageUser")->where('username','=',$username)->update($time);
+			        //保存登录日志
 			        Db::name("SystemLog")->insert($update);
 			        //登录成功后跳转到后台首页
 					$this->redirect('./admin/index');
+                	}
+
 				}else{
 					$msg["status"] = "false";  
 					$msg["message"] = "账号被锁定，请联系管理员！";  
@@ -83,8 +92,19 @@ class Login extends Controller
 		// 取值并删除Session
         // Session::pull('username');
         // 设置session为null
+        $del = Session::delete('username');
+        $nul = Session('username',null);
+        if ($del) {
+        	$this->redirect('../../');
+        	// echo "1";
+        }elseif ($nul) {
+        	$this->redirect('../../');
+        }
+        echo "2";
+        // die;
+        // dump(session('username'));
         // session('username',null);
-        Session::delete('username');
+        // Session::delete('username');
         //跳转到后台首页
         // $this->redirect('.');
         //跳转到网站首页

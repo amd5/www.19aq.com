@@ -17,14 +17,21 @@ class BaseController extends Controller
         //判断用户是否登陆
         if(!isset($sid)) {
             //如果Session为空进入后台登录界面
-        	$this->redirect('./admin/login');
+            //
+            if(!$_SERVER['PHP_SELF'] = "index.php"){
+                $this->redirect('./admin/login');
+            }
+            //输出当前域名
+            // echo $_SERVER['HTTP_HOST'];
         }else{
             if((time() - $logintime) > 7200)  //Session有效期 秒
             {
                 Session::delete('username');
                 Session::delete('logintime');
             }
-        	echo "Session ok </br>";
+            echo "Session id : " .session('id') ."</br>";
+            echo "Session username : " .session('username') ."</br>";
+            echo "Session last_login_ip : " .session('last_login_ip') ."</br>";
             echo("Session开始时间".  date("Y-m-d h-i-s",$logintime));
             //当Session正常且未过期自动进入后台主页
         }
