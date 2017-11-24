@@ -602,6 +602,9 @@ Base继承到后台，并继承到前台，根据Base判断Sessiond管理员身�
 增加Session管理员判断</br>
 增加普通管理员和超级管理员查看文章权限不同
 
+## 2017-11-24 13:03:20
+安装测试Redis成功
+SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 
 </br>
 继承：如果IP地址为XXX禁止访问网站

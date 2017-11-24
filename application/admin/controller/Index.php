@@ -15,6 +15,7 @@ use think\Session;
 use think\Request;
 use think\Db;
 
+use think\cache\driver\Redis;
 
 class Index extends BaseController
 {
@@ -341,6 +342,20 @@ class Index extends BaseController
 	
 	public function article1()
     {
+    	$config = [
+		'host' => '127.0.0.1',
+		'port' => 6379,
+		'password' => '',
+		'select' => 0,
+		'timeout' => 0,
+		'expire' => 0,
+		'persistent' => false,
+		'prefix' => '',
+		];
+
+		$Redis=new Redis($config);
+		$Redis->set("blog","test");
+		echo $Redis->get("blog");
         // return $this->fetch();
     }
 
