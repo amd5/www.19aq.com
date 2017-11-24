@@ -13,6 +13,7 @@ use think\Controller;
 use think\Exception;
 use think\Session;
 use think\Request;
+use think\Cache;
 use think\Db;
 
 use think\cache\driver\Redis;
@@ -39,8 +40,20 @@ class Index extends BaseController
 		}
     }
 	
-	public function login()
+	public function clear()
     {
+    	//删除Cache缓存
+		Cache::clear();
+		rmdir(CACHE_PATH);
+		//删除Temp缓存
+		array_map('unlink', glob(TEMP_PATH . '/*.php'));
+		// rmdir(TEMP_PATH);
+		//清除Log缓存
+		$path = glob( LOG_PATH.'*' );
+		foreach ($path as $item) {
+		array_map( 'unlink', glob( $item.DS.'*.log' ) );
+		rmdir( $item );
+		}
         // return $this->fetch();
     }
 	

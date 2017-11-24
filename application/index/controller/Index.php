@@ -4,6 +4,7 @@ use think\Controller;
 /*模块*/
 use app\index\model\Article;
 use app\index\model\ArticleSort;
+use app\index\model\ArticleTag;
 use app\index\model\Link;
 /*后台继承*/
 use app\admin\controller\BaseController;
@@ -36,6 +37,9 @@ class Index	extends BaseController
 			->paginate();
 			$page = $result->render();
     	}
+
+    	//文章标签
+    	$tag = ArticleTag::select();
     	
 
 		//分类列表
@@ -69,6 +73,20 @@ class Index	extends BaseController
 		$this->assign('result', $result);
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
+    }
+
+
+    public function tag()
+    {
+    	$result = Article::order('id','desc')
+			->limit(15)
+			->paginate();
+			$page = $result->render();
+    	$tag = ArticleTag::select();
+    	// dump($tag);
+    	$this->assign('result', $result);
+		$this->assign('page', $page);
+    	return $this->fetch();
     }
 
 	
