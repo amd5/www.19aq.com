@@ -47,14 +47,20 @@ class Index extends BaseController
 		rmdir(CACHE_PATH);
 		//删除Temp缓存
 		array_map('unlink', glob(TEMP_PATH . '/*.php'));
-		// rmdir(TEMP_PATH);
+		//空目录删除php文件报错，备用
+		// array_map(function($v){ if(file_exists($v)) @unlink($v); }, (array)glob(TEMP_PATH . '/*.php'));  
+		//如果Temp目录存在则删除，否则跳过
+		if (file_exists(TEMP_PATH) == true) {
+			rmdir(TEMP_PATH);
+		}
 		//清除Log缓存
 		$path = glob( LOG_PATH.'*' );
 		foreach ($path as $item) {
 		array_map( 'unlink', glob( $item.DS.'*.log' ) );
 		rmdir( $item );
 		}
-        // return $this->fetch();
+		// return $this->true;
+        // return $this->display();
     }
 	
 	public function welcome()

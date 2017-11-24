@@ -606,6 +606,12 @@ Base继承到后台，并继承到前台，根据Base判断Sessiond管理员身�
 安装测试Redis成功
 SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 
+## 2017-11-25 01:20:36
+后台增加一键删除缓存</br>
+增加清除缓存询问框</br>
+增加清除缓存后成功提示</br>
+
+
 </br>
 继承：如果IP地址为XXX禁止访问网站
 QQ登陆是管理员
