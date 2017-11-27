@@ -18,11 +18,11 @@ class ArticleSort extends Model
 	return $status[$data['status']];
 	}
 
-	public function ArticleSort()
-    {
-		$result = ArticleSort::order('taxis', 'asc')->select();
-		return $result;
-    }
+	// public function ArticleSort()
+ //    {
+	// 	$result = ArticleSort::order('taxis', 'asc')->select();
+	// 	return $result;
+ //    }
 	
 	public function ArticleSortAdd()
     {

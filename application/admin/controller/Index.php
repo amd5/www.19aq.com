@@ -87,6 +87,27 @@ class Index extends BaseController
 		$this->assign('result', $result);
 		return $this->fetch();
     }
+
+
+    public function aces()
+    {
+    	$user = Article::select([1,2,3]);
+    	$user->Pcs;
+    	// dump($user->Pcs);
+    	dump($user);
+    	// foreach ($user->pcs as $pcs)
+    	// echo "</br>".$pcs->id."</br>";
+    	// echo "</br>".$articlert->title."</br>";
+    	// echo "</br>".$articlert->sortname."</br>";
+    	// $this->assign('data', $user->pcs());
+    	// $this->assign('result', $user);
+    	// return $this->fetch();
+
+    }
+
+
+
+
 	
 	public function article_list()	//文章列表页           toJson();
     {
