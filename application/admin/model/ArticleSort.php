@@ -7,6 +7,7 @@
 # #Email:		amd5@qq.com
 # #########################################
 namespace app\admin\model;
+use app\admin\model\Article;
 
 use think\Model;
 
@@ -18,11 +19,10 @@ class ArticleSort extends Model
 	return $status[$data['status']];
 	}
 
-	// public function ArticleSort()
- //    {
-	// 	$result = ArticleSort::order('taxis', 'asc')->select();
-	// 	return $result;
- //    }
+	public function Article()
+    {
+		return $this->belongsTo('Article','sortid','taxis');
+    }
 	
 	public function ArticleSortAdd()
     {

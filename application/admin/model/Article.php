@@ -43,9 +43,11 @@ class Article extends Model
 		return $result;
     }
 	
-	public function Pcs()
+	public function pcs()
     {
-    	return $this->hasMany('ArticleSort','taxis','sortid');
+    	//ArticleSort    taxis
+    	//Article        sortid
+    	return $this->hasOne('ArticleSort','taxis','sortid');
     }
 	
 	public function ArticleEdit($id)

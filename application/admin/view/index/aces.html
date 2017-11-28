@@ -28,14 +28,16 @@
 			</tr>
 		</thead>
 		<tbody>
-			{volist name="result" id="result" }   <!--输出数组循环开始-->
-			
+			{$result}
+			{volist name="result" id="vv" }   <!--输出数组循环开始-->
 			<tr class="text-c">
 				<td><input type="checkbox" value="1" name=""></td>
-				<td>{$result.id}</td>
-				<td>{$result.title}</td>
-				<td>{$data.sortname}</td>
-				<td></td>
+				<td>{$vv.id}</td>
+				<td>{$vv.title}</td>
+				{volist name="vv['sortid']" id="sub"}
+				<td>{$sub.sortname}789</td>
+				{/volist}
+				<td>12</td>
 				<td></td>
 				<td></td>
 				<td></td>

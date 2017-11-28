@@ -6,6 +6,9 @@ use app\index\model\Article;
 use app\index\model\ArticleSort;
 use app\index\model\ArticleTag;
 use app\index\model\Link;
+use app\extra\ip\IpLocation;
+use app\extra\api_demo\SmsDemo;
+use think\Request;
 /*后台继承*/
 use app\admin\controller\BaseController;
 
@@ -13,6 +16,19 @@ class Index	extends BaseController
 {
     public function index()
     {
+    	$ip=new IpLocation();
+    	$dizhi = $this->request->ip();
+    	dump($ip->getlocation($dizhi));
+    	$demo = new SmsDemo(
+            "LTAIJ7jxMyfxE9nw",
+            "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
+        );
+        $response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>$dizhi,"product"=>"dsd"),
+            "123"
+        );
+
+        
+
     	if(!session('username'))
     	{
     		//文章列表  不是管理员显示没有密码的文章

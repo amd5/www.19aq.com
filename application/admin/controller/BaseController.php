@@ -4,6 +4,8 @@ namespace app\admin\controller;
 
 // use app\index\model\User;
 use app\admin\model\ManageUser;
+use app\extra\api_demo\SmsDemo;
+
 use think\Controller;
 use think\Request;
 use think\Session;
