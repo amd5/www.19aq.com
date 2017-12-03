@@ -2,8 +2,15 @@
 
 namespace app\index\controller;
 
-class Blog
+
+
+class Check
 {
+    
+
+
+
+
 
     public function get($id)
     {

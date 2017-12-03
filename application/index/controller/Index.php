@@ -9,23 +9,19 @@ use app\index\model\Link;
 use app\extra\ip\IpLocation;
 use app\extra\api_demo\SmsDemo;
 use think\Request;
+
 /*后台继承*/
 use app\admin\controller\BaseController;
+use app\index\controller\Check;
 
 class Index	extends BaseController
 {
     public function index()
     {
-    	$ip=new IpLocation();
-    	$dizhi = $this->request->ip();
-    	dump($ip->getlocation($dizhi));
-    	$demo = new SmsDemo(
-            "LTAIJ7jxMyfxE9nw",
-            "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
-        );
-        $response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>$dizhi,"product"=>"dsd"),
-            "123"
-        );
+        //调用check方法
+        $check  =new index();
+        // dump($check);
+        echo $check->check();
 
         
 
@@ -104,6 +100,39 @@ class Index	extends BaseController
 		$this->assign('page', $page);
     	return $this->fetch();
     }
+
+
+    public function check()
+    {
+        $ip=new IpLocation();
+        $dizhi = $this->request->ip();
+        //只含    ip地址
+        $ipdizhi = $ip->getlocation($dizhi);
+        //显示ip地址信息数组
+        // dump($ip->getlocation($dizhi));
+        //输出ip地址
+        // dump($ipdizhi['ip']);
+        //输出详细地址
+        $xxdz = $ipdizhi['country'].$ipdizhi['area'];
+        // dump($xxdz);
+        
+        // 如果不是管理员才执行
+        if(session('id') <> "1")
+        {
+            $demo = new SmsDemo(
+            "LTAIJ7jxMyfxE9nw",
+            "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
+            );
+            $response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>$xxdz,"product"=>"dsd"),
+                "123"
+            );
+            print_r($response);
+        }
+        echo (session('id'));
+        // echo "222";
+
+    }
+
 
 	
 	

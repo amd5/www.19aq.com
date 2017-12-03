@@ -93,7 +93,9 @@ class Login extends Controller
         // Session::pull('username');
         // 设置session为null
         $del = Session::delete('username');
+        $del = Session::delete('id');
         $nul = Session('username',null);
+        $nul = Session('id',null);
         if ($del) {
         	$this->redirect('../../');
         	// echo "1";

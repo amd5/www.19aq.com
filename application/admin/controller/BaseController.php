@@ -3,11 +3,9 @@
 namespace app\admin\controller;
 
 // use app\index\model\User;
-use app\admin\model\ManageUser;
-use app\extra\api_demo\SmsDemo;
-
+// use app\admin\model\ManageUser;
 use think\Controller;
-use think\Request;
+// use think\Request;
 use think\Session;
 
 class BaseController extends Controller
@@ -38,7 +36,6 @@ class BaseController extends Controller
             //当Session正常且未过期自动进入后台主页
         }
     }
-
 
 
 }
