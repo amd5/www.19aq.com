@@ -112,6 +112,8 @@ class Index	extends BaseController
         // dump($ip->getlocation($dizhi));
         //输出ip地址
         // dump($ipdizhi['ip']);
+        $xxip = $ipdizhi['ip'];
+        $xxip = str_replace('.','_',$xxip);
         //输出详细地址
         $xxdz = $ipdizhi['country'].$ipdizhi['area'];
         // dump($xxdz);
@@ -123,7 +125,7 @@ class Index	extends BaseController
             "LTAIJ7jxMyfxE9nw",
             "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
             );
-            $response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>$xxdz,"product"=>"dsd"),
+            $response = $demo->sendSms("c32博客","SMS_115390722","15024267536",Array("address"=>$xxdz,"ip"=>$xxip),
                 "123"
             );
             print_r($response);

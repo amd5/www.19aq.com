@@ -2,21 +2,23 @@
 namespace app\admin\controller;
 
 //use app\admin\model\User as UserModel;  //载入模型 并设置别名
-use app\admin\model\Article;
-use app\admin\model\ArticleSort;
-use app\admin\model\ManageUser;
+use app\admin\model\Article;	//加载文章模块
+use app\admin\model\ArticleSort; //加载文章分类模块
+use app\admin\model\ManageUser;	//加载管理员模块
+use app\admin\model\SystemLog;	//加载系统日志模块
 // use think\Loader;
-use app\extra\api_demo\SmsDemo;
-use app\extra\ip\IpLocation;
+use app\extra\api_demo\SmsDemo;	//载入短信类
+use app\extra\ip\IpLocation;	//载入ip类
 use app\extra;
-use think\Controller;
+use think\Controller;	//继承控制器
 use think\Exception;
-use think\Session;
-use think\Request;
+use think\Session;		//设置Session
+use think\Request;    //请求IP地址等
 use think\Cache;
 use think\Db;
+use extend\org\Baksql;
 
-use think\cache\driver\Redis;
+use think\cache\driver\Redis;  //缓存用到
 
 class Index extends BaseController
 {
@@ -235,14 +237,10 @@ class Index extends BaseController
 	
 	public function article_sort()	//分类列表
     {
-		$result = new ArticleSort();
-		$result = $result->ArticleSort();
+		$result = ArticleSort::order('taxis ASC')
+		->select();
         $this->assign('result', $result);
         return $this->fetch();
-		
-
-		
-
     }
 	
 	public function article_sort_add()	//添加分类
@@ -571,9 +569,41 @@ class Index extends BaseController
     {
         return $this->fetch();
     }
+
+    public function backup_sql()
+    {
+    	$type=input("tp");
+        $name=input("name");
+        $sql=new \org\Baksql(\think\Config::get("database"));
+        switch ($type)
+        {
+        case "backup": //备份
+        	return $sql->backup();
+        	break;  
+        case "dowonload": //下载
+          	$sql->downloadFile($name);
+          	break;  
+        case "restore": //还原
+          	return $sql->restore($name);
+          	break; 
+        case "del": //删除
+          	return $sql->delfilename($name);
+          	break;          
+        default: //获取备份文件列表
+            return $this->fetch("db_bak",["list"=>$sql->get_filelist()]); 
+          
+        }
+
+        return $this->fetch();
+    }
+
 	
 	public function system_log()
     {
+    	$result = SystemLog::order('id desc')
+		->select();
+		// dump ($result);
+        $this->assign('result', $result);
         return $this->fetch();
     }
 	
