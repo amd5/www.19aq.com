@@ -590,7 +590,7 @@ class Index extends BaseController
           	return $sql->delfilename($name);
           	break;          
         default: //获取备份文件列表
-            return $this->fetch("db_bak",["list"=>$sql->get_filelist()]); 
+            return $this->fetch("system_sql",["list"=>$sql->get_filelist()]); 
           
         }
 
