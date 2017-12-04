@@ -570,7 +570,7 @@ class Index extends BaseController
         return $this->fetch();
     }
 
-    public function backup_sql()
+    public function system_sql()
     {
     	$type=input("tp");
         $name=input("name");

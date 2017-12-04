@@ -627,6 +627,7 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 修复后台分类表格显示样式错误问题</br>
 增加系统日志后台显示</br>
 初步增加数据库备份测试</br>
+完善数据库操作模板和数据库存储目录</br>
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
