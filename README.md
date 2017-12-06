@@ -628,6 +628,9 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 增加系统日志后台显示</br>
 初步增加数据库备份测试</br>
 完善数据库操作模板和数据库存储目录</br>
+
+## 2017-12-5 10:17:58
+注释容联云通讯短信SDK第66行break 不兼容php7的问题</br>
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
