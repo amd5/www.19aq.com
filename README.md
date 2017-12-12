@@ -634,6 +634,11 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 
 ## 2017-12-11 19:45:27
 初步完成PHP爬虫循环抓取
+
+## 2017-12-12 21:48:42
+完善爬虫</br>
+自动爬入数据库</br>
+随时暂停、关闭、关机后、重新打开可继续从上一地点继续爬取</br>
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
