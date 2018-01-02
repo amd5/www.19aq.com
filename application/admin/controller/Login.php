@@ -120,7 +120,8 @@ class Login extends Controller
 	{
 		echo Session::get('username');
 		echo "</br>";
-		echo "12312";
+		echo "密码";
+		echo "</br>";
 		// $result = Manageuser::get([
 		// 'username'=>$username,
 		// 'password'=>$password
