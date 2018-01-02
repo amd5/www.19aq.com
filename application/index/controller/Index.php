@@ -152,6 +152,32 @@ class Index	extends BaseController
         // echo ($xxdz1);
     }
 
+    public function webhooks()
+    {
+        echo "hooks";
+        // echo shell_exec("ifconfig");
+
+
+        $hash = hash_hmac($a,$b,$c);
+
+        $github_signa = $_SERVER['HTTP_X_HUB_SIGNATURE'];
+        list($hash_type, $hash_value) = explode('=', $github_signa, 2);
+        $payload = file_get_contents("php://input");$secret = 'updateblog';
+        $hash = hash_hmac($hash_type,$payload,$secret);
+        if($hash && $hash === $hash_value)
+        {
+            echo '认证成功，开始更新';
+            // echo shell_exec("./github_pull.sh");
+            echo shell_exec("ifconfig");
+
+            echo date("Y-m-d H:i:s");
+        }
+
+
+
+
+    }
+
 
 	
 	
