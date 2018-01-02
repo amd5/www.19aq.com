@@ -152,6 +152,11 @@ class Index	extends BaseController
         // echo ($xxdz1);
     }
 
+    public function test()
+    {
+        echo "c32";
+    }
+
     public function webhooks()
     {
         //echo shell_exec("ifconfig");
