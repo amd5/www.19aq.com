@@ -154,7 +154,7 @@ class Index	extends BaseController
 
     public function test()
     {
-        echo "c321";
+        echo "c32";
     }
 
     public function webhooks()
