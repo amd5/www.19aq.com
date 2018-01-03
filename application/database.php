@@ -19,7 +19,7 @@ return [
     // 用户名
     'username'        => 'blog_19aq_com',
     // 密码
-    'password'        => 'v4qdS7RGwxGA8',
+    'password'        => 'aNWhGTKCGmT3v',
     // 端口
     'hostport'        => '',
     // 连接dsn
