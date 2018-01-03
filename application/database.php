@@ -13,11 +13,11 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'c.19aq.com',
+    'hostname'        => 'blog.19aq.com',
     // 数据库名
-    'database'        => 'c_19aq_com',
+    'database'        => 'blog_19aq_com',
     // 用户名
-    'username'        => 'c_19aq_com',
+    'username'        => 'blog_19aq_com',
     // 密码
     'password'        => 'v4qdS7RGwxGA8',
     // 端口
