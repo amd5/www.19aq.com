@@ -639,6 +639,10 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 完善爬虫</br>
 自动爬入数据库</br>
 随时暂停、关闭、关机后、重新打开可继续从上一地点继续爬取</br>
+
+## 2018-1-4 17:46:26
+初步解决博客分类的模型关联的问题。
+
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb

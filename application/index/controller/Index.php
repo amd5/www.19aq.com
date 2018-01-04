@@ -44,30 +44,36 @@ class Index	extends BaseController
     	}else
     	{
     		//文章列表  管理员显示全部文章
-			$result = Article::order('id','desc')
+			$result = Article::with('sort')
+            ->order('id','desc')
 			->limit(15)
 			->paginate();
 			$page = $result->render();
+            // print_r($result);
+
+            // $sort = $result->ArticleSort->sortname()
     	}
 
+        // $sort = 
+
     	//文章标签
-    	$tag = ArticleTag::select();
+    	// $tag = ArticleTag::select();
     	
 
 		//分类列表
-		$articlesort = ArticleSort::where('status','=','1')
-		->select();
+		// $articlesort = ArticleSort::where('status','=','1')
+		// ->select();
 		
 		//存档列表
 		//SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
-		$archives = Article::order('days','desc')
-		->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
-		->GROUP(days)
-		->select();
+		// $archives = Article::order('days','desc')
+		// ->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
+		// ->GROUP(days)
+		// ->select();
 
 		//友情链接
-		$links = Link::order('taxis','asc')
-		->select();
+		// $links = Link::order('taxis','asc')
+		// ->select();
 
 		//输出
 		$this->assign('links', $links);
@@ -75,6 +81,7 @@ class Index	extends BaseController
 		$this->assign('articlesort', $articlesort);
 		$this->assign('result', $result);
 		$this->assign('page', $page);
+        $this->assign('sort', $sort);
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
@@ -154,7 +161,16 @@ class Index	extends BaseController
 
     public function test()
     {
-        echo "c32";
+        $result = Article::with('sort')->select();
+        // echo $result;
+        // echo "</br>上面是文章内容";
+        // echo $result->ArticleSort->sortname;
+        // $sort = $result->ArticleSort->sortname;
+        // dump($result);
+        // $this->assign('sort', $sort);
+        $this->assign('result', $result);
+        return $this->fetch();
+
     }
 
     public function webhooks()

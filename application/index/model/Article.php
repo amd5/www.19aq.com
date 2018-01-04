@@ -18,8 +18,10 @@ class Article extends Model
 	return $status[$data['status']];
 	}
 	
-	
-	public function ArticleSort(){
-		return $this->hasMany('ArticleSort','sortid','sid');
+	public function sort(){
+		return $this->hasOne('ArticleSort','taxis','sortid');
 	}
+
+
+
 }
