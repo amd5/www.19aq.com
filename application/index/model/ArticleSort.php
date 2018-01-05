@@ -13,6 +13,13 @@ use think\Model;
 class ArticleSort extends Model
 {
 
+	public function sort(){
+
+		// return $this->hasOne('Article','sortid','sid');
+		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
+		return $this->hasMany('Article','sortid','sid');
+	}
+
 
 	// public function ArticleSort()
  //    {

@@ -641,7 +641,12 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 随时暂停、关闭、关机后、重新打开可继续从上一地点继续爬取</br>
 
 ## 2018-1-4 17:46:26
-初步解决博客分类的模型关联的问题。
+初步解决博客分类的模型关联的问题。</br>
+{$v.sort.sortname}</br>
+
+## 2018-1-5 17:48:35
+使用withCount解决所有分类下文章数量求和统计
+
 
 http://www.thinkphp.cn/extend/764.html</br>
 

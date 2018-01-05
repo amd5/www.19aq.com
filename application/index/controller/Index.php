@@ -63,7 +63,8 @@ class Index	extends BaseController
     	
 
 		//分类列表
-		$articlesort = ArticleSort::where('status','=','1')
+		$articlesort = ArticleSort::withCount('sort')
+        ->where('status','=','1')
 		->select();
 		
 		//存档列表
@@ -163,13 +164,27 @@ class Index	extends BaseController
 
     public function test()
     {
-        $result = Article::with('tag')->select();
+
+
+        $result = ArticleSort::withCount('sort')
+        // ->alias('tiaoshu')
+        ->select();
+        // ->where('status','=','1')
+        
+        // foreach($result as $user){
+        //     // 获取用户关联的card关联统计
+        //     echo $user->cards_count;
+        // }
+
         // echo $result;
         echo "</br>上面是文章内容";
         // echo $result->ArticleSort->sortname;
         // $sort = $result->ArticleSort->sortname;
         // dump($result);
         // $this->assign('sort', $sort);
+
+
+
         $this->assign('result', $result);
         return $this->fetch();
 
