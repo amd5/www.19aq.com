@@ -28,7 +28,8 @@ class Index	extends BaseController
     	if(!session('username'))
     	{
     		//文章列表  不是管理员显示没有密码的文章
-			$result = Article::order('id','desc')
+			$result = Article::with('sort')
+            ->order('id','desc')
 			->where('password','=','')
 			->limit(15)
 			->paginate();
@@ -36,7 +37,8 @@ class Index	extends BaseController
     	}elseif(session('username') == "1")
     	{
     		//管理员ID不是1
-			$result = Article::order('id','desc')
+			$result = Article::with('sort')
+            ->order('id','desc')
 			->where('password','=','')
 			->limit(15)
 			->paginate();
@@ -57,23 +59,23 @@ class Index	extends BaseController
         // $sort = 
 
     	//文章标签
-    	// $tag = ArticleTag::select();
+    	$tag = ArticleTag::select();
     	
 
 		//分类列表
-		// $articlesort = ArticleSort::where('status','=','1')
-		// ->select();
+		$articlesort = ArticleSort::where('status','=','1')
+		->select();
 		
 		//存档列表
-		//SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
-		// $archives = Article::order('days','desc')
-		// ->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
-		// ->GROUP(days)
-		// ->select();
+		// SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
+		$archives = Article::order('days','desc')
+		->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
+		->GROUP(days)
+		->select();
 
 		//友情链接
-		// $links = Link::order('taxis','asc')
-		// ->select();
+		$links = Link::order('taxis','asc')
+		->select();
 
 		//输出
 		$this->assign('links', $links);
@@ -81,7 +83,7 @@ class Index	extends BaseController
 		$this->assign('articlesort', $articlesort);
 		$this->assign('result', $result);
 		$this->assign('page', $page);
-        $this->assign('sort', $sort);
+        // $this->assign('sort', $sort);
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
@@ -161,9 +163,9 @@ class Index	extends BaseController
 
     public function test()
     {
-        $result = Article::with('sort')->select();
+        $result = Article::with('tag')->select();
         // echo $result;
-        // echo "</br>上面是文章内容";
+        echo "</br>上面是文章内容";
         // echo $result->ArticleSort->sortname;
         // $sort = $result->ArticleSort->sortname;
         // dump($result);

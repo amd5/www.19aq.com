@@ -18,8 +18,15 @@ class Article extends Model
 	return $status[$data['status']];
 	}
 	
+	//使用文章表sortid关联sort分类表的sid
 	public function sort(){
-		return $this->hasOne('ArticleSort','taxis','sortid');
+		return $this->hasOne('ArticleSort','sid','sortid');
+		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
+	}
+
+	public function tag(){
+		return $this->hasMany('ArticleTag','gid','id');
+		//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
 	}
 
 
