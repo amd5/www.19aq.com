@@ -60,7 +60,7 @@ class Index	extends BaseController
 
     	//文章标签
     	$tag = ArticleTag::select();
-    	
+    	//dump($tag);
 
 		//分类列表
 		$articlesort = ArticleSort::withCount('sort')
@@ -79,6 +79,7 @@ class Index	extends BaseController
 		->select();
 
 		//输出
+		$this->assign('tag', $tag);
 		$this->assign('links', $links);
 		$this->assign('archives', $archives);
 		$this->assign('articlesort', $articlesort);
