@@ -75,36 +75,15 @@
 	<dl>
 	<dt>标签</dt><dd>
 	<ul id="blogtags">
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/Linux%E6%BA%90" title="1 篇文章">Linux源</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/sqlmap" title="6 篇文章">sqlmap</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/shell" title="2 篇文章">shell</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/vmware" title="8 篇文章">vmware</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/ubuntu" title="6 篇文章">ubuntu</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/ssh" title="8 篇文章">ssh</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/nmap" title="3 篇文章">nmap</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/mysql" title="10 篇文章">mysql</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/metasploit" title="9 篇文章">metasploit</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/xss" title="1 篇文章">xss</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/beef" title="1 篇文章">beef</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/apache" title="15 篇文章">apache</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/tomcat" title="4 篇文章">tomcat</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/vsftpd" title="5 篇文章">vsftpd</a></span>
-			<span style="line-height:30px;">
-		<a href="http://www.19aq.com/tag/%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB" title="2 篇文章">依赖关系</a></span>
+	{volist name="tag" id="v" }
+		<span style="line-height:30px;">
+			<a href="http://www.19aq.com/tag/Linux%E6%BA%90" title="1 篇文章">{$v.tagname}</a>
+		</span>
+	{/volist}
+		
+
+
+		
 			<div class="clear"></div>
 	</ul>
 	</dd>

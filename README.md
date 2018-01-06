@@ -647,6 +647,9 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 ## 2018-1-5 17:48:35
 使用withCount解决所有分类下文章数量求和统计
 
+## 2018-1-6 18:06:34
+处理首页显示文章标签
+
 
 http://www.thinkphp.cn/extend/764.html</br>
 
