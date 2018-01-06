@@ -202,6 +202,17 @@ class Index	extends BaseController
         printf($read);
         pclose($handle);
     }
+	public function webhooksf()
+    {
+        //echo shell_exec("ifconfig");
+        echo "</br>";
+        error_reporting ( E_ALL );
+        $dir = '/home/wwwroot/web/domain/blog.19aq.com/web/';//该目录为git检出目录
+        $handle = popen('cd '.$dir.' && git checkout -f','r');
+        $read = stream_get_contents($handle);
+        printf($read);
+        pclose($handle);
+    }
 
 
 	
