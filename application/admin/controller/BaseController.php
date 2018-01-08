@@ -2,8 +2,6 @@
 //感谢github作者zjw710
 namespace app\admin\controller;
 
-// use app\index\model\User;
-// use app\admin\model\ManageUser;
 use think\Controller;
 // use think\Request;
 use think\Session;

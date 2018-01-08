@@ -1,11 +1,17 @@
 <?php
+# #########################################
+# #感谢1207877378大神
+# #########################################
 namespace app\index\controller;
 use think\Controller;
-/*模块*/
+/*前台模块*/
 use app\index\model\Article;
 use app\index\model\ArticleSort;
 use app\index\model\ArticleTag;
 use app\index\model\Link;
+/*后台模块*/
+use app\admin\model\SystemConfig;
+/*其他第三方模块*/
 use app\extra\ip\IpLocation;
 use app\extra\api_demo\SmsDemo;
 use think\Request;
@@ -18,13 +24,18 @@ class Index	extends BaseController
 {
     public function index()
     {
-        //调用check方法
-        $check  =new index();
-        // dump($check);
-        echo $check->check();
+        
+        $config = SystemConfig::get(4);
+        //如果配置开启才发送短信，否则不发送短信
+        if($config->status=='1'){
+            $check  =new index();
+            // dump($check);
+            echo $check->check();
+        }else{
+            //不发送短信
+        }
 
         
-
     	if(!session('username'))
     	{
     		//文章列表  不是管理员显示没有密码的文章
