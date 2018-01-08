@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.33,minimum-scale=1.0,maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>站点标题</title>
+<title>c32's blog</title>
 <meta name="keywords" content="站点关键词" />
 <meta name="description" content="站点描述" />
 <meta name="generator" content="文章描述" />
@@ -73,42 +73,58 @@
 
 
 	<dl>
-	<dt>标签</dt><dd>
-	<ul id="blogtags">
-	{volist name="tag" id="v" }
-		<span style="line-height:30px;">
-			<a href="http://www.19aq.com/tag/{$v.tagname}" title="1 篇文章">{$v.tagname}</a>
-		</span>
-	{/volist}
-		
-
-
-		
-			<div class="clear"></div>
-	</ul>
+	<dt>Search</dt>
+	<dd>
+		<ul id="blogtags">
+			<form name="keyform" method="get" action="{:Url('/')}index.php">
+			<input name="keyword" class="search" type="text" />
+			</form>
+		</ul>
 	</dd>
 	</dl>
+	
 	<dl>
 	<dt>分类</dt><dd>
 		<ul id="blogsort">
 			{volist name="articlesort" id="v" }
-			<li>
-				<a href="http://www.19aq.com/sort/{$v.alias}">{$v.sortname}({$v.sort_count})</a>
-				<a href="http://www.19aq.com/rss.php?sort={$v.taxis}"><img src="{:Url('/')}static/blog/rss.png" alt=""/></a>
-			</li>
+				<span style="line-height:10px;font-size:10px;">
+					<li>
+						<a href="http://www.19aq.com/sort/{$v.alias}">{$v.sortname}({$v.sort_count})</a>
+						<a href="http://www.19aq.com/rss.php?sort={$v.taxis}"><img src="{:Url('/')}static/blog/rss.png" alt="" height="10px"/></a>
+					</li>
+				</span>
 			{/volist}
 		</ul>
 	</dd>
 	</dl>
+	
 	<dl>
 	<dt>存档</dt><dd>
 	<ul id="record">
 		{volist name="archives" id="v" }
-		<li><a href="http://www.19aq.com/record/201402">{$v.days}({$v.COUNT})</a></li>
+		<span style="line-height:10px;font-size:10px;">
+		<li>
+		<a href="http://www.19aq.com/record/201402">{$v.days}({$v.COUNT})</a>
+		</li>
+		</span>
 		{/volist}
 	</ul>
 	</dd>
 	</dl>
+	
+	<dl>
+	<dt>标签</dt>
+	<dd>
+		<ul id="blogtags">
+			{volist name="tag" id="v" }
+				<span style="line-height:10px;font-size:10px;">
+					<a href="http://www.19aq.com/tag/{$v.tagname}" title="1 篇文章">{$v.tagname}</a>
+				</span>
+			{/volist}
+		</ul>
+	</dd>
+	</dl>
+	
 	<dl>
 	<dt>Links</dt><dd>
 	<ul id="link">

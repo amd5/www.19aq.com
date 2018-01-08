@@ -11,7 +11,7 @@ body{
 	font-family: "Microsoft YaHei";
 	background-repeat: repeat;
 }
-a{text-decoration: none;color: #434a54;}
+a{text-decoration: none;color: #556c88;}
 a:hover{color: #cc0000;text-decoration: none;}
 img{max-width: 100%;border:none;}
 div, h1, h2, h3, h4, p, form, ul, label, input, textarea, img, span, dl, dt, dd{margin:0px;padding:0;}
