@@ -223,7 +223,7 @@ class Index	extends BaseController
         $read = stream_get_contents($handle);
         printf($read."</br>");
         pclose($handle."</br>");
-
+    }
     public function webhookspull()
     {
         //echo shell_exec("ifconfig");
