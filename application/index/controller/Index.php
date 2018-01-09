@@ -211,7 +211,7 @@ class Index	extends BaseController
         $handle = popen('cd '.$dir.' && git pull 2>&1','r');
         $read = stream_get_contents($handle);
         printf($read."</br>");
-        pclose($handle."</br>");
+        pclose($handle);
     }
 	public function webhooksf()
     {
@@ -222,7 +222,7 @@ class Index	extends BaseController
         $handle = popen('cd '.$dir.' && git checkout -f','r');
         $read = stream_get_contents($handle);
         printf($read."</br>");
-        pclose($handle."</br>");
+        pclose($handle);
     }
     public function webhookspull()
     {
@@ -233,7 +233,7 @@ class Index	extends BaseController
         $handle = popen('cd '.$dir.' && git pull','r');
         $read = stream_get_contents($handle);
         printf($read."</br>");
-        pclose($handle."</br>");
+        pclose($handle);
     }
 
 
