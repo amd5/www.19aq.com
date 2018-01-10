@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>c32</title>
+</head>
+<body>
+</br></br>下面是视图内容</br>
+
+
+{volist name="nian" id="item" }
+{$item.days}------------</br>
+
+
+{volist name="archives" id="v" }
+
+{if condition="($v.days|substr(0,4) <= $item.days)"/}{$v.days}11111</br>
+{elseif condition="($v.days|substr(0,5) >= $item.days)"/}{$v.days}22222</br>
+{else /}
+{/if}
+
+
+
+<!-- {$v.days}</br> -->
+<!-- {$v.days|substr=0,4}</br> -->
+
+{/volist}
+
+
+
+
+
+{/volist}
+
+
+</body>
+</html>

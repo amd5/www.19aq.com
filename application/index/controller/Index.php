@@ -80,10 +80,16 @@ class Index	extends BaseController
 		
 		//存档列表
 		// SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
-		$archives = Article::order('days','desc')
-		->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
-		->GROUP(days)
-		->select();
+		// $archives = Article::order('days','desc')
+		// ->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
+		// ->GROUP(days)
+		// ->select();
+        //
+        //SELECT distinct YEAR(FROM_UNIXTIME(date)) as nianfen FROM think_article ORDER BY nianfen DESC
+        // $archives = Article::
+
+
+        
 
 		//友情链接
 		$links = Link::order('taxis','asc')
