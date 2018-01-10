@@ -29,11 +29,5 @@ class Article extends Model
 		//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
 	}
 
-	public function cundang(){
-		return $this->hasOne('Article','id','id');
-		//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
-	}
-
-
 
 }
