@@ -1,4 +1,4 @@
-/*
+﻿/*
 作者：c32
 地址：http://www.19aq.com
 邮箱：admin@19aq.com
@@ -77,8 +77,7 @@ li{list-style-type: none;}
 #rigth dl{background-color: #FFFFFF;margin-bottom: 15px;border-radius: 5px;border:1px solid #CCCCCC;}
 #rigth dt{font-size: 14px;line-height: 35px;font-weight: 700;padding-left: 9px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #cccccc;color: #333333; background-color:#f1f1f1;}
 #rigth dd{font-size: 14px;padding-top: 10px;padding-right: 15px;padding-bottom: 10px;padding-left: 15px;}
-#rigth ul li{padding-top: 5px;padding-bottom: 5px; display:none; font-size:13px;}
-
+#rigth ul li{padding-top: 5px;padding-bottom: 5px;}
 #rigth dl dd #newcomment li{background-image: none;padding-left: 0px;padding-top: 8px;padding-bottom: 8px; }
 #newcomment li img{float: left;height: 35px;width: 35px;margin-right: 10px;}
 #divCalendar .function_t{display:none;}

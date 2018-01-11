@@ -108,6 +108,7 @@ class Index	extends BaseController
 		$this->assign('page', $page);
         
 		return $this->fetch();
+        
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
 	
