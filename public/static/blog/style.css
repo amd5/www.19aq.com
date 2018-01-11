@@ -3,18 +3,22 @@
 地址：http://www.19aq.com
 邮箱：admin@19aq.com
 */
-body{
+/**{margin:0;padding:0;list-style-type:none;}*/
+/*body{
 	margin:0px;
 	padding:0px;
 	color:#777;
 	font-size:14px;
 	font-family: "Microsoft YaHei";
 	background-repeat: repeat;
-}
+}*/
+/*.guidang{font-size:13px;}*/
+
 a{text-decoration: none;color: #556c88;}
-a:hover{color: #cc0000;text-decoration: none;}
+a:hover{color: #556c88;text-decoration: none;}
 img{max-width: 100%;border:none;}
 div, h1, h2, h3, h4, p, form, ul, label, input, textarea, img, span, dl, dt, dd{margin:0px;padding:0;}
+
 .clear{clear:both;}
 .line{border-top: 1px dashed #CCCCCC;}
 li{list-style-type: none;}
@@ -73,8 +77,9 @@ li{list-style-type: none;}
 #rigth dl{background-color: #FFFFFF;margin-bottom: 15px;border-radius: 5px;border:1px solid #CCCCCC;}
 #rigth dt{font-size: 14px;line-height: 35px;font-weight: 700;padding-left: 9px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #cccccc;color: #333333; background-color:#f1f1f1;}
 #rigth dd{font-size: 14px;padding-top: 10px;padding-right: 15px;padding-bottom: 10px;padding-left: 15px;}
-#rigth ul li{padding-top: 5px;padding-bottom: 5px;}
-#rigth dl dd #newcomment li{background-image: none;padding-left: 0px;padding-top: 8px;padding-bottom: 8px;}
+#rigth ul li{padding-top: 5px;padding-bottom: 5px; display:none; font-size:13px;}
+
+#rigth dl dd #newcomment li{background-image: none;padding-left: 0px;padding-top: 8px;padding-bottom: 8px; }
 #newcomment li img{float: left;height: 35px;width: 35px;margin-right: 10px;}
 #divCalendar .function_t{display:none;}
 #divCalendar table{width:100%; table-layout:fixed}
@@ -94,3 +99,4 @@ li{list-style-type: none;}
 #guan h2 {font-size: 14px;line-height: 40px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #eee;margin-bottom: 9px;color: #000000;}
 #guan ul li {line-height: 26px;}
 #guan ul li span {float: right;color: #999999;}
+/*.div3{display:none;font-size:13px;}*/

@@ -79,14 +79,17 @@ class Index	extends BaseController
 		->select();
 		
 		//存档列表
-		// SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
-		// $archives = Article::order('days','desc')
-		// ->field('FROM_UNIXTIME(date,"%Y年%m月") as days,COUNT(*) as COUNT')
-		// ->GROUP(days)
-		// ->select();
-        //
+        // SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
         //SELECT distinct YEAR(FROM_UNIXTIME(date)) as nianfen FROM think_article ORDER BY nianfen DESC
-        // $archives = Article::
+        $nian = Article::order('days','desc')
+        ->field('FROM_UNIXTIME(date,"%Y") as days,COUNT(*) as COUNT')
+        ->GROUP('days')
+        ->select();
+
+        $yue = Article::order('days','desc')
+        ->field('FROM_UNIXTIME(date,"%Y年-%m月") as days,COUNT(*) as COUNT')
+        ->GROUP('days')
+        ->select();
 
 
         
@@ -98,11 +101,12 @@ class Index	extends BaseController
 		//输出
 		$this->assign('tag', $tag);
 		$this->assign('links', $links);
-		$this->assign('archives', $archives);
+		$this->assign('nian', $nian);
+        $this->assign('yue', $yue);
 		$this->assign('articlesort', $articlesort);
 		$this->assign('result', $result);
 		$this->assign('page', $page);
-        // $this->assign('sort', $sort);
+        
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
