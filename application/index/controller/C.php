@@ -29,4 +29,9 @@ class C extends Controller
 
 
     }
+
+    public function php(){
+    	echo "phpinfo";
+    	// phpinfo();
+    }
 }
