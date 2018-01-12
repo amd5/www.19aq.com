@@ -653,6 +653,10 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 ## 2018-1-11 14:53:53
 解决文章归档手风琴样式
 
+## 2018-1-13 01:09:32
+隐藏index.php入口</br>
+解决文章路由</br>
+
 
 http://www.thinkphp.cn/extend/764.html</br>
 
