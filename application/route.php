@@ -24,7 +24,7 @@ use think\Route;
 Route::rule('c','index/c/php');
 // Route::rule('article/:id','index/index/article');
 // Route::rule('article/[:id]','index/index/article',['ext'=>'html']);
-Route::get('article/[:id]','index/index/article',['ext'=>'html']);
+Route::get('article-<id>','index/index/article',['ext'=>'html']);
 
 
 
