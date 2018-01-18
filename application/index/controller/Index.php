@@ -241,7 +241,7 @@ class Index	extends BaseController
         echo "</br>";
         error_reporting ( E_ALL );
         $dir = '/home/wwwroot/web/domain/blog.19aq.com/web/';//该目录为git检出目录
-        $handle = popen('cd '.$dir.'&& git clean -d -fx && git pull','r');
+        $handle = popen('cd '.$dir.' && chown -R www:www .git/* && git clean -d -fx && git pull','r');
         $read = stream_get_contents($handle);
         printf($read."</br>");
         pclose($handle);
