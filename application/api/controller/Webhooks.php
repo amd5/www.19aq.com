@@ -24,7 +24,7 @@ class Webhooks extends Controller
         error_reporting ( E_ALL );
         $dir = '/home/wwwroot/web/domain/blog.19aq.com/web/';//该目录为git检出目录
         // $handle = popen('cd '.$dir.' && git checkout -f','r');
-        $handle = popen('cd '.$dir.' && chown -R www:www .git','r');
+        $handle = popen('cd '.$dir.' && chown -R www:www *','r');
         $read = stream_get_contents($handle);
         printf($read."</br>");
         pclose($handle);
