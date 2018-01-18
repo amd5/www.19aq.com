@@ -26,5 +26,10 @@ Route::rule('c','index/c/php');
 // Route::rule('article/[:id]','index/index/article',['ext'=>'html']);
 Route::get('article-<id>','index/index/article',['ext'=>'html']);
 
+//api-webhook
+// Route::get('/api/Webhooks/a','api/Webhooks/a1',['ext'=>'html']);
+// Route::get('article-<id>','index/index/article',['ext'=>'html']);
+// Route::get('article-<id>','index/index/article',['ext'=>'html']);
+
 
 
