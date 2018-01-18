@@ -2,7 +2,8 @@
 namespace app\api\controller;
 
 use think\Controller;
-use app\index\model\User;
+use app\api\model\User;
+use app\api\model\Api_bitcoin_addr;
 /*其他第三方模块*/
 use app\extra\bitcoin\bitcoin;
     const RPC_HOST = '127.0.0.1';
@@ -34,10 +35,20 @@ class Bit extends Controller
     //创建新的钱包地址,并存入数据库
     public function getnewaddress($name)
     {
-        //创建前查询数据库是否有地址
-        $rpc  = new Bitcoin( RPC_USER, RPC_PASS, RPC_HOST, RPC_PORT );
-        $info = $rpc->getnewaddress($name);
-        dump($info);
+        //如果数据库有地址则不创建，没有则创建
+        $result = Api_bitcoin_addr::where('name',$name)
+        ->find();
+        if(!$result){
+            $rpc  = new Bitcoin( RPC_USER, RPC_PASS, RPC_HOST, RPC_PORT );
+            $info = $rpc->getnewaddress($name);
+            dump($info);
+            $data['name']       = $name;
+            $data['address']    = $info;
+            $data['time']       = time();
+            $result = Api_bitcoin_addr::insert($data);
+        }else{
+            echo "repeat"; //提示 数据库已存在
+        }
     }
     //查询钱包地址是否有效
     public function validateaddress($addr)
