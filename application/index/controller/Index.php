@@ -168,22 +168,22 @@ class Index	extends BaseController
 
     }
 
-    public function cheip($ip)
-    {
-        $add=new IpLocation();
-        $ipdizhi = $add->getlocation($ip);
-        $dizhi = $this->request->ip();
-        $xxip = $ipdizhi['ip'];
-        $xxdz = $ipdizhi['country'].$ipdizhi['area'];
-        echo ("查询IP：".$xxip);
-        echo ($xxdz);
+    // public function cheip($ip)
+    // {
+    //     $add=new IpLocation();
+    //     $ipdizhi = $add->getlocation($ip);
+    //     $dizhi = $this->request->ip();
+    //     $xxip = $ipdizhi['ip'];
+    //     $xxdz = $ipdizhi['country'].$ipdizhi['area'];
+    //     echo ("查询IP：".$xxip);
+    //     echo ($xxdz);
 
-        // $ipdizhi1 = $add->getlocation($dizhi);
-        // $xxip1 = $ipdizhi1['ip'];
-        // $xxdz1 = $ipdizhi1['country'].$ipdizhi1['area'];
-        // echo "</br>本机IP：".$xxip1;
-        // echo ($xxdz1);
-    }
+    //     // $ipdizhi1 = $add->getlocation($dizhi);
+    //     // $xxip1 = $ipdizhi1['ip'];
+    //     // $xxdz1 = $ipdizhi1['country'].$ipdizhi1['area'];
+    //     // echo "</br>本机IP：".$xxip1;
+    //     // echo ($xxdz1);
+    // }
 
     public function test()
     {
