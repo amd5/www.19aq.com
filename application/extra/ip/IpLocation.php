@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 // namespace Org\net;
-namespace app\extra\ip;;
+namespace app\extra\ip;
 
 /**
  *  IP 地理位置查询类
