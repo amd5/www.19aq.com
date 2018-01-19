@@ -1,7 +1,7 @@
 <?php
 namespace app\extra\cache;
 // use think\Controller;
-use think\cache\driver\Redis;
+// use app\extra\cache\Redis;
 use app\admin\model\SystemConfig;
 
 class Redisconfig
@@ -17,7 +17,7 @@ class Redisconfig
 		'host' => $host->content,
 		'port' => $port->content,
 		'password' => $pass->content,
-		'select' => 0,
+		'select' => 0,   //选择redis数据库
 		'timeout' => 0,
 		'expire' => 0,
 		'persistent' => false,
@@ -29,7 +29,7 @@ class Redisconfig
 		// dump($Redis);
 		// echo "22222222";
 		// $Redis->set("blog","test");
-		// echo $Redis->get("blog");
+		// echo $Redis->get("foo");
         return $Redis;
     }
 }
