@@ -3,7 +3,7 @@
 namespace app\index\controller;
 use think\Controller;
 
-use app\extra\cache\Redisconfig;    //载入ip类a
+use app\extra\cache\Redisconfig;    //载入ip类
 
 class Rediss extends Controller
 {
