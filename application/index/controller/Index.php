@@ -25,7 +25,9 @@ class Index	extends BaseController
     public function index()
     {
         
-        $config = SystemConfig::get(4);
+        $config = SystemConfig::where('name',"Sendsms")->find();
+        // $config = SystemConfig::get(4);
+        // echo ($config->status);
         //如果配置开启才发送短信，否则不发送短信
         if($config->status=='1'){
             $check  =new index();
