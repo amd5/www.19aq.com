@@ -175,37 +175,17 @@ class Redis extends Driver
 
     public function hset($key_name, $field, $value = null)
     {
-        // if (is_null($expire)) {
-        //     $expire = $this->options['expire'];
-        // }
-        // if ($this->tag && !$this->has($name)) {
-        //     $first = true;
-        // }
-        // $key = $this->getCacheKey($name);
-        //对数组/对象数据进行缓存处理，保证数据完整性  byron sampson<xiaobo.sun@qq.com>
-        // $value = (is_object($value) || is_array($value)) ? json_encode($value) : $value;
-        // if (is_int($expire) && $expire) {
-            // $result = $this->handler->setex($key, $expire, $value);
-        // } else {
-            // $result = $this->handler->set($key, $value);
-        // }
-        // isset($first) && $this->setTagItem($key);
-        // $result = $this->handler->sadd($key, $value);
         $result = $this->handler->hset($key_name, $field, $value);
         return $result;
     }
 
-    public function hmget($key_name, $field)
+    public function hgetall($key_name)
     {
         $value = $this->handler->smembers($this->getCacheKey($key_name));
         if (is_null($value)) {
             return $default;
         }
-        // $field = array();
-        // $jsonData = json_decode($value, true);
-        // 检测是否为JSON数据 true 返回JSON解析数组, false返回源数据 byron sampson<xiaobo.sun@qq.com>
-        // return (null === $jsonData) ? $value : $jsonData;
-        $result = $this->handler->hmget($key_name, $field);
+        $result = $this->handler->hgetall($key_name);
         return $result;
     }
 

@@ -29,7 +29,8 @@ class Redis extends Controller
         
 
         // $Redis->set("article_1",$result['content']);
-        echo $Redis->hmget("b","b");
+         $a = $Redis->hgetall("b");
+        dump($a);
 
         // $Redis->set("blog","test");
         // $a = $Redis->hset("b","a","3");
