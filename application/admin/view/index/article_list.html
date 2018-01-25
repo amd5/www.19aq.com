@@ -46,7 +46,7 @@
 					<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','{:Url('/admin/index/')}article.html?id={$result.id}','10001')" title="查看">{$result.title}</u></td>
 					<td>{$result.sortid}</td>
 					<td>{$result.author}</td>
-					<td>{$result.date|date="Y-m-d h:i:s",###}</td>
+					<td>{$result.date|date="Y-m-d H:i:s",###}</td>
 					<td>{$result.views}</td>
 					<td class="td-status"><span class="
 					{if 	condition="($result.status == '删除')"/}label label-danger radius
