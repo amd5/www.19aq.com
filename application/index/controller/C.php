@@ -11,7 +11,7 @@ class C extends Controller
     	//存档列表
 		// SELECT FROM_UNIXTIME(date,'%Y-%m') days,COUNT(*) COUNT FROM think_article GROUP BY days; 
     	//SELECT distinct YEAR(FROM_UNIXTIME(date)) as nianfen FROM think_article ORDER BY nianfen DESC
-
+        echo "test";
 		$test = User::select();
         dump($test);
 
