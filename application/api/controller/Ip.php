@@ -11,15 +11,23 @@ class Ip extends Controller
     public function cheip($ip)
     {
         $add=new IpLocation();
+        //查询请求IP对应地址信息
         $ipdizhi = $add->getlocation($ip);
+
+        //获取访问者外网IP
         $dizhi = $this->request->ip();
-        $xxip = $ipdizhi['ip'];
-        $xxdz = $ipdizhi['country'].$ipdizhi['area'];
-        //输出查询IP的详细物理地址
-        echo ($xxip.$xxdz);
+
         //本地IP的详细物理地址
         $local = $add->getlocation($dizhi);
+        $xxip = $ipdizhi['ip'];
+        $xxdz = $ipdizhi['country'].$ipdizhi['area'];
 
+        //输出查询IP的详细物理地址
+        // echo ($xxip.$xxdz);
+
+        //json格式输出内容
+        echo json_encode(($ipdizhi));
+        
         //获取本地IP、查询IP、查询时间
         $data['localip']    = $dizhi;
         $data['localaddr']  = $local['country'].$local['area'];
