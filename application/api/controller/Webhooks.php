@@ -33,7 +33,7 @@ class Webhooks extends Controller
     public function a3()
     {
         //echo shell_exec("ifconfig");
-        echo "</br>";
+        echo "拉取错误重复执行a3即可</br>";
         error_reporting ( E_ALL );
         $dir = '/home/wwwroot/web/domain/blog.19aq.com/web/';//该目录为git检出目录
         $handle = popen('cd '.$dir.' && git checkout -f && git pull','r');
