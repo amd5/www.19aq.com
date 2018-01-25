@@ -36,6 +36,18 @@ class Webhooks extends Controller
         echo "</br>";
         error_reporting ( E_ALL );
         $dir = '/home/wwwroot/web/domain/blog.19aq.com/web/';//该目录为git检出目录
+        $handle = popen('cd '.$dir.' && git checkout -f && git pull','r');
+        $read = stream_get_contents($handle);
+        printf($read."</br>");
+        pclose($handle);
+    }
+
+    public function a3()
+    {
+        //echo shell_exec("ifconfig");
+        echo "</br>";
+        error_reporting ( E_ALL );
+        $dir = '/home/wwwroot/web/domain/blog.19aq.com/web/';//该目录为git检出目录
         $handle = popen('cd '.$dir.' && git clean -d -fx && git pull','r');
         $read = stream_get_contents($handle);
         printf($read."</br>");
