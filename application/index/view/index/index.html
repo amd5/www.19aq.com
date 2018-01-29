@@ -8,8 +8,8 @@
 <div id="w980">
 	<div id="head">
 	<span id="ss">
-		<form name="keyform" method="get" action="#"> 
-			<input name="keyword" class="search" type="text"  id="edtSearch"/>
+		<form name="keyform" method="get" action="/index/Search"> 
+			<input name="key" class="search" type="text"  id="edtSearch"/>
 			<input type="submit" value="搜索"  class="search-submit" id="btnPost"/>
 		</form>
 	</span>
@@ -34,7 +34,7 @@
 <dl id="lieb">
 	<dt>
 		<h3 style="font-size:16px;">
-			<a href="./article-{$v.id}.html">{$v.title}</a>
+			<a href="{$url}/article-{$v.id}.html">{$v.title}</a>
 		</h3>
 			<span>
 				<em class="kan"></em>
