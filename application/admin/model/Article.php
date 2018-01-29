@@ -24,18 +24,17 @@ class Article extends Model
 	return $status[$data['status']];
 	}
 	
+	//使用文章表sortid关联sort分类表的sid
+	public function sort(){
+		return $this->hasOne('ArticleSort','sid','sortid');
+		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
+	}
 	
-	// public function index()
-    // {
-        // return $this->fetch(logincheck);	//默认进入登陆界面
-		// return $this->fetch();
-    // }
-	
-	public function ArticleList()
-    {
-		$result = Article::all();
-		return $result;
-    }
+	// public function ArticleList()
+ //    {
+	// 	$result = Article::all();
+	// 	return $result;
+ //    }
 	
 	public function Article($id)
     {
@@ -43,31 +42,31 @@ class Article extends Model
 		return $result;
     }
 	
-	public function pcs()
-    {
-    	//ArticleSort    taxis
-    	//Article        sortid
-    	return $this->hasOne('ArticleSort','taxis','sortid');
-    }
+	// public function pcs()
+ //    {
+ //    	//ArticleSort    taxis
+ //    	//Article        sortid
+ //    	return $this->hasOne('ArticleSort','taxis','sortid');
+ //    }
 	
-	public function ArticleEdit($id)
-    {
-		$result = Article::where('id', $id)
-			->update([
-			'title' 	=> $_POST["articletitle"],
-			'content' 	=> $_POST["content"],
-			'sortid'	=> $_POST["brandclass"],
-			'date' 		=> strtotime($_POST["datetime"]),
+	// public function ArticleEdit($id)
+ //    {
+	// 	$result = Article::where('id', $id)
+	// 		->update([
+	// 		'title' 	=> $_POST["articletitle"],
+	// 		'content' 	=> $_POST["content"],
+	// 		'sortid'	=> $_POST["brandclass"],
+	// 		'date' 		=> strtotime($_POST["datetime"]),
 			
-			]);
+	// 		]);
 			
-		return $result;
-    }
+	// 	return $result;
+ //    }
 	
-	public function ArticleDel($id,$action)  //未解决
-    {
-		echo "123";
-    }
+	// public function ArticleDel($id,$action)  //未解决
+ //    {
+	// 	echo "123";
+ //    }
 	
 	
 	
