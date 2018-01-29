@@ -1,0 +1,85 @@
+{include file="index/_header" title="c32's blog" keywords="标签" description="描述" generator="不知道" /}
+<div id="top">
+	<dl>
+		<span><a href="./admin" target="_blank">login</a></span>每天学习一点点,每天进步一点点.
+	</dl>
+</div> 
+<!--顶部左边副标题和右边登陆-->
+<div id="w980">
+	<div id="head">
+	<span id="ss">
+		<form name="keyform" method="get" action="#"> 
+			<input name="keyword" class="search" type="text"  id="edtSearch"/>
+			<input type="submit" value="搜索"  class="search-submit" id="btnPost"/>
+		</form>
+	</span>
+	<a href="#" class="logo" title="c32's blog">c32's blog</a>
+	</div>
+
+<div id="nav">
+	<ul>
+		<ul class="bar">
+			<li class="item current">
+			<a href="{:Url('/')}" ><span>首页</span></a>
+			</li>
+		</ul>
+	</ul>
+</div>
+
+<div id="place">当前位置：				首页</div>
+<div id="cennr">
+<div id="leftde" class="xian">
+
+{volist name="result" id="v" }
+<dl id="lieb">
+	<dt>
+		<h3 style="font-size:16px;">
+			<a href="{$url}/article-{$v.id}.html">{$v.title}</a>
+		</h3>
+			<span>
+				<em class="kan"></em>
+				<em class="ping"></em>
+			</span>
+		{$v.date|date="Y-m-d h:i:s",###}&nbsp;&nbsp;|&nbsp;&nbsp;分类：
+		<a href="javascript:void()"   class="secai">{$v.sort.sortname}</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;浏览：{$v.views}&nbsp;&nbsp;&nbsp;留言：1 
+	</dt>
+<div class="clear"></div>
+</dd>
+</dl>
+<div class="line"></div>
+{/volist}
+<div id="pagenavi">
+{$page}
+<div class="clear"></div>
+</div>
+
+</div>
+	
+
+<div id="rigth">
+
+	{include file="index/search" title="Search" /}
+	
+	{include file="index/sort" title="分类" /}
+	
+	{include file="index/record" title="存档" /}
+
+	{include file="index/tag" title="标签" /}
+	
+	{include file="index/links" title="Links" /}
+	
+<!--end #siderbar-->
+</div>
+</div>
+
+<div class="clear"></div>
+
+<div  id="footer">
+<!--<p>Powered by <a href="http://www.emlog.net" title="采用emlog系统">emlog</a>,Theme By <a href="http://www.txcstx.cn">天兴工作室</a></p>-->
+
+</div>
+
+</div>
+
+{include file="index/_footer" title="test" /}

@@ -20,10 +20,13 @@ use think\Request;
 use app\admin\controller\BaseController;
 use app\index\controller\Check;
 
-class Index	extends BaseController
+// class Index extends BaseController
+class Index	extends Controller
 {
     public function index()
     {
+        //获取当前访问URL
+        $url = "http://".$_SERVER['HTTP_HOST'];
         
         $config = SystemConfig::where('name',"Sendsms")->find();
         // $config = SystemConfig::get(4);
@@ -101,6 +104,7 @@ class Index	extends BaseController
 		->select();
 
 		//输出
+        $this->assign('url', $url);
 		$this->assign('tag', $tag);
 		$this->assign('links', $links);
 		$this->assign('nian', $nian);
@@ -108,6 +112,8 @@ class Index	extends BaseController
 		$this->assign('articlesort', $articlesort);
 		$this->assign('result', $result);
 		$this->assign('page', $page);
+
+
         
 		return $this->fetch();
         
@@ -122,16 +128,16 @@ class Index	extends BaseController
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
 
-    public function sort()
-    {
-        echo "string";
-        $articlesort = ArticleSort::withCount('sort')
-        // ->alias('tiaoshu')
-        ->select();
-        $this->assign('articlesort', $articlesort);
+    // public function sort()
+    // {
+    //     echo "string";
+    //     $articlesort = ArticleSort::withCount('sort')
+    //     // ->alias('tiaoshu')
+    //     ->select();
+    //     $this->assign('articlesort', $articlesort);
 
-        return $this->fetch();
-    }
+    //     return $this->fetch();
+    // }
 
 
   //   public function tag()
