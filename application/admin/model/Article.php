@@ -29,12 +29,14 @@ class Article extends Model
 		return $this->hasOne('ArticleSort','sid','sortid');
 		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
 	}
-	
-	// public function ArticleList()
- //    {
-	// 	$result = Article::all();
-	// 	return $result;
- //    }
+
+
+	//后台文章列表
+	public function ArticleList()
+    {
+		$result = Article::all();
+		return $result;
+    }
 	
 	public function Article($id)
     {

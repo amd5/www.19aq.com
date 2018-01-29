@@ -122,19 +122,30 @@ class Index	extends BaseController
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
 
-
-    public function tag()
+    public function sort()
     {
-    	$result = Article::order('id','desc')
-			->limit(15)
-			->paginate();
-			$page = $result->render();
-    	$tag = ArticleTag::select();
-    	// dump($tag);
-    	$this->assign('result', $result);
-		$this->assign('page', $page);
-    	return $this->fetch();
+        echo "string";
+        $articlesort = ArticleSort::withCount('sort')
+        // ->alias('tiaoshu')
+        ->select();
+        $this->assign('articlesort', $articlesort);
+
+        return $this->fetch();
     }
+
+
+  //   public function tag()
+  //   {
+  //   	$result = Article::order('id','desc')
+		// 	->limit(15)
+		// 	->paginate();
+		// 	$page = $result->render();
+  //   	$tag = ArticleTag::select();
+  //   	// dump($tag);
+  //   	$this->assign('result', $result);
+		// $this->assign('page', $page);
+  //   	return $this->fetch();
+  //   }
 
 
     public function check()

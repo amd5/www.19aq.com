@@ -1,0 +1,20 @@
+<dl>
+	<dt>[title]</dt>
+		<dd>
+			<ul id="record">
+				{volist name="nian" id="c" }
+				<div class="guidang">{$c.days}年({$c.COUNT})</div>
+				<div class="div3">
+					<ul>{volist name="yue" id="v" }
+							{eq name="$v.days|substr=0,4" value="$c.days"}
+							<span style="line-height:10px;font-size:10px;">
+							<li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$v.days|substr=8,8}({$v.COUNT})</a></li>
+							</span>
+							{/eq}
+						{/volist}
+					</ul>
+				</div>
+				{/volist}
+			</ul>
+		</dd>
+</dl>

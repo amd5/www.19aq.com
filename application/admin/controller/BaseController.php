@@ -27,11 +27,11 @@ class BaseController extends Controller
                 Session::delete('username');
                 Session::delete('logintime');
             }
-            echo "Session id : " .session('id') ."</br>";
-            echo "Session username : " .session('username') ."</br>";
-            echo "Session last_login_ip : " .session('last_login_ip') ."</br>";
-            echo("Session开始时间".  date("Y-m-d H-i-s",$logintime));
-            //当Session正常且未过期自动进入后台主页
+            //前后台Session提示
+            // echo "Session id : " .session('id') ."</br>";
+            // echo "Session username : " .session('username') ."</br>";
+            // echo "Session last_login_ip : " .session('last_login_ip') ."</br>";
+            // echo("Session开始时间".  date("Y-m-d H-i-s",$logintime));
         }
     }
 
