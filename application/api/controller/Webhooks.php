@@ -42,7 +42,7 @@ class Webhooks extends Controller
         pclose($handle);
     }
 
-    public function a3()
+    public function a4()
     {
         //echo shell_exec("ifconfig");
         echo "</br>";
