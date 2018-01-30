@@ -49,9 +49,9 @@
 <script type="text/javascript" src="{:Url('/')}lib/Validform/5.3.2/Validform.min.js"></script>
 <script>
     $(function () {
-        // $("#captcha").click(function () {
-            // $(this).attr("src",":captcha_src()}?t="+new Date().getTime())  //冒号左边加括号
-        // });
+        $("#captcha").click(function () {
+            $(this).attr("src","{:captcha_src()}?t="+new Date().getTime()) 
+        });
 
         $("#form").Validform({
             tiptype:2,
