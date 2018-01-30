@@ -206,30 +206,7 @@ class Index	extends Controller
 
     public function test()
     {
-
-
-        $result = ArticleSort::withCount('sort')
-        // ->alias('tiaoshu')
-        ->select();
-        // ->where('status','=','1')
-        
-        // foreach($result as $user){
-        //     // 获取用户关联的card关联统计
-        //     echo $user->cards_count;
-        // }
-
-        // echo $result;
-        echo "</br>上面是文章内容";
-        // echo $result->ArticleSort->sortname;
-        // $sort = $result->ArticleSort->sortname;
-        // dump($result);
-        // $this->assign('sort', $sort);
-
-
-
-        $this->assign('result', $result);
         return $this->fetch();
-
     }
 
 	
