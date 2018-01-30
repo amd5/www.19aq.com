@@ -23,6 +23,12 @@ class ArticleSort extends Model
     {
 		return $this->belongsTo('Article','sortid','taxis');
     }
+    //获取所有分类名称并展示到发布文章页面
+	public function ArticleSort()
+	{
+		$result = ArticleSort::order('taxis', 'asc')->select();
+		return $result;
+	}
 	
 	public function ArticleSortAdd()
     {

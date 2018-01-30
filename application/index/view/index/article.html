@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.33,minimum-scale=1.0,maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>文字标题+站点标题</title>
+<title>{$result['title']} - c32's blog</title>
 <meta name="keywords" content="站点关键词" />
 <meta name="description" content="文章描述" />
 <meta name="generator" content="emlog" />
@@ -41,8 +41,7 @@
 </span>
 <a href="{:Url('/')}" class="logo" title="c32's blog">c32's blog</a>
 
-<span id="ss1">444444
-</span>
+<!-- <span id="ss1">444444</span> -->
 <!--<div class="ss1">44444444</div>-->
 </div>
 
@@ -53,7 +52,7 @@
 		</ul>
 </ul>
 </div>
-{volist name="result" id="v" }
+
 <div id="place">
 当前位置：<a href="{:Url('/')}">首页</a> 
 >> <a href="{:Url('/')}{$v.sortid}" class="secai">Thinkphp</a>
@@ -62,7 +61,7 @@
 <div id="left" class="xian">
 <dl id="info">
 <dt>
-<h1>{$v.title}</h1>
+<h1>{$result['title']}</h1>
 
 
 
@@ -73,15 +72,15 @@
 <a href="{:Url('/')}" class="">mysql</a>&nbsp;
 <a href="{:Url('/')}" class="">sql</a>&nbsp;
 <span>
-<em class="kan">阅读({$v.views})</em><em class="ping">评论(0)</em>
+<em class="kan">阅读({$result['views']})</em><em class="ping">评论(0)</em>
 </span>
 </dt>
 
 <dd id="zi">
-{$v.content}
+{$result['content']}
 <!-- <P>推荐您阅读更多有关于“  ”的文章</P> -->
 </dd>
-{/volist}
+
 <dd id="post_nav">
 <a class="l" href="{:Url('/')}article-257.html">上一篇：ubuntu使用nmap查询端口</a>
 <a class="r" href="{:Url('/')}article-257.html">下一篇：ThinkPHP5 的视图$view-&gt;fetch()和$view-&gt;display()的区别</a>

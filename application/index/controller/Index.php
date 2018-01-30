@@ -122,7 +122,7 @@ class Index	extends Controller
 	
 	public function article($id)
     {
-		$result = Article::where('id','=',$id)->select();
+		$result = Article::where('id','=',$id)->find();
 		$this->assign('result', $result);
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');

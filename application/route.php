@@ -26,9 +26,9 @@ Route::rule('c','index/c/php');
 // Route::rule('article/[:id]','index/index/article',['ext'=>'html']);
 
 //文章详情页面URL
-Route::get('article-<id>','index/index/article',['ext'=>'html']);
+Route::get('Article-<id>','index/index/article',['ext'=>'html']);
 //分类页面URL
-Route::get('<name>','index/sort/index',['ext'=>'html']);
+Route::get('Sort-<name>','index/sort/index',['ext'=>'html']);
 
 //api-webhook
 // Route::get('/api/Webhooks/a','api/Webhooks/a1',['ext'=>'html']);
