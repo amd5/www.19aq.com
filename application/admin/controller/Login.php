@@ -12,7 +12,7 @@ class Login extends Controller
 	public function index()
     {
     	if(!Session::has('username')){
-    		dump(session('username'));
+    		// dump(session('username'));
 			echo "session null";
 			// die;
 		}
