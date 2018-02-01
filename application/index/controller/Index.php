@@ -12,13 +12,11 @@ use app\index\model\Link;
 /*后台模块*/
 use app\admin\model\SystemConfig;
 /*其他第三方模块*/
-use app\extra\ip\IpLocation;
-use app\extra\api_demo\SmsDemo;
-use think\Request;
+use app\api\controller\Sendsms;
 
 /*后台继承*/
 use app\admin\controller\BaseController;
-use app\index\controller\Check;
+// use app\index\controller\Check;
 
 // class Index extends BaseController
 class Index	extends Controller
@@ -33,9 +31,8 @@ class Index	extends Controller
         // echo ($config->status);
         //如果配置开启才发送短信，否则不发送短信
         if($config->status=='1'){
-            $check  =new index();
-            // dump($check);
-            echo $check->check();
+            $sms = new Sendsms();
+            echo $sms->mainsend();
         }else{
             //不发送短信
         }
@@ -153,39 +150,6 @@ class Index	extends Controller
   //   	return $this->fetch();
   //   }
 
-
-    public function check()
-    {
-        $ip=new IpLocation();
-        $dizhi = $this->request->ip();
-        //只含    ip地址
-        $ipdizhi = $ip->getlocation($dizhi);
-        //显示ip地址信息数组
-        // dump($ip->getlocation($dizhi));
-        //输出ip地址
-        // dump($ipdizhi['ip']);
-        $xxip = $ipdizhi['ip'];
-        $xxip = str_replace('.','_',$xxip);
-        //输出详细地址
-        $xxdz = $ipdizhi['country'].$ipdizhi['area'];
-        // dump($xxdz);
-        
-        // 如果不是管理员才执行
-        if(session('id') <> "1")
-        {
-            $demo = new SmsDemo(
-            "LTAIJ7jxMyfxE9nw",
-            "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
-            );
-            $response = $demo->sendSms("c32博客","SMS_115390722","15024267536",Array("address"=>$xxdz,"ip"=>$xxip),
-                "123"
-            );
-            print_r($response);
-        }
-        echo (session('id'));
-        // echo "222";
-
-    }
 
     // public function cheip($ip)
     // {
