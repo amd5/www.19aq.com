@@ -4,29 +4,12 @@
 <script type="text/javascript" src="/static/blog/jquery.js"></script>
 <script type="text/javascript" src="/static/blog/guidang.js"></script>
 <link type="text/css" rel="stylesheet" href="/static/blog/guidang.css"/>
-<!-- <style type="text/css"></style> -->
-
 
 </head>
 <body>
 
-<!-- <div class="left"> -->
-		{volist name="nian" id="c" }
-		<div class="guidang">{$c.days}年({$c.COUNT})</div>
-		<div class="div3">
-			<ul>{volist name="yue" id="v" }
-					{eq name="$v.days|substr=0,4" value="$c.days"}
-					<li><a href="#">{$v.days}----({$v.COUNT})</a></li>
-					{/eq}
-				{/volist}
-			</ul>
-		</div>
-		{/volist}
 
-
-
-
-
+{$test}
 
 
 
