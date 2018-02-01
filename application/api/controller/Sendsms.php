@@ -2,6 +2,7 @@
 namespace app\api\controller;
 
 use think\Controller;
+/*载入第三方模块*/
 use app\extra\ip\IpLocation;
 use app\extra\api_demo\SmsDemo;
 use app\api\model\System_config;
@@ -9,6 +10,7 @@ use app\api\model\System_config;
 
 class Sendsms extends Controller
 {
+    //监控http状态异常则发警告短信
     public function httpsend()
     {
         $id     = System_config::where('name','Access_Key_ID')->find();

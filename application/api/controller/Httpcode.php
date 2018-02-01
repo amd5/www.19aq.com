@@ -45,19 +45,14 @@ class Httpcode extends Controller
 
     public function httplist()
     {
-        // $ura = 'http://www.19aq.com/';
         $time = 200;
         $result = Api_httpcode::where('status','1')->select();
 
-        $http  = new Httpcode();
         //调用短信访问异常则报警
         $dx    = new Sendsms();
+        $http  = new Httpcode();
         
-        // echo $Httpcode->scan('$url = http://www.19aq.com/');
-        // dump($sc);
-        // dump($ss);
         foreach ($result as $key => $value) {
-            // echo $value->url."</br>";
             $code = $http->scan($value->url,$time);
             if($code=='200'){
                 echo ("HTTP状态码".$code."&nbsp;".$value['url']."</br>");
