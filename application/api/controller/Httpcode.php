@@ -60,9 +60,7 @@ class Httpcode extends Controller
             // echo $value->url."</br>";
             $code = $http->scan($value->url,$time);
             if($code=='200'){
-                echo "正常";
-                dump($value['name']);
-                echo ($code."</br>");
+                echo ("HTTP状态码".$code."&nbsp;".$value['url']."</br>");
             }elseif($code >= '300' and $code < '399'){
                 echo "30x"."</br>";
             }elseif($code >= '400' and $code < '499'){
