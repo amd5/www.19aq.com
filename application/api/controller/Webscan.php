@@ -145,6 +145,22 @@ class Webscan extends Controller
 		echo $md5file;
     }
 
+    public function cmsluru()
+    {
+    	//接收上传文件匹配后去重入库
+    	$file_path = 'D:/w_22_20220.Log';
+    	$data = iconv("gb2312", "utf-8//IGNORE",file_get_contents($file_path));   
+    	preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
+    	$filename 	= $m[1];
+    	$md5		= $m[2];
+    	$sha1 		= $m[3];
+    	$size 		= $m[4];
+    	$cmsname	= $name;
+    	$cmsversion = $ver;
+    	dump($m['4']);
+    	
+    }
+
     public function cmsfingerprint()
     {
     	$http = new Httpcode();
