@@ -25,17 +25,18 @@ class Httpcode extends Controller
         //设置超时时间
         curl_setopt($ch, CURLOPT_TIMEOUT, $time);  
         //设置CURLOPT_HEADER为false 不返回头部信息
-        curl_setopt($ch, CURLOPT_HEADER, false);  
+        curl_setopt($ch, CURLOPT_HEADER, ture);  
         //CURLOPT_NOBODY 不获取内容
         curl_setopt($ch, CURLOPT_NOBODY, false);  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
         //访问时不进行重定向访问
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE);  
         // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');  
-        curl_exec($ch);  
+        $http = curl_exec($ch);  
         $httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);  
         // dump($httpCode);
         $info = curl_getinfo($ch);
+        // echo($info['download_content_length']);
         //测试访问每个页面需要多长时间
         // echo ($info['total_time']."</br>");
         curl_close($ch);
