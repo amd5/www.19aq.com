@@ -6,6 +6,7 @@ use app\api\model\Api_webscan_cmsfingerprint;
 use app\api\model\Api_webscan_target;
 use app\api\model\Api_webscan_tmp;
 use app\api\controller\Httpcode;
+use think\Request;   //CMS上传文件请求
 
 class Webscan extends Controller
 {
@@ -147,17 +148,50 @@ class Webscan extends Controller
 
     public function cmsluru()
     {
+    	$request = Request::instance();
+    	
+    	
+    	echo '
+    	<form action="./cmsluru" method="post" enctype="multipart/form-data">
+    	CMS名称：<input type="text" name="cmsname" /></br>
+    	CMS版本：<input type="text" name="cmsver" /></br>
+	    <input type="file" name="file" />
+	    <input type="submit" value="上传文件" />
+	    </form>
+    	';
+
+    	// dump($_FILES["file"]);
+    	// dump($request->param('cmsname'));
+    	if(move_uploaded_file($_FILES["file"]["tmp_name"],"D:\/fingerprint.Log")){
+        echo "上传成功";
+	    }else{
+	        echo "上传失败";
+	    }
     	//接收上传文件匹配后去重入库
-    	$file_path = 'D:/w_22_20220.Log';
+    	$file_path = 'D:\fingerprint.Log';
+    	// $file_path = $_FILES["file"]["tmp_name"];
     	$data = iconv("gb2312", "utf-8//IGNORE",file_get_contents($file_path));   
     	preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
     	$filename 	= $m[1];
     	$md5		= $m[2];
     	$sha1 		= $m[3];
     	$size 		= $m[4];
-    	$cmsname	= $name;
-    	$cmsversion = $ver;
-    	dump($m['4']);
+    	$cmsname	= $request->param('cmsname');
+    	$cmsver 	= $request->param('cmsver');
+    	dump($m['2']);
+    	foreach ($m as $key => $value) {
+    		echo $value;
+    		// if($data){	
+	    	// 	echo "111";
+	    	// 	$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver]);
+	    	// }else{
+	    	// 	echo "请上传指纹文件！";
+	    	// }
+	    	// dump($file_path);
+    	}
+
+
+    	
     	
     }
 
