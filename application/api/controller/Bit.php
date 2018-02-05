@@ -12,6 +12,7 @@ use app\extra\bitcoin\bitcoin;
     const RPC_PASS = 'P2kAlMiG3Kb8FzP';
 class Bit extends Controller
 {
+    //查看节点信息
     public function index()
     {
         $rpc  = new Bitcoin( RPC_USER, RPC_PASS, RPC_HOST, RPC_PORT );
@@ -65,27 +66,27 @@ class Bit extends Controller
         $info = $rpc->gettransaction($txid);
         dump($info);
     }
-    //转账                           ===========加不了金额============
+    //转账                 
     public function move($fromname,$toname,$amount)
     {
         $rpc  = new Bitcoin( RPC_USER, RPC_PASS, RPC_HOST, RPC_PORT );
-        $info = $rpc->move($fromname,$toname,$amount);
+        $info = $rpc->move($fromname,$toname,(float)$amount);
         dump($info);
     }
-    //从指定地址发送币到指定地址    ============加不了金额============
+    //从指定地址发送币到指定地址  
     public function sendfrom($name,$addr,$amount)
     {
         $rpc  = new Bitcoin( RPC_USER, RPC_PASS, RPC_HOST, RPC_PORT );
         // echo $name,$addr,"====".$amount."</br>";
-        $info = $rpc->sendfrom($name,$addr,$amount);
+        $info = $rpc->sendfrom($name,$addr,(float)$amount);
         dump($info);
         // sendfrom 13800138000 HJJSGngVajcPCzqx91jF5obKey1sqGjVih 0.01
     }
-    //发送币到地址                  ============加不了金额============
-    public function sendtoaddress($addr)
+    //发送币到地址               
+    public function sendtoaddress($addr,$amount)
     {
         $rpc  = new Bitcoin( RPC_USER, RPC_PASS, RPC_HOST, RPC_PORT );
-        $info = $rpc->sendtoaddress($addr,'0.01');
+        $info = $rpc->sendtoaddress($addr,(float)$amount);
         dump($info);
     }
     //查询余额
