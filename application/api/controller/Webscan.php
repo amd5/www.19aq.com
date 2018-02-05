@@ -146,22 +146,9 @@ class Webscan extends Controller
 		echo $md5file;
     }
 
-    public function cmsluru()
+    public function cmsin()
     {
     	$request = Request::instance();
-    	
-    	
-    	echo '
-    	<form action="./cmsluru" method="post" enctype="multipart/form-data">
-    	CMS名称：<input type="text" name="cmsname" /></br>
-    	CMS版本：<input type="text" name="cmsver" /></br>
-	    <input type="file" name="file" />
-	    <input type="submit" value="上传文件" />
-	    </form>
-    	';
-
-    	// dump($_FILES["file"]);
-    	// dump($request->param('cmsname'));
     	if(move_uploaded_file($_FILES["file"]["tmp_name"],"D:\/fingerprint.Log")){
         echo "上传成功";
 	    }else{
@@ -171,28 +158,31 @@ class Webscan extends Controller
     	$file_path = 'D:\fingerprint.Log';
     	// $file_path = $_FILES["file"]["tmp_name"];
     	$data = iconv("gb2312", "utf-8//IGNORE",file_get_contents($file_path));   
-    	preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
-    	$filename 	= $m[1];
-    	$md5		= $m[2];
-    	$sha1 		= $m[3];
-    	$size 		= $m[4];
-    	$cmsname	= $request->param('cmsname');
-    	$cmsver 	= $request->param('cmsver');
-    	dump($m['2']);
-    	foreach ($m as $key => $value) {
-    		echo $value;
-    		// if($data){	
-	    	// 	echo "111";
-	    	// 	$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver]);
-	    	// }else{
-	    	// 	echo "请上传指纹文件！";
-	    	// }
-	    	// dump($file_path);
-    	}
+    	// $cia = preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
+    	$cishu = preg_match('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
+    	
+    	$cmsname	= $request->param('cmsname') ?"提交成功":"请提交CMS名称";
+    	$cmsver 	= $request->param('cmsver') ?"提交成功":"请提交CMS版本";
+    	dump($m);
+    	echo time();
+		$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver ,'subtime'=>time()]);
+  
+    	// foreach ($m as $key => $body) {
+    		// $filename 	= $c[1];
+	    	// $md5			= $c[2];
+	    	// $sha1 		= $c[3];
+	    	// $size 		= $c[4];
+    		// $tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver ,'subtime'=>time()]);
 
 
-    	
-    	
+    	// }
+	    		
+	
+
+    	// $this->assign('page', $page);
+
+    	return $this->fetch();
+
     }
 
     public function cmsfingerprint()
