@@ -4,15 +4,30 @@
 </head>
 <body>
 
-<form action="./cmsluru" method="post" enctype="multipart/form-data">
-	CMS名称：<input type="text" name="cmsname" /></br>
-	CMS版本：<input type="text" name="cmsver" /></br>
+<form action="./cmsin" method="post" enctype="multipart/form-data" onsubmit="return check()">
+	CMS名称：<input type="text" name="cmsname" id="name"/></br>
+	CMS版本：<input type="text" name="cmsver" id="ver"/></br>
 		<input type="file" name="file" />
 		<input type="submit" value="上传文件" />
 </form>
 
 
-
+<script type="text/javascript">  
+    function check(){  
+        var cmsname=window.document.getElementById("name").value;  
+        var cmsver=window.document.getElementById("ver").value;  
+        if (cmsname == "") // 或者是!nameValue  
+        {  
+            window.alert("CMS名称不能为空！");
+            return false;  
+        }
+        if(cmsver == ""){
+        	window.alert("CMS版本不能为空！");
+            return false;  
+        }
+        return true;  
+    }  
+</script>  	
 
 
 </body>

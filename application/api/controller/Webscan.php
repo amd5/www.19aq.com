@@ -161,8 +161,8 @@ class Webscan extends Controller
     	// $cia = preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
     	$cishu = preg_match('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
     	
-    	$cmsname	= $request->param('cmsname') ?"提交成功":"请提交CMS名称";
-    	$cmsver 	= $request->param('cmsver') ?"提交成功":"请提交CMS版本";
+    	$cmsname	= $request->param('cmsname');
+    	$cmsver 	= $request->param('cmsver');
     	dump($m);
     	echo time();
 		$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver ,'subtime'=>time()]);
