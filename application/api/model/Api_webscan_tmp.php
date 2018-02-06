@@ -9,8 +9,19 @@
 namespace app\api\model;
 
 use think\Model;
+use app\api\model\Api_webscan_tmp;
 
 class Api_webscan_tmp extends Model
 {
-
+	public function Abc($cmsver)
+    {
+    	if($cmsver == 'b'){
+    		echo "1111";
+    		dump($cmsver);
+    	}else{
+    		echo "2222";
+    	}
+		$result = Api_webscan_tmp::all();
+		return $result;
+    }
 }
