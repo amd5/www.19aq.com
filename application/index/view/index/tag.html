@@ -4,7 +4,7 @@
 			<ul id="blogtags">
 				{volist name="tag" id="v" }
 					<span style="line-height:10px;font-size:10px;">
-						<a href="#" title="1 篇文章">{$v.tagname}</a>
+						<a href="{:Url('/')}Tag/{$v.tagname}.html" title="1 篇文章">{$v.tagname}</a>
 					</span>
 				{/volist}
 			</ul>
