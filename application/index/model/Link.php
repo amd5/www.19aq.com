@@ -12,5 +12,12 @@ use think\Model;
 
 class Link extends Model
 {
+	public function links()
+    {
+    	$links = Link::order('taxis','asc')
+        ->select();
+
+        return $links;
+    }
 
 }

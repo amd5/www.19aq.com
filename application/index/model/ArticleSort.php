@@ -21,10 +21,14 @@ class ArticleSort extends Model
 	}
 
 
-	// public function ArticleSort()
- //    {
+	public function Sortlist()
+    {
+    	$articlesort = ArticleSort::withCount('sort')
+        ->where('status','=','1')
+        ->select();
 
- //    }
+        return $articlesort;
+    }
 
 	
 	

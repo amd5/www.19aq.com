@@ -12,5 +12,8 @@ use think\Model;
 
 class ArticleTag extends Model
 {
-	//
+	public function taglist(){
+		$result = ArticleTag::select();
+		return $result;
+	}
 }
