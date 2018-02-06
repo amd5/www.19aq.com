@@ -24,8 +24,8 @@ class Webscan extends Controller
     	// }
 
     	//获取扫描目标
-    	$target = Api_webscan_target::select();
-    	// $target = Api_webscan_tmp::select();
+    	// $target = Api_webscan_target::select();
+    	$target = Api_webscan_tmp::select();
 
     	$sm = new Webscan();
     	
@@ -74,7 +74,7 @@ class Webscan extends Controller
                                     $acode = $http->scan($t1,1);
 									if(!$data && $acode==200){
 										$tmp = Api_webscan_tmp::create(['url'=>$t1]);
-										echo "1号增加成功".$t1."</br>";
+										echo "1号增加成功----".$t1."</br>";
 									}
 								}
 							}
@@ -90,7 +90,7 @@ class Webscan extends Controller
 									if(!$data && $bcode==200){
 										//内容包含域名则直接新增
 										$tmp = Api_webscan_tmp::create(['url'=>$body]);
-										echo "2号增加成功b".$body."</br>";
+										echo "2号增加成功----".$body."</br>";
 									}
 								}
 							}
