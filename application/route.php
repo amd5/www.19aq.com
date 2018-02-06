@@ -29,6 +29,10 @@ Route::rule('c','index/c/php');
 Route::get('Article-<id>','index/index/article',['ext'=>'html']);
 //分类页面URL
 Route::get('Sort-<name>','index/sort/index',['ext'=>'html']);
+//标签页面URL
+Route::get('Tag/:name','index/tag/index',['ext'=>'html']);
+// Route::get('Tag-<id>','index/tag/index',['ext'=>'html']);
+// dump($name);
 
 //api-webhook
 // Route::get('/api/Webhooks/a','api/Webhooks/a1',['ext'=>'html']);
