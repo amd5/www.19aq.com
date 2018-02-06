@@ -25,6 +25,7 @@ class Webscan extends Controller
 
     	//获取扫描目标
     	$target = Api_webscan_target::select();
+    	// $target = Api_webscan_tmp::select();
 
     	$sm = new Webscan();
     	
@@ -40,6 +41,9 @@ class Webscan extends Controller
 
     public function sao($url)
     {
+        //检查URL是否可访问
+        $http = new Httpcode;
+        $code = $http->scan($url,1);
     	//设置执行超时时间
         set_time_limit(0);
 
@@ -53,7 +57,7 @@ class Webscan extends Controller
 		$info = curl_exec($ch);  
 		// dump($info);
 
-		if($info!=false)
+		if($info!=false && $code==200)
 		{
 			preg_match_all('/(src|href)="(.*?)"/',$info,$m);
 			// $arr = array('base64','#','javascript:void()');
@@ -67,9 +71,10 @@ class Webscan extends Controller
 							if(strpos($body,'#')===false){
 								if(strpos($body,'javascript:void(')===false){
 									$data = Api_webscan_tmp::where('url',$t1)->find();
-									if(!$data){
+                                    $acode = $http->scan($t1,1);
+									if(!$data && $acode==200){
 										$tmp = Api_webscan_tmp::create(['url'=>$t1]);
-										echo "增加成功a".$t1."</br>";
+										echo "1号增加成功".$t1."</br>";
 									}
 								}
 							}
@@ -81,48 +86,17 @@ class Webscan extends Controller
 							if(strpos($body,'#')===false){
 								if(strpos($body,'javascript:void(')===false){
 									$data = Api_webscan_tmp::where('url',$body)->find();
-									if(!$data){
+                                    $bcode = $http->scan($body,1);
+									if(!$data && $bcode==200){
 										//内容包含域名则直接新增
 										$tmp = Api_webscan_tmp::create(['url'=>$body]);
-										echo "增加成功b".$body."</br>";
+										echo "2号增加成功b".$body."</br>";
 									}
 								}
 							}
 						}
 					}
 				}
-				
-				//如果包含则不插入数据库
-				
-				// foreach ($arr as $key => $zifuchuan){
-				// 	dump(strpos($body,$zifuchuan));
-				// 	echo $body;
-				// if(strpos($body,$zifuchuan)===false){
-
-				// 	//如果插入数据等于扫描URL则不插入
-				// 	// if($body !== $url){
-				// 	// 	//如果插入数据没有网址 则自动补全
-				// 	// 	if(strpos($body,'http')===false)
-				// 	// 	{
-				// 	// 		// echo "链接内容没有网址前缀";
-				// 	// 		$t1  = $url.$body;
-				// 	// 		$data = Api_webscan_tmp::where('url',$t1)->find();
-				// 	// 		if(!$data){
-				// 	// 			$tmp = Api_webscan_tmp::create(['url'=>$t1]);
-				// 	// 			echo "增加成功a".$t1."</br>";
-				// 	// 		}
-				// 	// 	}else{
-				// 	// 		$data = Api_webscan_tmp::where('url',$body)->find();
-				// 	// 		if(!$data){
-				// 	// 			//内容包含域名则直接新增
-				// 	// 			$tmp = Api_webscan_tmp::create(['url'=>$body]);
-				// 	// 			echo "增加成功b".$body."</br>";
-				// 	// 		}
-				// 	// 	}
-				// 	// }
-				// }   //for结束
-				// }		//这里
-				
 			}
 			
 		}else{
@@ -143,72 +117,78 @@ class Webscan extends Controller
     {
         $filename = "http://www.tp5.com/static/blog/style.css";
 		$md5file = md5_file($filename);
-		echo $md5file;
+		echo strtoupper($md5file);
+    }
+
+    public function tu()
+    {
+    	$request = Request::instance();
+    	$cmsver  = $request->param('a');
+    	// dump();
+    	// $cmsver  = $request->param('cmsver');
+    	$a = new Api_webscan_tmp;
+    	$b = $a->Abc($cmsver);
+    	dump($b);
+    	// dump(input(''));
+    	// echo "<img src='http://cimage.tianjimedia.com/uploadImages/thirdImages/2015/333/N42LRRE404U9.jpg' />";
+
     }
 
     public function cmsin()
     {
     	$request = Request::instance();
-    	if(move_uploaded_file($_FILES["file"]["tmp_name"],"D:\/fingerprint.Log")){
-        echo "上传成功";
-	    }else{
-	        echo "上传失败";
-	    }
+    	//获取毫秒级时间戳
+    	list($t1, $t2) = explode(' ', microtime());
+    	$a = (float)sprintf('%.0f',(floatval($t1)+floatval($t2))*1000);
+    	$path = "./lib/ueditor/php/upload/log/".date('Ymd',time())."/";
+    	//如果上传目录不存在，则建立上传目录
+    	if(is_dir($path)==false){
+    		mkdir("./lib/ueditor/php/upload/log/".date('Ymd',time()),0777,true);
+    	}
+    	//移动上传的临时文件到指定位置
+    	$file 	 = move_uploaded_file($_FILES["file"]["tmp_name"],$path.$a.".Log");
     	//接收上传文件匹配后去重入库
-    	$file_path = 'D:\fingerprint.Log';
-    	// $file_path = $_FILES["file"]["tmp_name"];
-    	$data = iconv("gb2312", "utf-8//IGNORE",file_get_contents($file_path));   
-    	// $cia = preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
-    	$cishu = preg_match('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
-    	
-    	$cmsname	= $request->param('cmsname');
-    	$cmsver 	= $request->param('cmsver');
-    	dump($m);
-    	echo time();
-		$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver ,'subtime'=>time()]);
-  
-    	// foreach ($m as $key => $body) {
-    		// $filename 	= $c[1];
-	    	// $md5			= $c[2];
-	    	// $sha1 		= $c[3];
-	    	// $size 		= $c[4];
-    		// $tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver ,'subtime'=>time()]);
-
-
-    	// }
-	    		
-	
-
+    	$file_path = $path.$a.".Log";
+    	$dd = is_file($file_path);
+		// echo($path.$a.".Log");
+    	//如果文件存在才执行，否则进行提示
+    	if($dd==true){
+    		//转换文件编码为中文
+    		$data = iconv("gb2312", "utf-8//IGNORE",file_get_contents($file_path));  
+	    	$cishu = preg_match_all('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$data,$m);
+			foreach ($m[0] as $key => $value) {
+				preg_match('/文件名：(.*?)\nMD5：(.*?)\nSHA1：(.*?)\n文件大小：(.*?)\n修改时间：(.*?)\n路径：(.*?)/',$value,$c);
+				$filename 	= $c[1];
+		    	$md5		= $c[2];
+		    	$sha1 		= $c[3];
+		    	$size 		= $c[4];
+		    	$cmsname	= $request->param('cmsname');
+	    		$cmsver 	= $request->param('cmsver');
+	    		//过滤重复数据
+	    		$repeat = Api_webscan_cmsfingerprint::where('filename',$filename)->where('md5',$md5)->where('sha1',$sha1)->where('size',$size)->find();
+	    		if(!$repeat){
+	    			$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$filename ,'md5'=>$md5 ,'sha1'=>$sha1 ,'size'=>$size ,'cmsname'=>$cmsname ,'cmsversion'=>$cmsver ,'subtime'=>time()]);
+	    		}
+			}
+			unlink($file_path);
+			echo "数据已录入成功！";
+    	}else{
+    		echo "<font color='red'><h2>请上传指纹文件！</h2></font><br/>";
+    	}
     	// $this->assign('page', $page);
-
     	return $this->fetch();
-
     }
 
     public function cmsfingerprint()
     {
-    	$http = new Httpcode();
-    	//            "/.*?[\.php|\.htm|\.html|\.asp]/"
-    	preg_match_all('/(src|href)="(.*?)"/',$info,$m);
-    	echo "指纹.</br>";
-    	$result = Api_webscan_tmp::select();
-    	foreach ($result as $key => $link) {
-    		$code = $http->scan($link['url'],1);
-    		if($code == 200){
-    			$filename = $link['url'];
-    			//获取当前文件md5
-				$md5file = md5_file($filename);
-				//获取当前文件名
-				$name = end(explode('/',$filename)); 
-				// echo $filename; 
-				// die();
-				$tmp = Api_webscan_cmsfingerprint::create(['filename'=>$name ,'md5'=>$md5file]);
-				dump( $md5file."</br>");
-
-				//然后取文件名，大小，MD5入库
-    		}
-    		
-    	}
+    	// 1、打开页面
+    	// 2、输入网址
+    	// 3、开始爬行页面
+    	// 4、读取各页面MD5
+    	// 5、MD5与数据库进行匹配
+    	// 6、返回匹配失败数量
+    	// 7、返回匹配成功数量
+    	// 8、返回匹配成功的各CMS版本条数
     }
 
 
