@@ -26,8 +26,8 @@ Route::rule('c','index/c/php');
 // Route::rule('article/[:id]','index/index/article',['ext'=>'html']);
 
 //文章详情页面URL
-// Route::get('article-<id>','index/index/article',['ext'=>'html']);
-Route::rule('article-<id>','index/index/article');
+Route::get('article-<id>','index/index/article',['ext'=>'html']);
+// Route::rule('article-<id>','index/index/article');
 //分类页面URL
 Route::get('sort-<name>','index/sort/index',['ext'=>'html']);
 //标签页面URL
