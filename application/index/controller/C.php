@@ -11,7 +11,10 @@ class C extends Controller
 		$test = Dataa::with('sort')->where('phone','15966982315')->find();
         $this->assign('test', $test);
         return $this->fetch();
+    }
 
+    public function php(){
+    	echo "aaa";
     }
 
 

@@ -26,11 +26,12 @@ Route::rule('c','index/c/php');
 // Route::rule('article/[:id]','index/index/article',['ext'=>'html']);
 
 //文章详情页面URL
-Route::get('Article-<id>','index/index/article',['ext'=>'html']);
+// Route::get('article-<id>','index/index/article',['ext'=>'html']);
+Route::rule('article-<id>','index/index/article');
 //分类页面URL
-Route::get('Sort-<name>','index/sort/index',['ext'=>'html']);
+Route::get('sort-<name>','index/sort/index',['ext'=>'html']);
 //标签页面URL
-Route::get('Tag/:name','index/tag/index',['ext'=>'html']);
+Route::get('tag/:name','index/tag/index',['ext'=>'html']);
 // Route::get('Tag-<id>','index/tag/index',['ext'=>'html']);
 // dump($name);
 
