@@ -11,9 +11,15 @@ namespace app\index\model;
 use think\Model;
 
 class ArticleTag extends Model
-{
+{	
+	//首页标签列表
 	public function taglist(){
 		$result = ArticleTag::select();
 		return $result;
 	}
+	//文章关联模型绑定
+	// public function article(){
+	// 	return $this->belongsTo('article');
+	// }
+
 }
