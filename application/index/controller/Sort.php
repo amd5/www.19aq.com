@@ -30,12 +30,12 @@ class Sort extends Controller
         }elseif(session('username') == "1")
         {
             //管理员ID不是1
-            $result = $wenz->Articlelista($sid);
+            $result = $wenz->Articlelist($sid);
             $page = $result->render();
         }else
         {
             //文章列表  管理员显示全部文章
-            $result = $wenz->Articleall($sid);
+            $result = $wenz->Articlea($sid);
             $page = $result->render();
         }
 

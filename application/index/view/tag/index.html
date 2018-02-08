@@ -34,7 +34,7 @@
 <dl id="lieb">
 	<dt>
 		<h3 style="font-size:16px;">
-			<a href="{$url}/Article-{$v.id}.html">{$v.title}</a>
+			<a href="{$url}/article-{$v.id}.html">{$v.title}</a>
 		</h3>
 			<span>
 				<em class="kan"></em>
@@ -57,20 +57,7 @@
 </div>
 	
 
-<div id="rigth">
-
-	{include file="index/search" title="Search" /}
-	
-	{include file="index/sort" title="分类" /}
-	
-	{include file="index/record" title="存档" /}
-
-	{include file="index/tag" title="标签" /}
-	
-	{include file="index/links" title="Links" /}
-	
-<!--end #siderbar-->
-</div>
+{include file="index/_rigth" title="test" /}
 </div>
 
 <div class="clear"></div>
