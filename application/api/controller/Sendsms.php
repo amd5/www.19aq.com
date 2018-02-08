@@ -17,7 +17,7 @@ class Sendsms extends Controller
         $Secret = System_config::where('name','Access_Key_Secret')->find();
         // echo $id['content'];
         $demo = new SmsDemo($id['content'],$Secret['content']);
-        $response = $demo->sendSms("c32博客","SMS_115390722","15024267536",Array("address"=>'湖北省武汉市',"ip"=>'1_2_4_8'),"123");
+        $response = $demo->sendSms("c32博客","SMS_123669018","15024267536",Array("name"=>'网站宕机了',"code"=>'500'),"123");
         print_r($response);
     }
     //首页网友访问发送短信
