@@ -13,6 +13,12 @@ use think\Model;
 
 class Article extends Model
 {
+	// 开启自动写入时间戳
+    protected $autoWriteTimestamp = true;
+
+    // 定义自动完成的属性
+    protected $insert = ['status' => 1];
+    
 	// status获取器
     public function getStatusAttr($value,$data){
 	$status = [-1 =>'删除',0 =>'隐藏',1 => '正常',2 =>'待审核'];
@@ -50,7 +56,7 @@ class Article extends Model
         
 		return $result;
 	}
-	//显示全部文章（带密码的除外）
+	//首页-显示全部文章（带密码的除外）
 	public function Articles(){
         $result = Article::order('id','desc')
 		->where('password','=','')
@@ -59,7 +65,7 @@ class Article extends Model
 
 		return $result;
 	}
-	//显示所有文章
+	//首页-显示所有文章
 	public function Articleall(){
         $result = Article::order('id','desc')
 		->limit(15)
@@ -77,6 +83,13 @@ class Article extends Model
 	public function article($id){
 		$result = Article::where('id','=',$id)->find();
 		return $result;
+	}
+
+	public function a()
+	{
+		//查询本模型全部数据
+		$info = self::all();
+        return $info;
 	}
 
 

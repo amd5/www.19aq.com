@@ -1,6 +1,11 @@
 <?php
 # #########################################
-# #感谢1207877378大神
+# #Function:    网站首页
+# #Blog:        http://www.19aq.com/
+# #Datetime:    2018-2-9 11:30:59
+# #Author:      c32
+# #Email:       amd5@qq.com
+# #感谢King east(1207877378),一指流沙(287100654)
 # #########################################
 namespace app\index\controller;
 use think\Controller;
@@ -26,7 +31,7 @@ class Index	extends Controller
     protected $sort;
     protected $record;
     protected $link;
-
+    //构造方法  初始化实例化模型
     public function __construct()
     {
         $this->link     = new Link;
@@ -34,11 +39,13 @@ class Index	extends Controller
         $this->wenz     = new Article;
         $this->tag      = new ArticleTag;
         $this->sort     = new ArticleSort;
+        //调用父类构造方法
         parent::__construct();
     }
     //没有加管理员权限检查
     public function index()
     {
+        phpinfo();die;
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
         
@@ -104,7 +111,9 @@ class Index	extends Controller
 
     public function test()
     {
-        return $this->fetch();
+        $result = $this->wenz->a();
+        dump($result);
+        // return $this->fetch();
     }
 
 	
