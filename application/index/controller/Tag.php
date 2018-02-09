@@ -11,6 +11,22 @@ use app\index\model\ArticleSort;
 
 class Tag extends Controller
 {
+    protected $wenz;
+    protected $tag;
+    protected $sort;
+    protected $record;
+    protected $link;
+
+    public function __construct()
+    {
+        $this->link     = new Link;
+        $this->record   = new Record;
+        $this->wenz     = new Article;
+        $this->tag      = new ArticleTag;
+        $this->sort     = new ArticleSort;
+        parent::__construct();
+    }
+
     public function index()
     {
         $request = Request::instance();
@@ -29,28 +45,23 @@ class Tag extends Controller
         // dump($bo);
         
         //文章列表
-        $wenz = new Article;
-        $result = $wenz->tagArticle($bo);
-        // $result = Article::all($bo,'',false);
+        $result = $this->wenz->tagArticle($bo);
+
 
 
 
         //文章标签
-        $taglist = new ArticleTag;
-        $tag     = $taglist->taglist();
+        $tag =$this->tag->taglist();
 
-        // 分类列表
-        $sort = new ArticleSort;
-        $articlesort = $sort->sortlist();
+        //分类列表
+        $articlesort = $this->sort->sortlist();
         
         //存档列表
-        $record = new Record;
-        $nian = $record->nian();
-        $yue  = $record->yue();
+        $nian = $this->record->nian();
+        $yue = $this->record->yue();
 
-        // 友情链接
-        $link = new link;
-        $links = $link->links();
+        //友情链接
+        $links = $this->link->links();
 
         //输出
         $this->assign('url', $url);

@@ -74,5 +74,10 @@ class Article extends Model
 		return $result;
 	}
 
+	public function article($id){
+		$result = Article::where('id','=',$id)->find();
+		return $result;
+	}
+
 
 }

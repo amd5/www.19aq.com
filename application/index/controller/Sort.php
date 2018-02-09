@@ -11,9 +11,24 @@ use app\index\model\ArticleSort;
 
 class Sort extends Controller
 {
+    protected $wenz;
+    protected $tag;
+    protected $sort;
+    protected $record;
+    protected $link;
+
+    public function __construct()
+    {
+        $this->wenz = new Article;
+        $this->tag = new ArticleTag;
+        $this->sort = new ArticleSort;
+        $this->record = new Record;
+        $this->link = new Link;
+        parent::__construct();
+    }
+
     public function index()
     {
-        $wenz = new Article;
         $request = Request::instance();
 
         $sortid = ArticleSort::where('alias','=',$request->param('name'))->find();
@@ -22,41 +37,32 @@ class Sort extends Controller
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
         
-        if(!session('username'))
+        if(!session('username') || session('username') !== "c32")
         {
             //文章列表  不是管理员显示没有密码的文章
-            $result = $wenz->Articlelist($sid);
+            $result = $this->wenz->Articlelist($sid);
             $page = $result->render();   //获取分页显示
-        }elseif(session('username') == "1")
-        {
-            //管理员ID不是1
-            $result = $wenz->Articlelist($sid);
-            $page = $result->render();
         }else
         {
             //文章列表  管理员显示全部文章
-            $result = $wenz->Articlea($sid);
+            $result = $this->wenz->Articlea($sid);
             $page = $result->render();
         }
 
         // $sort = 
 
         //文章标签
-        $taglist = new ArticleTag;
-        $tag     = $taglist->taglist();
+        $tag =$this->tag->taglist();
 
         //分类列表
-        $sort = new ArticleSort;
-        $articlesort = $sort->sortlist();
+        $articlesort = $this->sort->sortlist();
         
         //存档列表
-        $record = new Record;
-        $nian = $record->nian();
-        $yue  = $record->yue();
+        $nian = $this->record->nian();
+        $yue = $this->record->yue();
 
         //友情链接
-        $link = new link;
-        $links = $link->links();
+        $links = $this->link->links();
 
         //输出
         $this->assign('url', $url);
