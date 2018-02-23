@@ -45,7 +45,6 @@ class Index	extends Controller
     //没有加管理员权限检查
     public function index()
     {
-        phpinfo();die;
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
         
