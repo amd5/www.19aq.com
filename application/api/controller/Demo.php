@@ -13,7 +13,7 @@ class Demo extends Controller
 {
     public function index()
     {
-        echo "5";
+        echo "6";
 
    //      $result = Article::with('sort')
    //          ->order('id','desc')
