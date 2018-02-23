@@ -21,18 +21,17 @@ class ArticleSort extends Model
 
 	public function Article()
     {
-		return $this->belongsTo('Article','sortid','taxis');
+		return $this->belongsTo('Article','sortid','sid');
     }
     //获取所有分类名称并展示到发布文章页面
 	public function ArticleSort()
 	{
-		$result = ArticleSort::order('taxis', 'asc')->select();
+		$result = ArticleSort::order('sid', 'asc')->select();
 		return $result;
 	}
 	
 	public function ArticleSortAdd()
     {
-		$data['taxis']       = $_POST["sort_taxis"];		//分类排序
 		$data['sortname']    = $_POST["sort_name"];			//分类名称
 		$data['alias']       = $_POST["sort_alias"];		//分类别名
 		$data['template']    = $_POST["sort_template"];		//分类模板
@@ -44,7 +43,6 @@ class ArticleSort extends Model
 	
 	public function ArticleSortEdit($id)
     {
-		$data['taxis']       = $_POST["sort_taxis"];		//分类排序
 		$data['sortname']    = $_POST["sort_name"];			//分类名称
 		$data['alias']       = $_POST["sort_alias"];		//分类别名
 		$data['template']    = $_POST["sort_template"];		//分类模板
@@ -57,7 +55,7 @@ class ArticleSort extends Model
 	
 	public function ArticleSortDel()
     {
-		$result = ArticleSort::order('taxis', 'asc')->select();
+		$result = ArticleSort::order('sid', 'asc')->select();
 		return $result;
     }
 	

@@ -44,13 +44,6 @@ class Article extends Model
 		return $result;
     }
 	
-	// public function pcs()
- //    {
- //    	//ArticleSort    taxis
- //    	//Article        sortid
- //    	return $this->hasOne('ArticleSort','taxis','sortid');
- //    }
-	
 	// public function ArticleEdit($id)
  //    {
 	// 	$result = Article::where('id', $id)

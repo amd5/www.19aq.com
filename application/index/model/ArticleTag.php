@@ -14,7 +14,7 @@ class ArticleTag extends Model
 {	
 	//首页标签列表
 	public function taglist(){
-		$result = ArticleTag::select();
+		$result = self::select();
 		return $result;
 	}
 	//文章关联模型绑定

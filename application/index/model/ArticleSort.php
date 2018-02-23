@@ -23,7 +23,7 @@ class ArticleSort extends Model
 
 	public function Sortlist()
     {
-    	$articlesort = ArticleSort::withCount('sort')
+    	$articlesort = self::withCount('sort')
         ->where('status','=','1')
         ->select();
 

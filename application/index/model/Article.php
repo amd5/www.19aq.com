@@ -38,7 +38,7 @@ class Article extends Model
 
 	//分类页面--文章列表  不是管理员显示没有密码的文章
 	public function Articlelist($sid){
-		$result = Article::order('id','desc')
+		$result = self::order('id','desc')
         ->where('password','=','')
         ->where('sortid','=',$sid)
         ->limit(15)
@@ -49,7 +49,7 @@ class Article extends Model
 
 	//分类页面--文章列表  管理员显示全部文章
 	public function Articlea($sid){
-		$result = Article::where('sortid','=',$sid)
+		$result = self::where('sortid','=',$sid)
         ->order('id','desc')
         ->limit(15)
         ->paginate();
@@ -58,7 +58,7 @@ class Article extends Model
 	}
 	//首页-显示全部文章（带密码的除外）
 	public function Articles(){
-        $result = Article::order('id','desc')
+        $result = self::order('id','desc')
 		->where('password','=','')
 		->limit(15)
 		->paginate();
@@ -67,7 +67,7 @@ class Article extends Model
 	}
 	//首页-显示所有文章
 	public function Articleall(){
-        $result = Article::order('id','desc')
+        $result = self::order('id','desc')
 		->limit(15)
 		->paginate();
 
@@ -76,12 +76,18 @@ class Article extends Model
 
 	//标签文章列表
 	public function tagArticle($tags){
-		$result = Article::all($tags,'',false);
+		$result = self::all($tags,'',false);
 		return $result;
 	}
 
 	public function article($id){
-		$result = Article::where('id','=',$id)->find();
+		$result = self::where('id','=',$id)->find();
+		return $result;
+	}
+	//首页-前台搜索功能
+	public function search($key)
+	{
+		$result = self::where('title','like','%'.$key.'%')->select(); 
 		return $result;
 	}
 

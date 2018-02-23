@@ -237,7 +237,7 @@ class Index extends BaseController
 	
 	public function article_sort()	//分类列表
     {
-		$result = ArticleSort::order('taxis ASC')
+		$result = ArticleSort::order('sid ASC')
 		->select();
         $this->assign('result', $result);
         return $this->fetch();

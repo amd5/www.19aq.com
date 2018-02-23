@@ -50,7 +50,7 @@ class Tag extends Controller
 
 
 
-        //文章标签
+        //标签列表
         $tag =$this->tag->taglist();
 
         //分类列表
