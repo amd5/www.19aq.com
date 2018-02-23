@@ -666,6 +666,9 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 ## 2018-1-30 10:28:56
 解决文章编辑后，时间会减少12小时
 
+## 2018-2-23 09:45:04
+加载第三方类库，解决后台验证码不显示的问题
+
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
