@@ -14,7 +14,8 @@ class Link extends Model
 {
 	public function links()
     {
-    	$links = Link::order('taxis','asc')
+    	$links = Link::order('id','asc')
+    	->where('hide','n')
         ->select();
 
         return $links;
