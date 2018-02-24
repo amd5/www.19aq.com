@@ -53,7 +53,7 @@ class IpLocation
      * @param string $filename
      * @return IpLocation
      */
-    public function __construct($filename = "UTFWry.dat")
+    public function __construct($filename = "qqwry.dat")
     {
         $this->fp = 0;
         if (($this->fp = fopen(dirname(__FILE__) . '/' . $filename, 'rb')) !== false) {
