@@ -4,6 +4,7 @@ use app\admin\model\ManageUser;
 use app\admin\controller\Base;
 use think\Controller;
 use think\Session;
+use think\Cookie;
 use think\Request;
 use think\Db;
 // use think\log;	//系统日志使用
@@ -44,6 +45,12 @@ class Login extends Controller
                     Session::set('username',$result["username"]);
 					Session::set('logintime',time());	//设置session开始时间
 					Session::set('last_login_ip',$this->request->ip());
+					// dump($result["username"]);
+					Cookie::set('username',$result["username"],3600);
+					// Cookie::get('username');
+					echo cookie('username');
+					// die;
+
 					// Session::delete('username',$result["username"]);
 					// $this->success('Session设置成功');
 					$data["message"] = "登录成功"; 
