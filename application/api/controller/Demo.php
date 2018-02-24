@@ -22,6 +22,15 @@ class Demo extends Controller
 			// $page = $result->render();
     }
 
+    public function ipc(){
+        // header("Content-type:text/html;charset=GBK");
+        // $cha = new ip();
+        // echo $cha->cheip('8.8.8.8');
+
+
+    }
+
+
 
 
 }

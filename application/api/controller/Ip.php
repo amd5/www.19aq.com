@@ -11,8 +11,15 @@ class Ip extends Controller
     public function cheip($ip)
     {
         $add=new IpLocation();
+        
         //查询请求IP对应地址信息
         $ipdizhi = $add->getlocation($ip);
+
+        //使用官方数据库需要进行编码转换GBK->UTF-8
+        // $ipdizhi['country'] = iconv('GBK//IGNORE', 'UTF-8', $ipdizhi['country']);
+        $ipdizhi['country'] = iconv('GBK', 'UTF-8', $ipdizhi['country']);
+        $ipdizhi['area'] = iconv('GBK', 'UTF-8', $ipdizhi['area']);
+        // dump($ipdizhi);
 
         //获取访问者外网IP
         $dizhi = $this->request->ip();
