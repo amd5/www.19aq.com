@@ -3,7 +3,7 @@ namespace app\index\controller;
 
 /*前台模块*/
 use app\index\model\Link;
-use app\index\model\Record;
+use app\index\model\ArticleRecord;
 use app\index\model\Article;
 use app\index\model\ArticleTag;
 use app\index\model\ArticleSort;
@@ -22,7 +22,7 @@ class Search extends Controller
     public function __construct()
     {
         $this->link     = new Link;
-        $this->record   = new Record;
+        $this->record   = new ArticleRecord;
         $this->wenz     = new Article;
         $this->tag      = new ArticleTag;
         $this->sort     = new ArticleSort;

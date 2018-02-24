@@ -8,7 +8,7 @@
 					<ul>{volist name="yue" id="v" }
 							{eq name="$v.days|substr=0,4" value="$c.days"}
 							<span style="line-height:10px;font-size:10px;">
-							<li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$v.days|substr=8,8}({$v.COUNT})</a></li>
+							<li><a href="{:Url('/')}Record/{$v.days|substr=0,4}{$v.days|substr=5,7}.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$v.days|substr=5,7}月({$v.COUNT})</a></li>
 							</span>
 							{/eq}
 						{/volist}

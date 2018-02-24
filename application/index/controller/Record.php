@@ -9,7 +9,7 @@ use app\index\model\Article;
 use app\index\model\ArticleTag;
 use app\index\model\ArticleSort;
 
-class Sort extends Controller
+class Record extends Controller
 {
     protected $wenz;
     protected $tag;
@@ -19,39 +19,44 @@ class Sort extends Controller
 
     public function __construct()
     {
-        $this->wenz = new Article;
-        $this->tag = new ArticleTag;
-        $this->sort = new ArticleSort;
-        $this->record = new ArticleRecord;
-        $this->link = new Link;
+        $this->link     = new Link;
+        $this->record   = new ArticleRecord;
+        $this->wenz     = new Article;
+        $this->tag      = new ArticleTag;
+        $this->sort     = new ArticleSort;
         parent::__construct();
     }
 
     public function index()
     {
         $request = Request::instance();
+        $tagname = $request->param('name');
+        // echo($tagname);
+        $nian = substr($tagname, 0, 4);
+        $yue  = substr($tagname, 4, 5);
+        $sj   = $nian.'-'.$yue.'-'.'01'.' '.'00:00:00';
+        //开始时间
+        $stsj = strtotime($sj);
+        //结束时间
+        $mdays = date( 't', strtotime($sj) );
+        $end_time = date( 'Y-m-' . $mdays . ' 23:59:59', strtotime($sj));
+        $endsj = strtotime($end_time);
+        // echo $sj;
+        // echo $stsj.'</br>';
+        // echo $endsj.'</br>';
 
-        $sortid = ArticleSort::where('alias','=',$request->param('name'))->find();
-        $sid = $sortid['sid'];
-
-        //获取当前访问URL
-        $url = "http://".$_SERVER['HTTP_HOST'];
-        
         if(!session('username') || session('username') !== "c32")
         {
             //文章列表  不是管理员显示没有密码的文章
-            $result = $this->wenz->Articlelist($sid);
+            $result = $this->record->Articlelist($stsj,$endsj);
             $page = $result->render();   //获取分页显示
         }else
         {
             //文章列表  管理员显示全部文章
-            $result = $this->wenz->Articlea($sid);
+            $result = $this->record->Articlea($stsj,$endsj);
             $page = $result->render();
         }
 
-        // $sort = 
-
-        //文章标签
         $tag =$this->tag->taglist();
 
         //分类列表
@@ -75,9 +80,7 @@ class Sort extends Controller
         $this->assign('page', $page);
 
 
-        
         return $this->fetch();
-        // return action('index/index');
     }
 
 }
