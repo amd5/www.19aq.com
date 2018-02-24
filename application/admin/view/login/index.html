@@ -22,7 +22,7 @@
         <div class="formControls col-xs-8 col-xs-offset-3">
           <!-- <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;"> -->
 		  <input name="captcha" class="input-text size-L" type="text" placeholder="验证码" style="width:150px;min-width: auto" datatype="*" nullmsg="请填写验证码">
-          <img id="captcha" src="../../captcha" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px">
+          <img id="captcha" src="{:captcha_src()}" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px">
           <!-- <img id="captcha" src="{:/captcha_src()}" alt="验证码" title="点击刷新验证码" style="cursor:pointer;width: 150px;height: 40px"> -->
 		  <!-- <a id="kanbuq" href="javascript:;">看不清，换一张</a>  -->
 		</div>
@@ -54,7 +54,7 @@
         });
 
         $("#form").Validform({
-            tiptype:2,
+            // tiptype:2,
             ajaxPost:true,
             showAllError:true,
             callback:function(ret){

@@ -26,7 +26,6 @@ class Index extends BaseController
 	public function index()
     {
 		$user = Session::has('username');
-		$id   = Session::has('id');
 		// echo ($this->accessKeyId);
 		if($user == null)
 		{

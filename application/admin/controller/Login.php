@@ -18,18 +18,24 @@ class Login extends Controller
 		}
         return $this->fetch();
     }
-	
+	 
 	public function checkLogin($username='',$password='')	//登陆检测
 	{
 		// dump(input('post.'));
 		$result = Manageuser::where('username', $username)->find();
 		$passok = password_verify($password,$result["password"]);
-		if($result){
+		// dump($result);
+		if($result != NULL){
 			
 			if($passok == true){
-				
+				//判断验证码是否正确
+				$verify_code = $_POST['captcha'];
+				if(!captcha_check($verify_code)){
+					$this->error('验证码错误');
+				}
+				//判断账号是否被冻结
 				if($result["status"]=="y"){
-					$msg["status"] = "true";
+					$data["status"] = "true";
 					//如果管理员ID=1则设置以下Session
 					if ($result['id'] == 1) 
 					{
@@ -39,7 +45,7 @@ class Login extends Controller
 					Session::set('last_login_ip',$this->request->ip());
 					// Session::delete('username',$result["username"]);
 					// $this->success('Session设置成功');
-					$msg["message"] = "登录成功"; 
+					$data["message"] = "登录成功"; 
 					// $this->success("登录成功",U('Index/index'));
 					// 保存登录信息
 					$username = $_POST['username'];
@@ -54,36 +60,43 @@ class Login extends Controller
 			        //保存登录日志
 			        Db::name("SystemLog")->insert($update);
 			        //登录成功后跳转到后台首页
-					$this->redirect('./admin/index');
+					$this->success('登录成功', './admin/index');
                 	}
 
 				}else{
-					$msg["status"] = "false";  
-					$msg["message"] = "账号被锁定，请联系管理员！";  
+					$data["status"] = "false";  
+					$data["message"] = "账号被锁定，请联系管理员！";  
+					$this->error('账号被锁定，请联系管理员！');
 				}
 				
 			}else{
-				$msg["status"] = "false"; 
-				$msg["message"] = "密码错误"; 
+				$data["status"] = "false"; 
+				$data["message"] = "密码错误"; 
 				$update['username'] = $_POST['username'];
 				$update['content'] = "密码" .$_POST['password']. "错误";
 		        $update['last_login_time'] = time();
 		        $update['last_login_ip'] = $this->request->ip();
 		        $update['login_status'] = "2";
 		        Db::name("SystemLog")->insert($update);
+		        $this->error('密码错误');
 			}
 
 		}else{
-			$msg["status"] = "false";  
-            $msg["message"] = "账号不存在，请联系管理员";
+			$data["status"] = "false";  
+            $data["message"] = "账号不存在，请联系管理员";
             $update['username'] = $_POST['username'];
 			$update['content'] = "密码" .$_POST['password']. "错误";
 	        $update['last_login_time'] = time();
 	        $update['last_login_ip'] = $this->request->ip();
 	        $update['login_status'] = "3";
 	        Db::name("SystemLog")->insert($update);
+	        $this->error('账号不存在，请联系管理员');
 		}
-		echo json_encode($msg, JSON_UNESCAPED_UNICODE);  
+		// echo json_encode($data, JSON_UNESCAPED_UNICODE);  
+		// return json_encode($data, JSON_UNESCAPED_UNICODE);  
+		// return $this->success('成功', 'Index');
+		return $this->redirect('Index');
+
 		// die();
 		// session('username',null); // 删除session
 	}
