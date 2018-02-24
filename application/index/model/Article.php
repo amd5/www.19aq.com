@@ -82,6 +82,8 @@ class Article extends Model
 
 	public function article($id){
 		$result = self::where('id','=',$id)->find();
+		//每次被访问增加阅读1
+		$view = self::where('id',$id)->setInc('views');
 		return $result;
 	}
 	//首页-前台搜索功能
