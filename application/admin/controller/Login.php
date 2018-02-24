@@ -6,6 +6,7 @@ use think\Controller;
 use think\Session;
 use think\Request;
 use think\Db;
+// use think\log;	//系统日志使用
 
 class Login extends Controller
 {
