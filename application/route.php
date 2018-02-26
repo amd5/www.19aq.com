@@ -32,7 +32,10 @@ Route::get('article-<id>','index/index/article',['ext'=>'html']);
 Route::get('sort-<name>','index/sort/index',['ext'=>'html']);
 //标签页面URL
 Route::get('tag/:name','index/tag/index',['ext'=>'html']);
+//文章归档
 Route::get('record/:name','index/record/index',['ext'=>'html']);
+//文章RSS
+Route::get('rss/:name','index/rss/index',['ext'=>'html']);
 // Route::get('Tag-<id>','index/tag/index',['ext'=>'html']);
 // dump($name);
 

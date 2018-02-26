@@ -681,7 +681,6 @@ http://www.thinkphp.cn/extend/764.html</br>
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
 
 </br>
-后台验证码不显示
 继承：如果IP地址为XXX禁止访问网站
 QQ登陆是管理员
 文章标签

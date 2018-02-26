@@ -19,6 +19,7 @@ use app\index\model\ArticleSort;
 use app\admin\model\SystemConfig;
 /*其他第三方模块*/
 use app\api\controller\Sendsms;
+use app\extra\rss\Rss;
 
 /*后台继承*/
 use app\admin\controller\BaseController;
@@ -45,6 +46,11 @@ class Index	extends Controller
     //没有加管理员权限检查
     public function index()
     {
+        // $rss = new Rss('标题','内容','描述','./static/blog/rss.png');
+        // $rss->AddItem("日志的标题","日志的地址","日志的摘要","2018-02-26"); 
+        // $rss->Display();//输出RSS内容 
+
+        // die;
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
         
