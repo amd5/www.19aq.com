@@ -681,9 +681,9 @@ http://www.thinkphp.cn/extend/764.html</br>
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
 
 </br>
+前台所有页面ajax请求 解决各页面卡的问题
 继承：如果IP地址为XXX禁止访问网站
 QQ登陆是管理员
-文章标签
 文章评论
 rss
 数据库备份恢复
