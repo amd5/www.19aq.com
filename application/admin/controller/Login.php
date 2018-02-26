@@ -65,7 +65,7 @@ class Login extends Controller
 					// 保存登录信息
 					$username = $_POST['username'];
 					$update['username'] = $username;
-					$update['content'] = "管理员后台登录账户";
+					$update['title'] = "管理员".$username."后台登录账户";
 			        $update['last_login_time'] = time();
 			        $update['last_login_ip'] = $this->request->ip();
 			        $update['login_status'] = "1";
@@ -88,7 +88,7 @@ class Login extends Controller
 				$data["status"] = "false"; 
 				$data["message"] = "密码错误"; 
 				$update['username'] = $_POST['username'];
-				$update['content'] = "密码" .$_POST['password']. "错误";
+				$update['title'] = "密码" .$_POST['password']. "错误";
 		        $update['last_login_time'] = time();
 		        $update['last_login_ip'] = $this->request->ip();
 		        $update['login_status'] = "2";
@@ -100,7 +100,7 @@ class Login extends Controller
 			$data["status"] = "false";  
             $data["message"] = "账号不存在，请联系管理员";
             $update['username'] = $_POST['username'];
-			$update['content'] = "密码" .$_POST['password']. "错误";
+			$update['title'] = "密码" .$_POST['password']. "错误";
 	        $update['last_login_time'] = time();
 	        $update['last_login_ip'] = $this->request->ip();
 	        $update['login_status'] = "3";

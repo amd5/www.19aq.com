@@ -49,7 +49,7 @@
 				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="80">ID</th>
 				<th width="100">类型</th>
-				<th>内容</th>
+				<th>概述</th>
 				<th width="17%">用户名</th>
 				<th width="120">客户端IP</th>
 				<th width="120">时间</th>
@@ -60,8 +60,8 @@
 			<tr class="text-c">
 				<td><input type="checkbox" value="" name=""></td>
 				<td>{$result.id}</td>
-				<td>1</td>
-				<td>{$result.content}</td>
+				<td></td>
+				<td>{$result.title}</td>
 				<td>{$result.username}</td>
 				<td>{$result.last_login_ip}</td>
 				<td>{$result.last_login_time|date="Y-m-d H:i:s",###}</td>
@@ -89,7 +89,7 @@ $('.table-sort').dataTable({
 	"bStateSave": true,//状态保存
 	"aoColumnDefs": [
 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7]}// 制定列不参与排序
+	  {"orderable":false,"aTargets":[0]}// 制定列不参与排序
 	]
 });
 

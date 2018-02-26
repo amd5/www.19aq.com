@@ -163,7 +163,8 @@ class Index extends BaseController
 			$result = Article::insert($data);
 
 			$update['username'] 		= session('username');
-			$update['content']  		= $_POST["content"] ."文章发布成功！";
+			$update['title']  			= $data['title'] ."-文章发布成功！";
+			$update['content']  		= $_POST["content"];
 	        $update['last_login_time']	= date(time());
 	        $update['last_login_ip']	= $this->request->ip();
 	        $update['login_status']		= "4";
@@ -194,9 +195,10 @@ class Index extends BaseController
 			'date' 		=> strtotime($_POST["datetime"]),
 			]);
 
-			$update['username'] 		= session('username');
-			$update['content']  		= $_POST["articletitle"] ."文章修改成功！";
-	        $update['last_login_time']	= date(time());
+			$update['username'] 		= Cookie('username');
+			$update['title']  			= $_POST["articletitle"] ."文章修改成功！";
+			$update['content']  		= $_POST["content"];
+	        $update['last_login_time']	= time();
 	        $update['last_login_ip']	= $this->request->ip();
 	        $update['login_status']		= "5";
 	        Db::name("SystemLog")->insert($update);
@@ -626,6 +628,7 @@ class Index extends BaseController
     	$result = SystemLog::order('id desc')
 		->select();
 		// dump ($result);
+		// die;
         $this->assign('result', $result);
         return $this->fetch();
     }
