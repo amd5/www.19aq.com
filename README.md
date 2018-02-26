@@ -672,6 +672,10 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 ## 2018-2-24 19:30:41
 新增按文章归档查询文章
 
+## 2018-2-26 11:13:49
+修复搜索页面，分类页面，标签页面的变量错误问题</br>
+优化登陆状态之前使用Session现在使用Cookie</br>
+
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
