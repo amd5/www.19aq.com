@@ -120,17 +120,22 @@ class Login extends Controller
 		// 取值并删除Session
         // Session::pull('username');
         // 设置session为null
-        $del = Session::delete('username');
-        $del = Session::delete('id');
-        $nul = Session('username',null);
-        $nul = Session('id',null);
-        if ($del) {
+        // $del = Session::delete('username');
+        // $del = Session::delete('id');
+        // $nul = Session('username',null);
+        // $nul = Session('id',null);
+        $del = Cookie::delete('id');
+        $del = Cookie::delete('username');
+
+        if ($del = 'NULL') {
         	$this->redirect('../../');
         	// echo "1";
-        }elseif ($nul) {
-        	$this->redirect('../../');
         }
-        echo "2";
+        echo "退出错误！";
+        // elseif ($nul) {
+        // 	$this->redirect('../../');
+        // }
+        // echo "2";
         // die;
         // dump(session('username'));
         // session('username',null);
@@ -138,7 +143,7 @@ class Login extends Controller
         //跳转到后台首页
         // $this->redirect('.');
         //跳转到网站首页
-        $this->redirect('../../');
+        // $this->redirect('../../');
     }
 
 

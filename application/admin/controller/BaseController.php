@@ -18,7 +18,7 @@ class BaseController extends Controller
         //判断用户是否登陆
         if(!isset($sid)) {
         // if(!$sid) {
-            echo "没有登录";die;
+            // echo "没有登录";die;
             //如果Session为空进入后台登录界面
             //
             if(!$_SERVER['PHP_SELF'] = "index.php"){

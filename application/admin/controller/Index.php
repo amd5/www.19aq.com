@@ -23,20 +23,34 @@ use think\cache\driver\Redis;  //缓存用到
 
 class Index extends BaseController
 {
+	//protected表示受保护的，只有本类或子类或父类中可以访问；
+	// protected $user = '';
+	//private表示私有的，只有本类内部可以使用；
+	// private $user = '';
+
+	public function __construct()
+    {
+    	//parent::tank();  //调用父类的tank方法
+    	//self::$love;     //调用本类的love方法 或 变量？
+    	//取Cookie值
+        $this->user = Cookie::get('username');
+        parent::__construct();
+    }
 	// private $accessKeyId = 'LTAIJ7jxMyfxE9nw';
 	public function index()
     {
-		$user = Cookie::has('username');
+		// $user = Cookie::has('username');
 		// $user = Session::has('username');
 		// echo ($this->accessKeyId);
-		if($user == null)
+		
+		if($this->user == null)
 		{
 			echo "Cookie 空";
 			$this->redirect('./admin/login');
 		}else
 		{
 			echo "you Cookie";
-			$result = ManageUser::where('id', $user)->find();
+			$result = ManageUser::where('id', $this->user)->find();
 			// dump($result);
 			$this->assign('result', $result);
 			return $this->fetch();
@@ -68,8 +82,8 @@ class Index extends BaseController
 	
 	public function welcome()
     {
-    	$user = Session::has('username');
-    	$result = ManageUser::where('id', $user)->find();
+    	// $user = Session::has('username');
+    	$result = ManageUser::where('id', $this->user)->find();
 		$this->assign('result', $result);
         return $this->fetch();
     }

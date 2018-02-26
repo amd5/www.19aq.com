@@ -11,29 +11,20 @@ use app\extra\bitcoin\bitcoin;
     const RPC_PASS = 'P2kAlMiG3Kb8FzP';
 class Demo extends Controller
 {
+    private $wenz = '1';
+    // protected $wenz = 1;
+
     public function index()
     {
-        echo "8";
+        // echo "8";
+        dump(RPC_HOST);die;
 
-   //      $result = Article::with('sort')
-   //          ->order('id','desc')
-			// ->limit(15)
-			// ->paginate();
-			// $page = $result->render();
+
     }
 
     public function array(){
-    	$a ="id,title,body1";
-    	$b ="id,title,body2";
-    	$c ="id,title,body3";
-        $aa = array('1' => $a, '2'=>$b,'3'=>$c);
-        dump($aa);
-        // var_dump($aa);
-
-
+    	echo "string";
     }
-
-
 
 
 }

@@ -27,6 +27,10 @@ use app\admin\controller\BaseController;
 
 class Index	extends Controller
 {
+    //protected表示受保护的，只有本类或子类或父类中可以访问；
+    // protected $user = '';
+    //private表示私有的，只有本类内部可以使用；
+    // private $wenz = '1';
     protected $wenz;
     protected $tag;
     protected $sort;
@@ -49,7 +53,7 @@ class Index	extends Controller
         // $rss = new Rss('标题','内容','描述','./static/blog/rss.png');
         // $rss->AddItem("日志的标题","日志的地址","日志的摘要","2018-02-26"); 
         // $rss->Display();//输出RSS内容 
-
+        // dump($wenz);die;
         // die;
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
