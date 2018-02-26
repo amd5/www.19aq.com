@@ -45,13 +45,13 @@ class Tag extends Controller
         $bo   = substr($str,1);
         //以逗号分割数据为数组
         // $doh  = explode(',',$bo);
-        // dump($bo);
+        // dump($data);die;
         
         //文章列表
         $result = $this->wenz->tagArticle($bo);
         $page = $result->render();
 
-
+        // dump($tagname);die;
 
 
         //标签列表
@@ -75,6 +75,7 @@ class Tag extends Controller
         $this->assign('yue', $yue);
         $this->assign('articlesort', $articlesort);
         $this->assign('result', $result);
+        $this->assign('tagname', $tagname);
         $this->assign('page', $page);
 
         return $this->fetch();

@@ -54,8 +54,8 @@
 </div>
 
 <div id="place">
-当前位置：<a href="{:Url('/')}">首页</a> 
->> <a href="{:Url('/')}{$v.sortid}" class="secai">Thinkphp</a>
+当前位置：<a href="{:Url('/')}">首页</a>
+>> <a href="{:Url('/')}article-{$result.id}.html" class="secai">{$result.title}</a>
 </div>
 <div id="cennr">
 <div id="left" class="xian">
@@ -66,7 +66,7 @@
 
 
 2013-11-27 23:14:57&nbsp;&nbsp;|&nbsp;&nbsp;分类：
-<a href="{:Url('/')}{$v.sortid}" class="secai">Thinkphp</a>
+<a href="{:Url('/')}sort-{$sort.sortname}.html" class="secai">{$sort.sortname}</a>
 |&nbsp;&nbsp;标签：
 <a href="{:Url('/')}" class="">thinkphp</a>&nbsp;
 <a href="{:Url('/')}" class="">mysql</a>&nbsp;

@@ -113,6 +113,9 @@ class Index	extends Controller
 	public function article($id)
     {
         $result = $this->wenz->article($id);
+        $sort   = $this->sort->sortname($result['sortid']);
+
+        $this->assign('sort', $sort);
 		$this->assign('result', $result);
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
