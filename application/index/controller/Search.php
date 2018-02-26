@@ -35,6 +35,9 @@ class Search extends Controller
     	$request = Request::instance();
     	// $a = $this->param['key'];
     	// dump($a);die;
+        
+        //获取当前访问URL
+        $url = "http://".$_SERVER['HTTP_HOST'];
 
     	// dump($request->param());
         // echo "</br>Search</br>";
@@ -42,6 +45,7 @@ class Search extends Controller
         $key = $request->param('key');
         // dump($key);
         $result = $this->wenz->search($key);
+        $page = $result->render();
 
         //标签列表
         $tag =$this->tag->taglist();

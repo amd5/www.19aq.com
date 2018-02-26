@@ -31,6 +31,9 @@ class Tag extends Controller
     {
         $request = Request::instance();
         $tagname = $request->param('name');
+
+        //获取当前访问URL
+        $url = "http://".$_SERVER['HTTP_HOST'];
         // dump($request->param('name'));
         // echo "=======================";
         // $data = ArticleTag::where('tagname',$tagname)->select();
@@ -46,6 +49,7 @@ class Tag extends Controller
         
         //文章列表
         $result = $this->wenz->tagArticle($bo);
+        $page = $result->render();
 
 
 

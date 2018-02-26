@@ -76,7 +76,11 @@ class Article extends Model
 
 	//标签文章列表
 	public function tagArticle($tags){
-		$result = self::all($tags,'',false);
+		// $result = self::all($tags,'',false);
+		$result = self::where('id','in',$tags)
+		->limit(15)
+		->paginate();
+		// dump($tags);
 		return $result;
 	}
 
@@ -89,7 +93,9 @@ class Article extends Model
 	//首页-前台搜索功能
 	public function search($key)
 	{
-		$result = self::where('title','like','%'.$key.'%')->select(); 
+		$result = self::where('title','like','%'.$key.'%')
+		->limit(15)
+		->paginate();
 		return $result;
 	}
 

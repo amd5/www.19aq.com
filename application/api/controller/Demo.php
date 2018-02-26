@@ -22,10 +22,13 @@ class Demo extends Controller
 			// $page = $result->render();
     }
 
-    public function ipc(){
-        // header("Content-type:text/html;charset=GBK");
-        // $cha = new ip();
-        // echo $cha->cheip('8.8.8.8');
+    public function array(){
+    	$a ="id,title,body1";
+    	$b ="id,title,body2";
+    	$c ="id,title,body3";
+        $aa = array('1' => $a, '2'=>$b,'3'=>$c);
+        dump($aa);
+        // var_dump($aa);
 
 
     }
