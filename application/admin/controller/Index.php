@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 //use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Article;	//加载文章模块
+use app\admin\model\ArticleTag; //加载文章分类模块
 use app\admin\model\ArticleSort; //加载文章分类模块
 use app\admin\model\ManageUser;	//加载管理员模块
 use app\admin\model\SystemLog;	//加载系统日志模块
@@ -209,13 +210,20 @@ class Index extends BaseController
 		} else {
 			$result = Article::where('id', $id)
 			->select();
+			//查询所有分类
 			$sort   = ArticleSort::select();
-			// $result = new Article();
-			// $sort	= new ArticleSort();
-			// $result = $result->Article($id);
-			// $sort 	= $sort->ArticleSort();
+			
+			//查询文章详情包含的标签
+			$where="find_in_set($id,gid)";
+			$tagname    = ArticleTag::where($where)->select();
+			foreach ($tagname as $key => $value) {
+				# code...
+				$tag =$tag.$value['tagname'].',';
+			}
+
 			$this->assign('result', $result);
 			$this->assign('sortname', $sort);
+			$this->assign('tag', $tag);
 			return $this->fetch();
 
 		}
