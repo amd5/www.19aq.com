@@ -43,10 +43,8 @@
 			<tr class="text-c">
 				<th width="15"><input type="checkbox" name="" value=""></th>
 				<th width="30">ID</th>
-				<th width="80">排序</th>
 				<th width="90">分类名称</th>
 				<th width="90">分类别名</th>
-				<th width="80">分类模板</th>
 				<th width="80">查看分类</th>
 				<th width="60">文章数量</th>
 				<th>分类描述</th>
@@ -58,17 +56,14 @@
 			<tr class="text-c">
 				<td><input type="checkbox" value="1" name=""></td>
 				<td width="15">{$result.sid}</td>
-				<td width="80"><input type="text" class="input-text text-c" value="{$result.sid}"></td>
 				<td width="90">{$result.sortname}</td>
 				<td width="90">{$result.alias}</td>
-				<td width="80"></td>
 				<td width="80">
 				<a style="text-decoration:none"  target="_blank" href="{$result.alias}" title="{$result.alias}">
 				<i class="Hui-iconfont">&#xe603;</i></a>
 				</td>
 				<td width="60">10</td>
 				<td>{$result.description}</td>
-				
 				<td><span class="
 				{if 	condition="	($result.status11 == '删除')"/}label label-danger radius
 				{elseif condition="	($result.status11 == '隐藏')"/}label label-defaunt radius
@@ -105,7 +100,7 @@ $(function(){
 		"bStateSave": true,//状态保存
 		"aoColumnDefs": [
 		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-		  {"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
+		  {"orderable":false,"aTargets":[0,7,8]}// 制定列不参与排序
 		]
 	});
 	
