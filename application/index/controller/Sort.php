@@ -30,8 +30,8 @@ class Sort extends Controller
     public function index()
     {
         $request = Request::instance();
-
-        $sortid = ArticleSort::where('alias','=',$request->param('name'))->find();
+        $sortname    = $request->param('name');
+        $sortid = ArticleSort::where('alias','=',$sortname)->find();
         $sid = $sortid['sid'];
 
         //获取当前访问URL
@@ -67,6 +67,7 @@ class Sort extends Controller
         //输出
         $this->assign('url', $url);
         $this->assign('tag', $tag);
+        $this->assign('sortname', $sortname);
         $this->assign('links', $links);
         $this->assign('nian', $nian);
         $this->assign('yue', $yue);
