@@ -12,6 +12,7 @@ use app\extra\ip\IpLocation;	//载入ip类
 use app\extra;
 use think\Controller;	//继承控制器
 use think\Exception;
+use think\Cookie;
 use think\Session;		//设置Session
 use think\Request;    //请求IP地址等
 use think\Cache;
@@ -25,15 +26,16 @@ class Index extends BaseController
 	// private $accessKeyId = 'LTAIJ7jxMyfxE9nw';
 	public function index()
     {
-		$user = Session::has('username');
+		$user = Cookie::has('username');
+		// $user = Session::has('username');
 		// echo ($this->accessKeyId);
 		if($user == null)
 		{
-			echo "Session 空";
+			echo "Cookie 空";
 			$this->redirect('./admin/login');
 		}else
 		{
-			echo "you session";
+			echo "you Cookie";
 			$result = ManageUser::where('id', $user)->find();
 			// dump($result);
 			$this->assign('result', $result);

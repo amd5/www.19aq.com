@@ -13,10 +13,14 @@ class Login extends Controller
 {
 	public function index()
     {
-    	if(!Session::has('username')){
+    	// if(!Session::has('username')){
+    	if(!Cookie::has('username')){
     		// dump(session('username'));
-			echo "session null";
+			echo "Cookie null";
 			// die;
+		}else{
+			//增加判断如果登录页面已有登陆状态直接跳转到后台
+			$this->redirect('./');
 		}
         return $this->fetch();
     }
@@ -41,13 +45,16 @@ class Login extends Controller
 					//如果管理员ID=1则设置以下Session
 					if ($result['id'] == 1) 
 					{
-					Session::set('id',$result["id"]);
-                    Session::set('username',$result["username"]);
-					Session::set('logintime',time());	//设置session开始时间
-					Session::set('last_login_ip',$this->request->ip());
+					// Session::set('id',$result["id"]);
+                    // Session::set('username',$result["username"]);
+					// Session::set('logintime',time());	//设置session开始时间
+					// Session::set('last_login_ip',$this->request->ip());
 					// dump($result["username"]);
-					Cookie::set('username',$result["username"],3600);
-					// Cookie::get('username');
+					Cookie::set('id',$result["id"],7200);  //有效期7200秒
+					Cookie::set('username',$result["username"],7200);  //有效期7200秒
+					Cookie::set('logintime',time(),7200);  //有效期7200秒
+					Cookie::set('last_login_ip',$this->request->ip(),7200);  //有效期7200秒
+
 					echo cookie('username');
 					// die;
 
