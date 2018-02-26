@@ -3,7 +3,7 @@ namespace app\admin\controller;
 use app\admin\model\ManageUser;
 use app\admin\controller\Base;
 use think\Controller;
-use think\Session;
+// use think\Session;
 use think\Cookie;
 use think\Request;
 use think\Db;

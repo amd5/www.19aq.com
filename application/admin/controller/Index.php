@@ -13,7 +13,7 @@ use app\extra;
 use think\Controller;	//继承控制器
 use think\Exception;
 use think\Cookie;
-use think\Session;		//设置Session
+// use think\Session;		//设置Session
 use think\Request;    //请求IP地址等
 use think\Cache;
 use think\Db;

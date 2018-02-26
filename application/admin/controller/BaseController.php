@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 // use think\Request;
 use think\Cookie;
-use think\Session;
+// use think\Session;
 
 class BaseController extends Controller
 {
