@@ -112,9 +112,16 @@ class Index	extends Controller
 	
 	public function article($id)
     {
+        //文章详情标题和内容
         $result = $this->wenz->article($id);
+
+        //文章详情分类显示
         $sort   = $this->sort->sortname($result['sortid']);
 
+        //文章详情标签显示
+        $tag =$this->tag->articlelist($id);
+
+        $this->assign('tag', $tag);
         $this->assign('sort', $sort);
 		$this->assign('result', $result);
 		return $this->fetch();

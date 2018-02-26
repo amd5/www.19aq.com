@@ -17,9 +17,13 @@ class ArticleTag extends Model
 		$result = self::select();
 		return $result;
 	}
-	//文章关联模型绑定
-	// public function article(){
-	// 	return $this->belongsTo('article');
-	// }
+	
+	//查询文章详情所包含的标签
+	public function articlelist($id){
+		$where="find_in_set($id,gid)";
+		$result = self::where($where)->select();
+
+		return $result;
+	}
 
 }

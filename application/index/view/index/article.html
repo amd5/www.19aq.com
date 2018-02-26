@@ -68,9 +68,10 @@
 2013-11-27 23:14:57&nbsp;&nbsp;|&nbsp;&nbsp;分类：
 <a href="{:Url('/')}sort-{$sort.sortname}.html" class="secai">{$sort.sortname}</a>
 |&nbsp;&nbsp;标签：
-<a href="{:Url('/')}" class="">thinkphp</a>&nbsp;
-<a href="{:Url('/')}" class="">mysql</a>&nbsp;
-<a href="{:Url('/')}" class="">sql</a>&nbsp;
+
+{volist name="tag" id="tag" }
+<a href="{:Url('/')}tag/{$tag.tagname}.html" class="">{$tag.tagname}</a>&nbsp;
+{/volist} 
 <span>
 <em class="kan">阅读({$result['views']})</em><em class="ping">评论(0)</em>
 </span>
