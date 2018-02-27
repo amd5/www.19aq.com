@@ -6,6 +6,7 @@
 # #Author:		c32
 # #Email:		amd5@qq.com
 # #感谢King east  QQ1207877378指导的模型关联
+# #感谢流年 QQ130770305指导解决后台查询300条文章产生600条语句的问题
 # #########################################
 namespace app\index\model;
 
@@ -58,18 +59,18 @@ class Article extends Model
 	}
 	//首页-显示全部文章（带密码的除外）
 	public function Articles(){
-        $result = self::order('id','desc')
+        $result = self::with('sort,tag')
+        ->order('id','desc')
 		->where('password','=','')
-		->limit(15)
-		->paginate();
+		->paginate(15);
 
 		return $result;
 	}
 	//首页-显示所有文章
 	public function Articleall(){
-        $result = self::order('id','desc')
-		->limit(15)
-		->paginate();
+        $result = self::with('sort,tag')
+        ->order('id','desc')
+		->paginate(15);
 
 		return $result;
 	}

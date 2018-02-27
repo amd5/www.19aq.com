@@ -110,19 +110,7 @@ class Index extends BaseController
     public function aces()
     {
 
-    	// $user = Article::select([1,2,3]);
-    	// $user = Article::get(1);
     	$user = Article::with('pcs')->select([1,2,3]);
-    	// $user = Article::has('pcs')->select();
-    	// $pcs = $user->pcs;
-    	// $pcs = $user->pcs()->select();
-    	// dump($user);
-
-    	// $obj=$user->relation;
-    	
-    	// foreach($user->pcs as $data)
-    	// 	echo "id:{$data->id}  标题:{$data->title}</br>";
-    	// $this->assign('data', $pcs);
     	$this->assign('result', $user);
     	return $this->fetch();
 

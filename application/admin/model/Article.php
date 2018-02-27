@@ -24,23 +24,28 @@ class Article extends Model
 	return $status[$data['status']];
 	}
 	
-	//使用文章表sortid关联sort分类表的sid
+	//后台文章列表关联文章所属分类
 	public function sort(){
-		return $this->hasOne('ArticleSort','sid','sortid');
+		return $this->hasOne('ArticleSort','sid','sortid')->field('sid,sortname');
 		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
+	}
+	//后台文章列表关联作者
+	public function admin(){
+		return $this->hasOne('ManageUser','id','author')->field('id,username');
 	}
 
 
 	//后台文章列表
 	public function ArticleList()
     {
-		$result = Article::all();
+    	//使用关联预载入，解决语句N+1的查询问题
+		$result = self::with('sort,admin')->select();
 		return $result;
     }
 	
 	public function Article($id)
     {
-		$result = Article::where('id','=',$id)->select();
+		$result = self::where('id',$id)->select();
 		return $result;
     }
 	
