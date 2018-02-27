@@ -1,4 +1,12 @@
 <?php
+# #########################################
+# #Function:    标签
+# #Blog:        http://www.19aq.com/
+# #Datetime:    2018-2-27 17:28:59
+# #Author:      c32
+# #Email:       amd5@qq.com
+# #分割分隔标签
+# #########################################
 namespace app\index\controller;
 
 use think\Controller;

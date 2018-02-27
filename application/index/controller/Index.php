@@ -74,6 +74,22 @@ class Index	extends Controller
     	{
     		//文章列表  不是管理员显示没有密码的文章
             $result = $this->wenz->Articles();
+            // dump($result);
+            // die;
+            // foreach ($result as $key => $value) {
+            //     # code...
+            //     $tagid = $value['tagid'];
+                
+            //     $str  = substr($tagid,0,strlen($tagid)-1); 
+            //     $tags   = substr($str,1);
+            //     // dump($tags);
+            //     $data = $this->wenz->indextag($tags);
+            //     dump($data);
+            // }
+            
+            // dump($data);
+            // die;
+
 			$page = $result->render();   //获取分页显示
     	}else
     	{
@@ -98,7 +114,8 @@ class Index	extends Controller
 
 		//输出
         $this->assign('url', $url);
-		$this->assign('tag', $tag);
+        $this->assign('tag', $tag);
+		$this->assign('data', $data);
 		$this->assign('links', $links);
 		$this->assign('nian', $nian);
         $this->assign('yue', $yue);
