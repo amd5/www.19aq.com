@@ -8,6 +8,8 @@
 # #感谢King east(1207877378),一指流沙(287100654)
 # #########################################
 namespace app\index\controller;
+
+use think\Cookie;
 use think\Controller;
 /*前台模块*/
 use app\index\model\Link;
@@ -70,26 +72,10 @@ class Index	extends Controller
         }
 
         // dump(session('username'));die;
-    	if(!session('username') || session('username') !== "c32")
+    	if(!Cookie('username') || Cookie('username') !== "c32")
     	{
     		//文章列表  不是管理员显示没有密码的文章
             $result = $this->wenz->Articles();
-            // dump($result);
-            // die;
-            // foreach ($result as $key => $value) {
-            //     # code...
-            //     $tagid = $value['tagid'];
-                
-            //     $str  = substr($tagid,0,strlen($tagid)-1); 
-            //     $tags   = substr($str,1);
-            //     // dump($tags);
-            //     $data = $this->wenz->indextag($tags);
-            //     dump($data);
-            // }
-            
-            // dump($data);
-            // die;
-
 			$page = $result->render();   //获取分页显示
     	}else
     	{
