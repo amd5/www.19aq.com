@@ -45,7 +45,7 @@ class ArticleRecord extends Model
         return $result;
     }
     //归档页面-显示全部文章
-    public function Articles($stsj,$endsj){
+    public function ArticleALL($stsj,$endsj){
         $result = Article::order('id','desc')
         ->where('date','>=',$stsj)
         ->where('date','<=',$endsj)
