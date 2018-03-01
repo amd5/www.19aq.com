@@ -34,76 +34,108 @@ class Article extends Model
 	}
 
 	public function tag(){
+		// $result = ArticleTag::select();
 		return $this->hasMany('ArticleTag','gid');
+		// return $result;
 		//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
 	}
 
 	// public function indextag(){
-	// 	$where="find_in_set($id,gid)";
-	// 	$result = ArticleTag::where($where)->select();
-	// 	return $result;
+	// 	$gid = '34';
+	// 	$data = ArticleTag::select();
+	// 	$tags = new Article;
+	// 	$tagss = $tags->qutag($data,$gid);
+	// 	$ls = $this -> qutag($data,$gid);
+
+	// 	return $ls;
 	// }
 
+	//根据文章取文章标签
+	public function qutag($data,$gid)
+	{
+		if(is_array($data) && !empty($data)){
+			$_data = [];
+			foreach($data as $a){
+				if(!empty($a['gid'])){
+					$b = substr($a['gid'],1);
+					$b = substr($b,0,-1);
+					$c = explode(',',$b);
+					foreach($c as $d){
+						if($d == $gid){
+							array_push($_data,$a['tagname']);
+						}
+					}
+				}
+			}
+			return $_data;
+			// dump($_data);
+		}
+
+	}
+
 	//分类页面--文章列表  不是管理员显示没有密码的文章
-	public function Articlelist($sid){
-		$result = self::with('sort,tag')
-		->order('id','desc')
+	public function SortArticlelist($sid){
+		// $result = self::with('sort,tag')
+		$result = self::order('id','desc')
         ->where('password','=','')
         ->where('sortid','=',$sid)
         ->limit(15)
         ->paginate();
 
+        //遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
+
 		return $result;
 	}
 
 	//分类页面--文章列表  管理员显示全部文章
-	public function Articlea($sid){
-		$result = self::with('sort,tag')
-		->where('sortid','=',$sid)
+	public function SortArticleALL($sid){
+		$result = self::where('sortid','=',$sid)
         ->order('id','desc')
         ->limit(15)
         ->paginate();
+
+        //遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
         
 		return $result;
 	}
 
-	public function indextag($tags){
-		$result = ArticleTag::where('tid','in',$tags)
-		->select();
-		return $result;
-		// dump($result);
-	}
 	//首页-显示全部文章（带密码的除外）
 	public function Articles(){
         // $result = self::with('tag')->
-        $data = self::order('id','desc')
+        $result = self::order('id','desc')
 		->where('password','=','')
 		->paginate(15);
 
-		// foreach ($result as $key => $value) {
-  //               # code...
-  //               $tagid = $value['tagid'];
-                
-  //               $str  = substr($tagid,0,strlen($tagid)-1); 
-  //               $tags   = substr($str,1);
-  //               dump($tags);
-  //           }
-  //           die;
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
 
-  //       $result = ArticleTag::where('id','in',$tags)
-		// ->paginate(15);
-		// ->select();
-		// dump()
-
-            // $result = self::where('id','in',$tags)->select();
-
-		return $data;
+		return $result;
 	}
 	//首页-显示所有文章
 	public function Articleall(){
-        $result = self::with('sort,tag')
-        ->order('id','desc')
+        $result = self::order('id','desc')
 		->paginate(15);
+
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
 
 		return $result;
 	}
@@ -111,11 +143,17 @@ class Article extends Model
 	//标签文章列表
 	public function tagArticle($tags){
 		// $result = self::all($tags,'',false);
-		$result = self::with('sort,tag')
-		->where('id','in',$tags)
+		$result = self::where('id','in',$tags)
 		->limit(15)
 		->paginate();
-		// dump($tags);
+		
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
+
 		return $result;
 	}
 
@@ -128,10 +166,16 @@ class Article extends Model
 	//首页-前台搜索功能
 	public function search($key)
 	{
-		$result = self::with('sort,tag')
-		->where('title','like','%'.$key.'%')
+		$result = self::where('title','like','%'.$key.'%')
 		->limit(15)
 		->paginate();
+
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
 		return $result;
 	}
 
