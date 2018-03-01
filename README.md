@@ -676,6 +676,9 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 修复搜索页面，分类页面，标签页面的变量错误问题</br>
 优化登陆状态之前使用Session现在使用Cookie</br>
 
+## 2018-3-1 17:13:40
+解决首页按文章显示文章对应标签的问题 文章标签
+
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
