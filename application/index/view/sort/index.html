@@ -21,32 +21,14 @@
 	</ul>
 </div>
 
-<div id="place">
-当前位置：<a href="{:Url('/')}">首页</a>
+<div id="place">当前位置：<a href="{:Url('/')}">首页</a>
 >> 分类 >> <a href="{:Url('/')}sort-{$sortname}.html" class="secai">{$sortname}</a>
 </div>
 <div id="cennr">
 <div id="leftde" class="xian">
 
-{volist name="result" id="v" }
-<dl id="lieb">
-	<dt>
-		<h3 style="font-size:16px;">
-			<a href="{$url}/article-{$v.id}.html">{$v.title}</a>
-		</h3>
-			<span>
-				<em class="kan"></em>
-				<em class="ping"></em>
-			</span>
-		{$v.date|date="Y-m-d h:i:s",###}&nbsp;&nbsp;|&nbsp;&nbsp;分类：
-		<a href="javascript:void()"   class="secai">{$v.sort.sortname}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;浏览：{$v.views}&nbsp;&nbsp;&nbsp;留言：1 
-	</dt>
-<div class="clear"></div>
-</dd>
-</dl>
-<div class="line"></div>
-{/volist}
+{include file="index/_article" title="test" /}
+
 <div id="pagenavi">
 {$page}
 <div class="clear"></div>
