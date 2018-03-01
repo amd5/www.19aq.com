@@ -53,7 +53,7 @@ class Record extends Controller
         }else
         {
             //文章列表  管理员显示全部文章
-            $result = $this->record->Articlea($stsj,$endsj);
+            $result = $this->record->ArticleALL($stsj,$endsj);
             $page = $result->render();
         }
 

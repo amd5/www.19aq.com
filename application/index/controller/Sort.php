@@ -40,12 +40,12 @@ class Sort extends Controller
         if(!session('username') || session('username') !== "c32")
         {
             //文章列表  不是管理员显示没有密码的文章
-            $result = $this->wenz->Articlelist($sid);
+            $result = $this->wenz->SortArticlelist($sid);
             $page = $result->render();   //获取分页显示
         }else
         {
             //文章列表  管理员显示全部文章
-            $result = $this->wenz->Articlea($sid);
+            $result = $this->wenz->SortArticleALL($sid);
             $page = $result->render();
         }
 

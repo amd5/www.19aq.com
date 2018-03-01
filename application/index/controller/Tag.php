@@ -57,7 +57,7 @@ class Tag extends Controller
         
         //文章列表
         $result = $this->wenz->tagArticle($bo);
-        $page = $result->render();
+        $page   = $result->render();
 
         // dump($tagname);die;
 
@@ -70,7 +70,7 @@ class Tag extends Controller
         
         //存档列表
         $nian = $this->record->nian();
-        $yue = $this->record->yue();
+        $yue  = $this->record->yue();
 
         //友情链接
         $links = $this->link->links();
