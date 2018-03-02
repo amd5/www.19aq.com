@@ -61,6 +61,7 @@ class Search extends Controller
         $links = $this->link->links();
 
         //输出
+        $this->assign('key', $key);
         $this->assign('url', $url);
         $this->assign('tag', $tag);
         $this->assign('links', $links);

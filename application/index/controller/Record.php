@@ -30,10 +30,10 @@ class Record extends Controller
     public function index()
     {
         $request = Request::instance();
-        $tagname = $request->param('name');
+        $key = $request->param('name');
         // echo($tagname);
-        $nian = substr($tagname, 0, 4);
-        $yue  = substr($tagname, 4, 5);
+        $nian = substr($key, 0, 4);
+        $yue  = substr($key, 4, 5);
         $sj   = $nian.'-'.$yue.'-'.'01'.' '.'00:00:00';
         //开始时间
         $stsj = strtotime($sj);
@@ -77,6 +77,7 @@ class Record extends Controller
         $this->assign('yue', $yue);
         $this->assign('articlesort', $articlesort);
         $this->assign('result', $result);
+        $this->assign('key', $key);
         $this->assign('page', $page);
 
 

@@ -38,14 +38,14 @@ class Tag extends Controller
     public function index()
     {
         $request = Request::instance();
-        $tagname = $request->param('name');
+        $key = $request->param('name');
 
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
         // dump($request->param('name'));
         // echo "=======================";
-        // $data = ArticleTag::where('tagname',$tagname)->select();
-        $data = ArticleTag::where('tagname',$tagname)->find();
+        // $data = ArticleTag::where('tagname',$key)->select();
+        $data = ArticleTag::where('tagname',$key)->find();
         $body = $data['gid'];
         //去掉最后一个字符
         $str  = substr($body,0,strlen($body)-1); 
@@ -83,7 +83,7 @@ class Tag extends Controller
         $this->assign('yue', $yue);
         $this->assign('articlesort', $articlesort);
         $this->assign('result', $result);
-        $this->assign('tagname', $tagname);
+        $this->assign('key', $key);
         $this->assign('page', $page);
 
         return $this->fetch();
