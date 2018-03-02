@@ -1,4 +1,4 @@
-{include file="index/_header" title="c32's blog" keywords="标签" description="描述" generator="不知道" /}
+{include file="index/_header" title="$key" keywords="标签" description="描述" blog="c32's blog" /}
 <div id="top">
 	<dl>
 		<span><a href="{:Url('/')}admin" target="_blank">login</a></span>每天学习一点点,每天进步一点点.
@@ -11,17 +11,10 @@
 	<a href="#" class="logo" title="c32's blog">c32's blog</a>
 	</div>
 
-<div id="nav">
-	<ul>
-		<ul class="bar">
-			<li class="item current">
-			<a href="{:Url('/')}" ><span>首页</span></a>
-			</li>
-		</ul>
-	</ul>
-</div>
+{include file="index/_nav" /}
 
-<div id="place">当前位置：				首页</div>
+<div id="place">当前位置：<a href="{:Url('/')}">首页</a>
+>> 搜索 >> <a href="{:Url('/')}sort-{$key}.html" class="secai">{$key}</a></div>
 <div id="cennr">
 <div id="leftde" class="xian">
 

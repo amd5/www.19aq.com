@@ -13,6 +13,13 @@ use app\index\model\Article;
 
 class ArticleRecord extends Model
 {
+    protected $wenz;
+    public function __construct()
+    {
+        $this->wenz     = new Article;
+        parent::__construct();
+    }
+    
 	public function nian()
     {
     	$nian = Article::order('days','desc')
@@ -42,6 +49,12 @@ class ArticleRecord extends Model
         ->limit(15)
         ->paginate();
 
+        $datas = ArticleTag::select();
+        foreach ($result as $a => $value) {
+            $ls = $this->wenz->qutag($datas,$value['id']);
+            $result[$a]['tag_name'] = $ls;
+        }
+
         return $result;
     }
     //归档页面-显示全部文章
@@ -51,6 +64,13 @@ class ArticleRecord extends Model
         ->where('date','<=',$endsj)
         ->limit(15)
         ->paginate();
+
+        $datas = ArticleTag::select();
+        foreach ($result as $a => $value) {
+            $ls = $this->wenz->qutag($datas,$value['id']);
+            $result[$a]['tag_name'] = $ls;
+        }
+
 
         return $result;
     }
