@@ -170,12 +170,19 @@ class Article extends Model
 		->limit(15)
 		->paginate();
 
+
 		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
 		$datas = ArticleTag::select();
 		foreach ($result as $a => $value) {
 			$ls = $this -> qutag($datas,$value['id']);
 			$result[$a]['tag_name'] = $ls;
+			$result[$a]['searchkey'] = $key;
+
 		}
+		// dump($result);
+
+
+		// die;
 		return $result;
 	}
 
