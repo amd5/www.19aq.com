@@ -87,6 +87,8 @@ class Index	extends Controller
 
     	//文章标签
         $tag =$this->tag->taglist();
+        //文章标签所属文章求和
+        // $tag =$this->tag->tagcount();
 
         //分类列表
         $articlesort = $this->sort->sortlist();
@@ -101,7 +103,7 @@ class Index	extends Controller
 		//输出
         $this->assign('url', $url);
         $this->assign('tag', $tag);
-		$this->assign('data', $data);
+		// $this->assign('data', $data);
 		$this->assign('links', $links);
 		$this->assign('nian', $nian);
         $this->assign('yue', $yue);
