@@ -24,6 +24,8 @@ class Httpcode extends Controller
         curl_setopt($ch, CURLOPT_URL, $url);  
         //设置超时时间
         curl_setopt($ch, CURLOPT_TIMEOUT, $time);  
+        //设置头
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;http://www.19aq.com)'); 
         //设置CURLOPT_HEADER为false 不返回头部信息
         curl_setopt($ch, CURLOPT_HEADER, ture);  
         //CURLOPT_NOBODY 不获取内容
