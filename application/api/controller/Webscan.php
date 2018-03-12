@@ -24,8 +24,8 @@ class Webscan extends Controller
     	// }
 
     	//获取扫描目标
-    	// $target = Api_webscan_target::select();
-    	$target = Api_webscan_tmp::select();
+    	$target = Api_webscan_target::select();
+    	//$target = Api_webscan_tmp::select();
 
     	$sm = new Webscan();
     	
@@ -52,12 +52,16 @@ class Webscan extends Controller
 		curl_setopt($ch, CURLOPT_URL, $url);  
 		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);  
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;http://www.19aq.com)'); 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
 		curl_setopt($ch, CURLOPT_HEADER, 0);  
 		$info = curl_exec($ch);  
-		// dump($info);
+        dump($code);
+        dump($url);
+		dump($info);
+        //die;
 
-		if($info!=false && $code==200)
+		if($info!=false && $code==0)
 		{
 			preg_match_all('/(src|href)="(.*?)"/',$info,$m);
 			// $arr = array('base64','#','javascript:void()');
