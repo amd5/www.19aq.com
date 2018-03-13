@@ -9,8 +9,8 @@ class Webhooks extends Controller
     {
         //echo shell_exec("ifconfig");
         echo "webhooksf</br>";
-        $lj = shell_exec('pwd');
-        $qu=substr($lj,-8);
+        $lj = dirname(__FILE__);
+        $qu=substr($lj,-27);
         $path =explode($qu,$lj);
         //dump($path['0']);
         $dir = $path['0'];
