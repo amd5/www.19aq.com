@@ -9,6 +9,7 @@ class Webhooks extends Controller
     {
         //echo shell_exec("ifconfig");
         echo "webhooksf</br>";
+        echo(popen('pwd'));
         error_reporting ( E_ALL );
         $dir = '/www/wwwroot/www.19aq.com/';//该目录为git检出目录
         $handle = popen('cd '.$dir.' && git pull 2>&1','r');
