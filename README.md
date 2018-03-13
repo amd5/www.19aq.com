@@ -689,7 +689,7 @@ http://www.thinkphp.cn/extend/764.html</br>
 </br>
 前台所有页面ajax请求 解决各页面卡的问题
 继承：如果IP地址为XXX禁止访问网站
-QQ
+Q
 文章评论
 rss
 数据库备份恢复
