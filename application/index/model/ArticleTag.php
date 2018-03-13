@@ -15,6 +15,12 @@ class ArticleTag extends Model
 	//首页标签列表
 	public function taglist(){
 		$result = self::select();
+		foreach ($result as $k => $v) {
+			# code...
+			$ls = $this -> qu_tag_num($v['tid']);
+			$result[$k]['tag_num'] = $ls;
+			// dump($result);
+		}
 		return $result;
 	}
 	
@@ -24,6 +30,15 @@ class ArticleTag extends Model
 		$result = self::where($where)->select();
 
 		return $result;
+	}
+
+	//统计每个标签里面有多少文章
+	public function qu_tag_num($id){
+		$result = self::where('tid',$id)->find();
+		$str = substr_count($result['gid'],',');
+		$str = $str - 1;
+		
+		return $str;
 	}
 
 }
