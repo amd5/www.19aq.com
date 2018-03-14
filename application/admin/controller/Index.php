@@ -173,6 +173,8 @@ class Index extends BaseController
 	public function article_edit($id)	//文章编辑
     {
 		if($this->request->isPost()){
+			// dump($_POST["tag"]);
+			$posttag = $_POST["tag"];
 			// $result = new Article();
 			// $result = $result->ArticleEdit($id);
 			$result = Article::where('id', $id)
@@ -183,6 +185,81 @@ class Index extends BaseController
 			'date' 		=> strtotime($_POST["datetime"]),
 			]);
 
+			//////////////////////////////////////////////////////////////////////////////////////////
+			//查询文章详情包含的标签
+			$where="find_in_set($id,gid)";
+			$tag_update    = ArticleTag::where($where)->select();
+			$_data = [];
+			//如果是修改
+			if(!empty($tag_update)){
+				foreach ($tag_update as $k => $v) {
+					# code...
+					// dump($v['gid']);
+					// echo "====";
+					// dump($v['tid']);
+					$arr = explode(",",$v['gid']);
+					$_data = array_filter($arr);
+					// dump($arr)
+					$aa = in_array($id,$_data);
+					// dump($aa);
+					// if (!) {
+					// 	# code...
+					// 	echo "包含";
+					// }else{
+					// 	echo "不包含";
+					// }
+					
+				}
+				// dump($_data);
+				
+				// echo "aaaa";
+				// dump($tag_update);
+				// echo "where";
+				// die;
+			}else{
+				//如果是新增标签
+				// dump($posttag);
+				$arr = array_filter(explode(",",$posttag));
+				// dump($arr);
+
+				// $where="find_in_set($arr,tagname)";
+				foreach ($arr as $k => $v) {
+					# code...
+					// dump($v);
+					$tag_a    = ArticleTag::where('tagname',$v)->select();
+					// dump($tag_a);
+					if ($tag_a) {
+						//如果数据库有这个标签就新增
+						# code...
+						foreach ($tag_a as $kk => $vv) {
+						$result = ArticleTag::where('tid',$vv['tid'])
+						->update([
+							'gid' 	=> $vv['gid'].$id.",",
+						]);
+
+						}
+					}else{
+						//如果数据库没有这个标签就新建
+
+					}
+					
+					
+					// if($tag_a){
+
+					// }
+					
+				}
+				// dump($tag_a);
+				
+
+
+				// die;
+				//如果新增标签，直接新增
+			}
+			
+			// 先提交过来，判断文章有多少个标签，更新全部标签
+			//////////////////////////////////////////////////////////////////////////////////////////
+
 			$update['username'] 		= Cookie('username');
 			$update['title']  			= $_POST["articletitle"] ."文章修改成功！";
 			$update['content']  		= $_POST["content"];
@@ -190,7 +267,7 @@ class Index extends BaseController
 	        $update['last_login_ip']	= $this->request->ip();
 	        $update['login_status']		= "5";
 	        Db::name("SystemLog")->insert($update);
-
+ 			
 			if($result){
 				$this->success("文章修改成功!");
 				

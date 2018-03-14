@@ -682,6 +682,14 @@ SELECT * from think_article_tag where FIND_IN_SET('1',gid)
 ## 2018-3-13 22:33:25
 完成首页右侧标签统计对应每个标签的文章数量
 
+## 2018-3-14 23:33:49
+数据库无标签的情况下    新增单个标签
+数据库无标签的情况下    新增多个标签
+数据库you标签的情况下   新增单个标签
+数据库you标签的情况下   新增多个标签
+删除一个标签
+删除多个标签
+
 http://www.thinkphp.cn/extend/764.html</br>
 
 >>>>>>> a5b3560b17a2af037cfa473b2da33e8a3237c7fb
