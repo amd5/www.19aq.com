@@ -52,6 +52,8 @@ class Index	extends Controller
     //没有加管理员权限检查
     public function index()
     {
+        // phpinfo();
+        // die;
         // $rss = new Rss('标题','内容','描述','./static/blog/rss.png');
         // $rss->AddItem("日志的标题","日志的地址","日志的摘要","2018-02-26"); 
         // $rss->Display();//输出RSS内容 
