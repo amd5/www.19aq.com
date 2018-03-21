@@ -26,6 +26,7 @@ use app\extra\rss\Rss;
 /*后台继承*/
 use app\admin\controller\BaseController;
 // use app\index\controller\Check;
+define('DB_HOST', 'localhost');
 
 class Index	extends Controller
 {
