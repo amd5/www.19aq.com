@@ -4,6 +4,7 @@ namespace app\api\controller;
 use think\Controller;
 /*载入第三方模块*/
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class Sendmail extends Controller
 {
@@ -53,10 +54,10 @@ class Sendmail extends Controller
 			$mail->IsHTML(true); 
 			$mail->Send();
 			echo 'email send Success';
-		} catch (phpmailerException $e) {
-		// }catch (Exception $e){
-			echo "email send Error：".$e->errorMessage();
+		}catch (Exception $e){
+			echo "Email send Error：".$mail->errorMessage();
 		}
+	}
 	}
     
 
