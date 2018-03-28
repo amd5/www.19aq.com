@@ -2,6 +2,7 @@
 namespace app\api\controller;
 
 use think\Controller;
+use think\Db;
 use app\api\model\User;
 /*其他第三方模块*/
 use app\extra\bitcoin\bitcoin;
@@ -16,14 +17,17 @@ class Demo extends Controller
 
     public function index()
     {
-        // echo "8";
-        dump(RPC_HOST);die;
-
+        echo "8";
+        // dump(RPC_HOST);die;
+        // $a = Db::table('think_link')->select();
+        // dump($a);
+        // die;
+        return $this->fetch();
 
     }
 
     public function array(){
-    	echo "string";
+    	echo "2";
     }
 
 
