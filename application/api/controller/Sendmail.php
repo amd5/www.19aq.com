@@ -58,7 +58,6 @@ class Sendmail extends Controller
 			echo "Email send Error：".$mail->errorMessage();
 		}
 	}
-	}
     
 
 }
