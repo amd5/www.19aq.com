@@ -10,7 +10,7 @@ class Sendmail extends Controller
 {
 	public function index()
 	{
-		// echo "string";
+		echo "string";
 		// $mail=new PHPMailer();
         // dump($mail);
 
