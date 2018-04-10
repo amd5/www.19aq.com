@@ -11,6 +11,7 @@
 namespace app\index\model;
 
 use think\Model;
+use think\Cache;
 use app\index\model\ArticleTag;
 
 class Article extends Model
@@ -108,9 +109,18 @@ class Article extends Model
         
 		return $result;
 	}
-
-	//首页-显示全部文章（带密码的除外）
+	//缓存-首页-显示全部文章（带密码的除外）
 	public function Articles(){
+		$cache = Cache::get('Articles');
+        if($cache == false){
+            $Articles   = $this->Articlesa();
+            Cache::set('Articles',$Articles,14000);
+            $cache = Cache::get('Articles');
+        }
+		return $cache;
+	}
+	//首页-显示全部文章（带密码的除外）
+	public function Articlesa(){
         // $result = self::with('tag')->
         $result = self::order('id','desc')
 		->where('password','=','')
@@ -125,8 +135,18 @@ class Article extends Model
 
 		return $result;
 	}
-	//首页-显示所有文章
+	//缓存-首页-显示所有文章
 	public function Articleall(){
+		$cache = Cache::get('Articleall');
+        if($cache == false){
+            $Articleall   = $this->Articlealls();
+            Cache::set('Articleall',$Articleall,14000);
+            $cache = Cache::get('Articleall');
+        }
+		return $cache;
+	}
+	//首页-显示所有文章
+	public function Articlealls(){
         $result = self::order('id','desc')
 		->paginate(15);
 
@@ -139,9 +159,18 @@ class Article extends Model
 
 		return $result;
 	}
-
-	//标签文章列表
+	//缓存-标签文章列表
 	public function tagArticle($tags){
+		$cache = Cache::get('tagArticle');
+        if($cache == false){
+            $tagArticle   = $this->tagArticlea($tags);
+            Cache::set('tagArticle',$tagArticle,14000);
+            $cache = Cache::get('tagArticle');
+        }
+		return $cache;
+	}
+	//标签文章列表
+	public function tagArticlea($tags){
 		// $result = self::all($tags,'',false);
 		$result = self::where('id','in',$tags)
 		->limit(15)
@@ -156,8 +185,18 @@ class Article extends Model
 
 		return $result;
 	}
-
+	//文章缓存
 	public function article($id){
+		$cache = Cache::get('article');
+        if($cache == false){
+            $article   = $this->articlea($id);
+            Cache::set('article',$article,14000);
+            $cache = Cache::get('article');
+        }
+		return $cache;
+	}
+	//文章
+	public function articlea($id){
 		$result = self::where('id','=',$id)->find();
 		//每次被访问增加阅读1
 		$view = self::where('id',$id)->setInc('views');

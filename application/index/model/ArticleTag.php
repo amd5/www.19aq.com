@@ -9,11 +9,22 @@
 namespace app\index\model;
 
 use think\Model;
+use think\Cache;
 
 class ArticleTag extends Model
-{	
-	//首页标签列表
+{
+	//缓存-首页标签列表
 	public function taglist(){
+		$cache = Cache::get('taglist');
+        if($cache == false){
+            $taglist   = $this->taglista($id);
+            Cache::set('taglist',$taglist,14000);
+            $cache = Cache::get('taglist');
+        }
+		return $cache;
+	}
+	//首页标签列表
+	public function taglista(){
 		$result = self::select();
 		foreach ($result as $k => $v) {
 			# code...
@@ -23,9 +34,18 @@ class ArticleTag extends Model
 		}
 		return $result;
 	}
-	
-	//查询文章详情所包含的标签
+	//缓存-查询文章详情所包含的标签
 	public function articlelist($id){
+		$cache = Cache::get('articlelist');
+        if($cache == false){
+            $articlelist   = $this->articlelista($id);
+            Cache::set('articlelist',$articlelist,14000);
+            $cache = Cache::get('articlelist');
+        }
+		return $cache;
+	}
+	//查询文章详情所包含的标签
+	public function articlelista($id){
 		$where="find_in_set($id,gid)";
 		$result = self::where($where)->select();
 

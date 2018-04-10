@@ -9,6 +9,7 @@
 namespace app\index\model;
 
 use think\Model;
+use think\Cache;
 use app\index\model\Article;
 
 class ArticleRecord extends Model
@@ -19,24 +20,40 @@ class ArticleRecord extends Model
         $this->wenz     = new Article;
         parent::__construct();
     }
-    
-	public function nian()
+    //缓存
+    public function nian(){
+        $cache = Cache::get('nian');
+        if($cache == false){
+            $nian   = $this->niana();
+            Cache::set('nian',$nian,14000);
+            $cache = Cache::get('nian');
+        }
+        return $cache;
+    }
+
+	public function niana()
     {
     	$nian = Article::order('days','desc')
         ->field('FROM_UNIXTIME(date,"%Y") as days,COUNT(*) as COUNT')
         ->GROUP('days')
         ->select();
-
         return $nian;
     }
-
-    public function yue()
+    public function yue(){
+        $cache = Cache::get('yue');
+        if($cache == false){
+            $yue   = $this->yuea();
+            Cache::set('yue',$yue,14000);
+            $cache = Cache::get('yue');
+        }
+        return $cache;
+    }
+    public function yuea()
     {
     	$yue = Article::order('days','desc')
         ->field('FROM_UNIXTIME(date,"%Y-%m") as days,COUNT(*) as COUNT')
         ->GROUP('days')
         ->select();
-
         return $yue;
     }
 
@@ -54,7 +71,6 @@ class ArticleRecord extends Model
             $ls = $this->wenz->qutag($datas,$value['id']);
             $result[$a]['tag_name'] = $ls;
         }
-
         return $result;
     }
     //归档页面-显示全部文章
@@ -70,8 +86,6 @@ class ArticleRecord extends Model
             $ls = $this->wenz->qutag($datas,$value['id']);
             $result[$a]['tag_name'] = $ls;
         }
-
-
         return $result;
     }
 

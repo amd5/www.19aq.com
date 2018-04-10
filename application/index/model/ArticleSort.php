@@ -9,6 +9,7 @@
 namespace app\index\model;
 
 use think\Model;
+use think\Cache;
 
 class ArticleSort extends Model
 {
@@ -17,8 +18,18 @@ class ArticleSort extends Model
 		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
 		return $this->hasMany('Article','sortid','sid');
 	}
-
-	public function Sortlist()
+    //缓存-分类列表
+    public function Sortlist(){
+        $cache = Cache::get('Sortlist');
+        if($cache == false){
+            $Sortlist   = $this->Sortlista();
+            Cache::set('Sortlist',$Sortlist,14000);
+            $cache = Cache::get('Sortlist');
+        }
+        return $cache;
+    }
+    //分了列表
+	public function Sortlista()
     {
     	$articlesort = self::withCount('sort')
         ->where('status','=','1')
