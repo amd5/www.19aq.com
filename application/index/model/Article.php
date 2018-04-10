@@ -110,17 +110,17 @@ class Article extends Model
 		return $result;
 	}
 	//缓存-首页-显示全部文章（带密码的除外）
-	public function Articles(){
-		$cache = Cache::get('Articles');
-        if($cache == false){
-            $Articles   = $this->Articlesa();
-            Cache::set('Articles',$Articles,14000);
-            $cache = Cache::get('Articles');
-        }
-		return $cache;
-	}
+	// public function Articles(){
+	// 	$cache = Cache::get('Articles');
+ //        if($cache == false){
+ //            $Articles   = $this->Articlesa();
+ //            Cache::set('Articles',$Articles,14000);
+ //            $cache = Cache::get('Articles');
+ //        }
+	// 	return $cache;
+	// }
 	//首页-显示全部文章（带密码的除外）
-	public function Articlesa(){
+	public function Articles(){
         // $result = self::with('tag')->
         $result = self::order('id','desc')
 		->where('password','=','')
@@ -136,17 +136,17 @@ class Article extends Model
 		return $result;
 	}
 	//缓存-首页-显示所有文章
-	public function Articleall(){
-		$cache = Cache::get('Articleall');
-        if($cache == false){
-            $Articleall   = $this->Articlealls();
-            Cache::set('Articleall',$Articleall,14000);
-            $cache = Cache::get('Articleall');
-        }
-		return $cache;
-	}
+	// public function Articleall(){
+	// 	$cache = Cache::get('Articleall');
+ //        if($cache == false){
+ //            $Articleall   = $this->Articlealls();
+ //            Cache::set('Articleall',$Articleall,14000);
+ //            $cache = Cache::get('Articleall');
+ //        }
+	// 	return $cache;
+	// }
 	//首页-显示所有文章
-	public function Articlealls(){
+	public function Articleall(){
         $result = self::order('id','desc')
 		->paginate(15);
 
