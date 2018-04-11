@@ -187,11 +187,11 @@ class Article extends Model
 	}
 	//文章缓存
 	public function article($id){
-		$cache = Cache::get('article');
+		$cache = Cache::get('article'.$id);
         if($cache == false){
             $article   = $this->articlea($id);
-            Cache::set('article',$article,14000);
-            $cache = Cache::get('article');
+            Cache::set('article'.$id,$article,14000);
+            $cache = Cache::get('article'.$id);
         }
 		return $cache;
 	}
