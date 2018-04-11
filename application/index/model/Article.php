@@ -161,11 +161,11 @@ class Article extends Model
 	}
 	//缓存-标签文章列表
 	public function tagArticle($tags){
-		$cache = Cache::get('tagArticle');
+		$cache = Cache::get('tagArticle'.$tags);
         if($cache == false){
             $tagArticle   = $this->tagArticlea($tags);
-            Cache::set('tagArticle',$tagArticle,14000);
-            $cache = Cache::get('tagArticle');
+            Cache::set('tagArticle'.$tags,$tagArticle,14000);
+            $cache = Cache::get('tagArticle'.$tags);
         }
 		return $cache;
 	}

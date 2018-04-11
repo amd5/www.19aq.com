@@ -36,11 +36,11 @@ class ArticleTag extends Model
 	}
 	//缓存-查询文章详情所包含的标签
 	public function articlelist($id){
-		$cache = Cache::get('articlelist');
+		$cache = Cache::get('articlelist'.$id);
         if($cache == false){
             $articlelist   = $this->articlelista($id);
-            Cache::set('articlelist',$articlelist,14000);
-            $cache = Cache::get('articlelist');
+            Cache::set('articlelist'.$id,$articlelist,14000);
+            $cache = Cache::get('articlelist'.$id);
         }
 		return $cache;
 	}
