@@ -197,7 +197,15 @@ class Article extends Model
 	}
 	//文章
 	public function articlea($id){
-		$result = self::where('id','=',$id)->find();
+		if(Cookie('username') !== "c32"){
+			$data = self::where('id','=',$id)->where('password','')->find();
+			if (empty($data)) {
+				die('非管理员禁止访问！');
+			}
+			$result = $data;
+		}else{
+			$result = self::where('id','=',$id)->find();
+		}
 		//每次被访问增加阅读1
 		$view = self::where('id',$id)->setInc('views');
 		return $result;
