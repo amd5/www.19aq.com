@@ -35,10 +35,10 @@ class Login extends Controller
 			
 			if($passok == true){
 				//判断验证码是否正确
-				$verify_code = $_POST['captcha'];
-				if(!captcha_check($verify_code)){
-					$this->error('验证码错误');
-				}
+				// $verify_code = $_POST['captcha'];
+				// if(!captcha_check($verify_code)){
+				// 	$this->error('验证码错误');
+				// }
 				//判断账号是否被冻结
 				if($result["status"]=="y"){
 					$data["status"] = "true";

@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 
 //use app\admin\model\User as UserModel;  //载入模型 并设置别名
-use app\admin\model\Article;	//加载文章模块
+use app\admin\model\Article;
 use app\admin\model\ArticleTag; //加载文章分类模块
 use app\admin\model\ArticleSort; //加载文章分类模块
 use app\admin\model\ManageUser;	//加载管理员模块
@@ -38,6 +38,10 @@ class Index extends BaseController
         parent::__construct();
     }
 	// private $accessKeyId = 'LTAIJ7jxMyfxE9nw';
+    public function main(){
+    	return $this->fetch();
+    }
+
 	public function index()
     {
 		// $user = Cookie::has('username');
@@ -50,7 +54,7 @@ class Index extends BaseController
 			$this->redirect('./admin/login');
 		}else
 		{
-			echo "you Cookie";
+			// echo "you Cookie";
 			$result = ManageUser::where('id', $this->user)->find();
 			// dump($result);
 			$this->assign('result', $result);
@@ -81,14 +85,6 @@ class Index extends BaseController
         // return $this->display();
     }
 	
-	public function welcome()
-    {
-    	// $user = Session::has('username');
-    	$result = ManageUser::where('id', $this->user)->find();
-		$this->assign('result', $result);
-        return $this->fetch();
-    }
-	
 	public function admin_permission()
     {
 		$db1 = db('manage_user');
@@ -105,26 +101,10 @@ class Index extends BaseController
 		$this->assign('result', $result);
 		return $this->fetch();
     }
-
-
-    public function aces()
-    {
-
-    	$user = Article::with('pcs')->select([1,2,3]);
-    	$this->assign('result', $user);
-    	return $this->fetch();
-
-    }
-
-
-
-
 	
-	public function article_list()	//文章列表页           toJson();
+	public function article_list()
     {
-		$result = new Article();
-		$result = $result->ArticleList();
-		$this->assign('result', $result);
+    	// dump(input('post.'));die;
 		return $this->fetch();
     }
 	
@@ -138,20 +118,24 @@ class Index extends BaseController
 	
 	public function article_add()	//新建文章
     {
+    	// dump($_POST);die;
 		if($this->request->isPost()){
-			//dump(input('post.'));  //输出页面post过来的数据
-			// $result = new Article();
-			// $result = $result->ArticleAdd();
-			$data['title'] 		= $_POST["articletitle"];
-			$data['date'] 		= date(time());
+			$data['id']     = $_POST["id"];
+			$data['title'] 		= $_POST["tiele"];
+			$data['date'] 		= empty($_POST["time"]) ? date(time()) : $_POST["time"];
 			$data['content'] 	= $_POST["content"];
-			$data['sortid'] 	= $_POST["brandclass"];
+			$data['sortid'] 	= $_POST["sort"];
 			$data['excerpt'] 	= $this->request->ip();
 			$data['status'] 	= '1';
-			$result = Article::insert($data);
+
+			if (empty($_POST["id"])) {
+				$result = Article::insert($data);
+			}else{
+				$result = Article::where('id',$data['id'])->update($data);
+			}
 
 			$update['username'] 		= session('username');
-			$update['title']  			= $data['title'] ."-文章发布成功！";
+			$update['title']  			= $_POST["tiele"] ."-文章发布成功！";
 			$update['content']  		= $_POST["content"];
 	        $update['last_login_time']	= date(time());
 	        $update['last_login_ip']	= $this->request->ip();
@@ -169,329 +153,31 @@ class Index extends BaseController
 		}
 
     }
-	
-	public function article_edit($id)	//文章编辑
-    {
-		if($this->request->isPost()){
-			// dump($_POST["tag"]);
-			$posttag = $_POST["tag"];
-			// $result = new Article();
-			// $result = $result->ArticleEdit($id);
-			$result = Article::where('id', $id)
-			->update([
-			'title' 	=> $_POST["articletitle"],
-			'content' 	=> $_POST["content"],
-			'sortid'	=> $_POST["brandclass"],
-			'date' 		=> strtotime($_POST["datetime"]),
-			]);
 
-			//////////////////////////////////////////////////////////////////////////////////////////
-			//查询文章详情包含的标签
-			$where="find_in_set($id,gid)";
-			$tag_update    = ArticleTag::where($where)->select();
-			$_data = [];
-			//如果是修改
-			if(!empty($tag_update)){
-				foreach ($tag_update as $k => $v) {
-					# code...
-					// dump($v['gid']);
-					// echo "====";
-					// dump($v['tid']);
-					$arr = explode(",",$v['gid']);
-					$_data = array_filter($arr);
-					// dump($arr)
-					$aa = in_array($id,$_data);
-					// dump($aa);
-					// if (!) {
-					// 	# code...
-					// 	echo "包含";
-					// }else{
-					// 	echo "不包含";
-					// }
-					
-				}
-				// dump($_data);
-				
-				// echo "aaaa";
-				// dump($tag_update);
-				// echo "where";
-				// die;
-			}else{
-				//如果是新增标签
-				// dump($posttag);
-				$arr = array_filter(explode(",",$posttag));
-				// dump($arr);
-
-				// $where="find_in_set($arr,tagname)";
-				foreach ($arr as $k => $v) {
-					# code...
-					// dump($v);
-					$tag_a    = ArticleTag::where('tagname',$v)->select();
-					// dump($tag_a);
-					if ($tag_a) {
-						//如果数据库有这个标签就新增
-						# code...
-						foreach ($tag_a as $kk => $vv) {
-						$result = ArticleTag::where('tid',$vv['tid'])
-						->update([
-							'gid' 	=> $vv['gid'].$id.",",
-						]);
-
-						}
-					}else{
-						//如果数据库没有这个标签就新建
-
-					}
-					
-					
-					// if($tag_a){
-
-					// }
-					
-				}
-				// dump($tag_a);
-				
-
-
-				// die;
-				//如果新增标签，直接新增
-			}
-			
-			// 先提交过来，判断文章有多少个标签，更新全部标签
-			//////////////////////////////////////////////////////////////////////////////////////////
-
-			$update['username'] 		= Cookie('username');
-			$update['title']  			= $_POST["articletitle"] ."文章修改成功！";
-			$update['content']  		= $_POST["content"];
-	        $update['last_login_time']	= time();
-	        $update['last_login_ip']	= $this->request->ip();
-	        $update['login_status']		= "5";
-	        Db::name("SystemLog")->insert($update);
- 			
-			if($result){
-				$this->success("文章修改成功!");
-				
-			}else{
-				$this->error("内容没有更新!");
-			}
-		} else {
-			$result = Article::where('id', $id)
-			->select();
-			//查询所有分类
-			$sort   = ArticleSort::select();
-			
-			//查询文章详情包含的标签
-			$where="find_in_set($id,gid)";
-			$tagname    = ArticleTag::where($where)->select();
-			foreach ($tagname as $key => $value) {
-				# code...
-				$tag =$tag.$value['tagname'].',';
-			}
-
-			$this->assign('result', $result);
-			$this->assign('sortname', $sort);
-			$this->assign('tag', $tag);
-			return $this->fetch();
-
-		}
-
-    }
-	
-	public function article_del()	//文章删除
-    {
-        if($this->request->isAjax()){
-			$id		= $_POST['id'];
-			$action = $_POST['action'];
-			//-1 => '删除', 0 => '隐藏', 1 => '正常', 2 => '待审核'
-			if($action == "-1"){
-				$result = Article::where('id', $id)->update(['status' => '-1']);
-				if($result){$this->success("删除成功!");}else{$this->error("删除失败");}
-			}elseif($action == "0"){
-				$result = Article::where('id', $id)->update(['status' => '0']);
-				if($result){$this->success("隐藏成功!");}else{$this->error("隐藏失败");}
-			}elseif($action == "1"){
-				$result = Article::where('id', $id)->update(['status' => '1']);
-				if($result){$this->success("显示成功!");}else{$this->error("显示失败");}
-			}
-			return $this->fetch();
-			
-		}else{
-			return "请勿非法操作!";
-		}
-    }
-	
-	public function article_del_hide()	//文章显示 文章隐藏
-    {
-        echo ("暂时还没写");
-    }
-	
-	public function article_sort()	//分类列表
-    {
-		$result = ArticleSort::order('sid ASC')
-		->select();
-        $this->assign('result', $result);
-        return $this->fetch();
-    }
-	
-	public function article_sort_add()	//添加分类
-    {
-		if($this->request->isPost()){
-			$result = new ArticleSort();
-			$result = $result->ArticleSortAdd();
-			if($result){
-				$this->success("添加成功!");
-				
-			}else{
-				$this->error("添加失败");
-			}
-		}else {
-			return $this->fetch();
-		}
-		
-    }
-	
-	public function article_sort_edit($id)	//编辑分类
-    {
-		if($this->request->isPost()){
-			$result = new ArticleSort();
-			$result = $result->ArticleSortEdit($id);
-			if($result){
-				$this->success("修改分类成功!");
-				
-			}else{
-				$this->error("内容没有更新!");
-			}	
-
-		} else {
-			
-			$result = ArticleSort::get($id);
-			return view('article_sort_edit',['result'=>$result]);
-		}	
-
-    }
-	
-	public function article_sort_del()	//删除分类
-    {
-		$id		= $_POST['id'];
-		if($this->request->isAjax()){
-			$result = ArticleSort::where('sid', $id)->delete();
-			if($result){
-				$this->success("删除成功!");
-				
-			}else{
-				$this->error("删除失败");
-				// $this->getError();
-			}
-			
-		}else{
-			return "请勿非法操作!";
-		}
-    }
-	
-	public function article_sort_hide()	//隐藏分类
-    {
-		if($this->request->isAjax()){
-			
-			$id		= $_POST['id'];
-			$action = $_POST['action'];
-			//-1 => '删除', 0 => '隐藏', 1 => '正常', 2 => '待审核'
-			if($action == "0"){
-				$result = ArticleSort::where('sid', $id)->update(['status' => '0']);
-				if($result){$this->success("隐藏成功!");}else{$this->error("隐藏失败");}
-			}elseif($action == "1"){
-				$result = ArticleSort::where('sid', $id)->update(['status' => '1']);
-				if($result){$this->success("显示成功!");}else{$this->error("显示失败");}
-			}
-			
-			
-			
-			return $this->fetch();
-		}else{
-			return "请勿非法操作!";
-		}
-
-    }
-	
-	public function article_sort_status()	//状态更改
-    {
-		// // dump ($_POST['id']);
-		// $result = ArticleSort::where('sid', $_POST['id'])->where('status', '1')->select();
-		// // dump($result);
-		// if($result == 1){
-			// $jinyong = ArticleSort::where('sid', $_POST['id'])->update(['status' => '0']);
-				// if($jinyong){
-					// $this->success("停用成功!");
-					
-				// }else{
-					// $this->error("停用失败");
-				// }
-		// }else{
-			// $qiyong = ArticleSort::where('sid', $_POST['id'])->update(['status' => '1']);
-				// if($qiyong){
-					// $this->success("启用成功!");
-					
-				// }else{
-					// $this->error("启用失败");
-				// }
-		// }
-		echo ("1111");
-    }
-	
-	
-	public function picture_add()
-    {
-    	// $result = Article::get(1);
-    	$result = Article::order('id desc')
-    	->where('status=1 and (sortid=1 or views=49 or checked="y")')
-    	->select();
-		dump ($result);
-		// $this->assign('result', $result);
-        // return $this->fetch();
-    }
-	
-	public function product_add()
+	public function sort_list()	//分类列表
     {
         return $this->fetch();
     }
 	
-	public function member_add()
+	public function sort_add()
     {
-        return $this->fetch();
+    	if($this->request->isPost()){
+			$data['sid']     		= $_POST["sid"];
+			$data['sortname'] 		= $_POST["SortName"];
+			$data['alias'] 			= $_POST["SortAlias"];
+			$data['description'] 	= $_POST["SortDesc"];
+			$data['status'] 		= '1';
+
+			if (empty($_POST["sid"])) {
+				$result = ArticleSort::insert($data);
+			}else{
+				$result = ArticleSort::where('sid',$data['sid'])->update($data);
+			}
+		}
+
+		return $this->fetch();
     }
 	
-	public function ip()
-    {
-    	$ip=new IpLocation();
-    	echo "</br>";
-    	//返回IP地址
-		// return $ip->get_client_ip();
-		// dump($ip->get_client_ip());
-		//返回所在区域
-
-		dump( $ip->getlocation('219.139.33.7'));
-        // return $this->fetch();
-    }
-	
-	
-	public function article1()
-    {
-    	$config = [
-		'host' => '127.0.0.1',
-		'port' => 6379,
-		'password' => '',
-		'select' => 0,
-		'timeout' => 0,
-		'expire' => 0,
-		'persistent' => false,
-		'prefix' => '',
-		];
-
-		$Redis=new Redis($config);
-		$Redis->set("blog","test");
-		echo $Redis->get("blog");
-        // return $this->fetch();
-    }
-
 	public function yunsms()	//融联云通信
     {
 		$code = "666666";
@@ -601,19 +287,6 @@ class Index extends BaseController
         return $this->fetch();
     }
 	
-	public function charts_2()
-    {
-		$user = UserModel::get($id);
-		echo $user['id'] . '<br/>';
-		echo $user['username'] . '<br/>';
-		echo $user['phone'] . '<br/>';
-		echo $user['email'] . '<br/>';
-		echo $user['role'] . '<br/>';
-		echo $user['status'] . '<br/>';
-		echo $user['description'] . '<br/>';
-		echo date('Y/m/d', $user['last_login_time']) . '<br/>';
-        return $this->fetch();
-    }
 	
 	public function charts_3()
     {
@@ -690,11 +363,6 @@ class Index extends BaseController
 	
 	public function system_log()
     {
-    	$result = SystemLog::order('id desc')
-		->select();
-		// dump ($result);
-		// die;
-        $this->assign('result', $result);
         return $this->fetch();
     }
 	
