@@ -43,7 +43,7 @@ class Search extends Controller
         // echo "</br>Search</br>";
         // dump($request->param('key'));
         $key = $request->param('key');
-        // dump($key);
+        // dump($key);die;
         $result = $this->wenz->search($key);
         $page = $result->render();
 

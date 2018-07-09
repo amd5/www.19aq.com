@@ -9,6 +9,7 @@
 namespace app\admin\model;
 
 use think\Db;
+use think\Cache;
 use think\Model;
 use think\Request;
 use think\Controller;
@@ -36,11 +37,30 @@ class Article extends Model
 
 
 	//后台文章列表
-	public function ArticleList()
+	public function ArticleList($page,$limit,$key)
     {
-    	//使用关联预载入，解决语句N+1的查询问题
-		$result = self::with('sort,admin')->select();
-		return $result;
+    	$cache = Cache::get('navs'.$page.$limit.$key);
+        if($cache == false){
+	    	//使用关联预载入，解决语句N+1的查询问题
+			$result = self::with('sort,admin')
+
+			->whereOr('title&content','like','%'.$key.'%')
+
+			->page($page)
+	        ->limit($limit)
+	        ->order('id desc')
+	        ->select();
+
+			//增加统计条数
+			$count = self::count();
+			foreach ($result as $key => $value) {
+				$value['id_count'] = $count;
+				$value['date'] = date('Y-m-s h:i:s',$value['date']);
+			}
+		    Cache::set('navs'.$page.$limit.$key,$result,60);
+            $cache = Cache::get('navs'.$page.$limit.$key);
+        }
+        return $cache;
     }
 	
 	public function Article($id)

@@ -27,35 +27,25 @@ class ArticleSort extends Model
 	public function ArticleSort()
 	{
 		$result = ArticleSort::order('sid', 'asc')->select();
+		foreach ($result as $key => $value) {
+			switch ($value['status']) {
+				case '1':$value['status'] = '正常';break;
+				case '2':$value['status'] = '已删除';break;
+				default:
+					# code...
+					break;
+			}
+		}
 		return $result;
 	}
 	
 	public function ArticleSortAdd()
     {
-		$data['sortname']    = $_POST["sort_name"];			//分类名称
-		$data['alias']       = $_POST["sort_alias"];		//分类别名
-		$data['template']    = $_POST["sort_template"];		//分类模板
-		$data['description'] = $_POST["description"];		//分类描述
+		$data['sortname']    = $_POST["SortName"];			//分类名称
+		$data['alias']       = $_POST["SortAlias"];		//分类别名
+		$data['description'] = $_POST["SortDesc"];		//分类描述
 		$result = ArticleSort::insert($data);
 			
-		return $result;
-    }
-	
-	public function ArticleSortEdit($id)
-    {
-		$data['sortname']    = $_POST["sort_name"];			//分类名称
-		$data['alias']       = $_POST["sort_alias"];		//分类别名
-		$data['template']    = $_POST["sort_template"];		//分类模板
-		$data['description'] = $_POST["description"];		//分类描述
-		// dump($data);
-		$result = ArticleSort::where('sid', $id)->update($data);
-		
-		return $result;
-    }
-	
-	public function ArticleSortDel()
-    {
-		$result = ArticleSort::order('sid', 'asc')->select();
 		return $result;
     }
 	

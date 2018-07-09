@@ -48,7 +48,7 @@ class Sort extends Controller
             $result = $this->wenz->SortArticleALL($sid);
             $page = $result->render();
         }
-
+        // dump($sid);die;
         // $sort = 
 
         //文章标签

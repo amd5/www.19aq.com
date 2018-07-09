@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{$time}</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="{:Url('/')}static/layui/css/layui.css"  media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+  <style type="text/css">
+  /*.layui-body{overflow-y: scroll;}*/
+  /*body{overflow-y: scroll;}*/
+  </style>
+</head>
+<body> 
+ 
+<!-- <div class="demoTable">
+  客户编号：
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload">搜索</button>
+  <button class="layui-btn layui-btn-normal" data-type="export">导出</button>
+</div> -->
+
+ 
+<table class="layui-hide" id="sort_list" lay-filter="sort_list"></table> 
+
+<script type="text/html" id="barDemo">
+  <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
+</script>
+
+<div class="layui-inline">
+  <a class="layui-btn layui-btn-normal addSort_btn">添加分类</a>
+</div>
+
+<script src="{:Url('/')}static/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="{:Url('/')}static/js/sortList.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  
+  //方法级渲染
+  table.render({
+    elem: '#sort_list'
+    ,url: '../json/sort_list.html'
+    ,cols: [[
+      {checkbox: true, fixed: true}
+      ,{field:'sid', title: '分类ID', sort: true, width:80, align: 'center'}
+      ,{field:'sortname', title: '分类名称', sort: true, width:120, align: 'center'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+      ,{field:'alias', title: '分类别名', width:150, align: 'center'}
+      ,{field:'description', title: '分类描述', width:200, align: 'center'}
+      ,{field:'status', title: '分类状态', width:100, align: 'center'}
+      ,{field:'ar_heji', title: '操作', align: 'center', width:100, toolbar: '#barDemo'} //单元格内容水平居中
+      // ,{title: '操作', width:170, templet:'#barDemo',fixed:"right",align:"center"}
+    ]]
+    ,id: 'testReload'
+    // ,page: true
+    // ,limit: 15
+    // ,height: 315
+  });
+  
+  var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+      
+      //执行重载
+      table.reload('testReload', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+            id: demoReload.val()
+          }
+        }
+      });
+    }
+  };
+  
+  // $('.demoTable .layui-btn').on('click', function(){
+  //   var type = $(this).data('type');
+  //   active[type] ? active[type].call(this) : '';
+  // });
+
+  // $('.demoTable .layui-btn-normal').click(function(){
+  //   var demoReload = $('#demoReload');
+  //   // id: demoReload.val()
+  //   url = '../execl/xls?time=month&id='+ demoReload.val()
+  //   window.open(url);
+  //   });
+
+  //添加分类
+    // function addsort(edit){
+    //     var index = layer.open({
+    //         title : "添加分类",
+    //         type : 2,
+    //         area : ["300px","385px"],
+    //         content : "sort_add.html",
+    //         success : function(layero, index){
+    //             var body = $($(".layui-layer-iframe",parent.document).find("iframe")[0].contentWindow.document.body);
+    //             if(edit){
+
+    //                 // body.find(".linkLogo").css("background","#fff");
+    //                 // body.find(".linkLogoImg").attr("src",edit.logo);
+    //                 body.find(".sid").val(edit.sid);
+    //                 body.find(".SortName").val(edit.sortname);
+    //                 body.find(".SortAlias").val(edit.alias);
+    //                 body.find(".SortDesc").val(edit.description);
+    //                 // body.find(".showAddress").prop("checked",edit.showAddress);
+    //                 table.render();
+    //             }
+    //             setTimeout(function(){
+    //                 layui.layer.tips('点击此处返回友链列表', '.layui-layer-setwin .layui-layer-close', {
+    //                     tips: 3
+    //                 });
+    //             },500)
+    //         }
+    //     })
+    // };
+    // $(".addsort_btn").click(function(){
+    //     addsort();
+    // });
+
+    // //列表操作
+    // table.on('tool(sort_list)', function(obj){
+    //     var layEvent = obj.event,
+    //         data = obj.data;
+
+    //     if(layEvent === 'edit'){ //编辑
+    //         addsort(data);
+    //     }
+    // });
+
+});
+</script>
+
+</body>
+</html>

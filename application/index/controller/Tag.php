@@ -42,25 +42,16 @@ class Tag extends Controller
 
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
-        // dump($request->param('name'));
-        // echo "=======================";
-        // $data = ArticleTag::where('tagname',$key)->select();
-        $data = ArticleTag::where('tagname',$key)->find();
-        $body = $data['gid'];
-        //去掉最后一个字符
-        $str  = substr($body,0,strlen($body)-1); 
-        //去掉第一个字符
-        $bo   = substr($str,1);
-        //以逗号分割数据为数组
-        // $doh  = explode(',',$bo);
-        // dump($data);die;
-        
+        $data = ArticleTag::where('tagname',$key)->select();
+
+        foreach ($data as $key => $value) {
+            $tid = $tid.",";
+            $tid = $tid.$value['tid'];
+        }
+        $tid = substr($tid,1);
         //文章列表
-        $result = $this->wenz->tagArticle($bo);
+        $result = $this->wenz->tagArticle($tid);
         $page   = $result->render();
-
-        // dump($tagname);die;
-
 
         //标签列表
         $tag =$this->tag->taglist();

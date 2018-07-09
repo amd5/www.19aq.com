@@ -127,7 +127,8 @@ class Index	extends Controller
         $sort   = $this->sort->sortname($result['sortid']);
 
         //文章详情标签显示
-        $tag =$this->tag->articlelist($id);
+        // dump($id);die;
+        $tag =$this->tag->articletag($id);
 
         $this->assign('tag', $tag);
         $this->assign('sort', $sort);
@@ -136,12 +137,6 @@ class Index	extends Controller
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
 
-    public function test()
-    {
-        $result = $this->wenz->a();
-        dump($result);
-        // return $this->fetch();
-    }
 
 	
 }

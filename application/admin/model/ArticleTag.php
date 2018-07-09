@@ -18,11 +18,10 @@ use think\Controller;
 
 class ArticleTag extends Model
 {
-	public function index()
+	public function article_tag($id)
     {
+    	$result = self::where('tid',$id)->select();
 		return $result;
     }
-
-
 	
 }
