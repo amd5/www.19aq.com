@@ -16,18 +16,12 @@ class Link extends Model
 	public function links(){
 		$cache = Cache::get('links');
         if($cache == false){
-            $links   = $this->linksa();
+            $links = Link::order('id','asc')
+            ->where('hide','n')
+            ->select();
             Cache::set('links',$links,140000);
             $cache = Cache::get('links');
         }
         return $cache;
 	}
-	public function linksa(){
-    	$links = Link::order('id','asc')
-    	->where('hide','n')
-        ->select();
-
-        return $links;
-    }
-
 }

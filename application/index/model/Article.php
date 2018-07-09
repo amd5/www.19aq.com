@@ -22,193 +22,87 @@ class Article extends Model
     // 定义自动完成的属性
     protected $insert = ['status' => 1];
     
-	// status获取器
- //    public function getStatusAttr($value,$data){
-	// $status = [-1 =>'删除',0 =>'隐藏',1 => '正常',2 =>'待审核'];
-	// return $status[$data['status']];
-	// }
-	
 	//使用文章表sortid关联sort分类表的sid
-	public function sort(){
-		return $this->hasOne('ArticleSort','sid','sortid');
-		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
-	}
-
-	public function tag(){
-		// $result = ArticleTag::select();
-		return $this->hasMany('ArticleTag','gid');
-		// return $result;
-		//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
-	}
-
-	// public function indextag(){
-	// 	$gid = '34';
-	// 	$data = ArticleTag::select();
-	// 	$tags = new Article;
-	// 	$tagss = $tags->qutag($data,$gid);
-	// 	$ls = $this -> qutag($data,$gid);
-
-	// 	return $ls;
+	// public function sort(){
+	// 	return $this->hasOne('ArticleSort','sid','sortid');
+	// 	//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
 	// }
 
-	//根据文章取文章标签
-	// public function qutag($data,$gid)
-	// {
-	// 	if(is_array($data) && !empty($data)){
-	// 		$_data = [];
-	// 		foreach($data as $a){
-	// 			if(!empty($a['gid'])){
-	// 				$b = substr($a['gid'],1);
-	// 				$b = substr($b,0,-1);
-	// 				$c = explode(',',$b);
-	// 				foreach($c as $d){
-	// 					if($d == $gid){
-	// 						array_push($_data,$a['tagname']);
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 		return $_data;
-	// 		// dump($_data);
-	// 	}
-
+	// public function tag(){
+	// 	return $this->hasMany('ArticleTag','gid');
+	// 	//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
 	// }
 
 	//分类页面--文章列表  不是管理员显示没有密码的文章
 	public function SortArticlelist($sid){
-		// $result = self::with('sort,tag')
 		$result = self::order('id','desc')
-        // ->where('password','=','')
+        ->where('password','=','')
         ->where('sortid','=',$sid)
         ->limit(15)
         ->paginate();
-
-        //遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
-		// $datas = ArticleTag::select();
-		// foreach ($result as $a => $value) {
-		// 	$ls = $this -> qutag($datas,$value['id']);
-		// 	$result[$a]['tag_name'] = $ls;
-		// }
-
+        $result = $this->tag($result);
 		return $result;
 	}
 
 	//分类页面--文章列表  管理员显示全部文章
-	public function SortArticleALL($sid){
-		$result = self::where('sortid','=',$sid)
-        ->order('id','desc')
-        ->limit(15)
-        ->paginate();
-
-        //遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
-		$datas = ArticleTag::select();
-		foreach ($result as $a => $value) {
-			$ls = $this -> qutag($datas,$value['id']);
-			$result[$a]['tag_name'] = $ls;
-		}
-        
-		return $result;
-	}
-	//缓存-首页-显示全部文章（带密码的除外）
-	// public function Articles(){
-	// 	$cache = Cache::get('Articles');
- //        if($cache == false){
- //            $Articles   = $this->Articlesa();
- //            Cache::set('Articles',$Articles,14000);
- //            $cache = Cache::get('Articles');
- //        }
-	// 	return $cache;
+	// public function SortArticleALL($sid){
+	// 	$result = self::where('sortid','=',$sid)
+ //        ->order('id','desc')
+ //        ->limit(15)
+ //        ->paginate();
+	// 	return $result;
 	// }
+
 	//首页-显示全部文章（带密码的除外）
-	public function Articles(){
-        // $result = self::with('tag')->
+	public function Article_list(){
         $result = self::order('id','desc')
 		->where('password','=','')
 		->paginate(15);
-
-		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
-		// $datas = ArticleTag::select();
-		// foreach ($result as $a => $value) {
-		// 	$ls = $this -> qutag($datas,$value['id']);
-		// 	$result[$a]['tag_name'] = $ls;
-		// }
-
+		$result = $this->tag($result);
 		return $result;
 	}
-	//缓存-首页-显示所有文章
-	// public function Articleall(){
-	// 	$cache = Cache::get('Articleall');
- //        if($cache == false){
- //            $Articleall   = $this->Articlealls();
- //            Cache::set('Articleall',$Articleall,14000);
- //            $cache = Cache::get('Articleall');
- //        }
-	// 	return $cache;
-	// }
-	//首页-显示所有文章
-	public function Articleall(){
-        $result = self::order('id','desc')
-		->paginate(15);
 
-		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
-		$datas = ArticleTag::select();
-		foreach ($result as $a => $value) {
-			$ls = $this -> qutag($datas,$value['id']);
-			$result[$a]['tag_name'] = $ls;
-		}
-
-		return $result;
-	}
 	//缓存-标签文章列表
 	public function tagArticle($tags){
 		$cache = Cache::get('tagArticle'.$tags);
         if($cache == false){
-            $tagArticle   = $this->tagArticlea($tags);
-            Cache::set('tagArticle'.$tags,$tagArticle,14000);
+            $result = self::where('id','in',$tags)
+			->limit(15)
+			->paginate();
+			$result = $this->tag($result);
+            Cache::set('tagArticle'.$tags,$result,14000);
             $cache = Cache::get('tagArticle'.$tags);
         }
 		return $cache;
 	}
-	//标签文章列表
-	public function tagArticlea($tags){
-		// $result = self::all($tags,'',false);
-		$result = self::where('id','in',$tags)
-		->limit(15)
-		->paginate();
-		
-		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
-		$datas = ArticleTag::select();
-		foreach ($result as $a => $value) {
-			$ls = $this -> qutag($datas,$value['id']);
-			$result[$a]['tag_name'] = $ls;
-		}
 
-		return $result;
-	}
-	//文章缓存
-	public function article($id){
-		$cache = Cache::get('article'.$id);
-        if($cache == false){
-            $article   = $this->articlea($id);
-            Cache::set('article'.$id,$article,14000);
-            $cache = Cache::get('article'.$id);
-        }
-		return $cache;
-	}
 	//文章
-	public function articlea($id){
-		if(Cookie('username') !== "c32"){
-			$data = self::where('id','=',$id)->where('password','')->find();
-			if (empty($data)) {
-				die('非管理员禁止访问！');
+	public function article($id){
+		$result = Cache::get('article'.$id);
+        if($result == false){
+			if(Cookie('username') !== "c32"){
+				$data = self::where('id','=',$id)->where('password','')->find();
+				if (empty($data)) {
+					die('非管理员禁止访问！');
+				}
+				$result = $data;
+			}else{
+				$result = self::where('id','=',$id)->find();
 			}
-			$result = $data;
-		}else{
-			$result = self::where('id','=',$id)->find();
-		}
-		//每次被访问增加阅读1
-		$view = self::where('id',$id)->setInc('views');
-		return $result;
+			//每次被访问增加阅读1
+			$view = self::where('id',$id)->setInc('views');
+			//----------------------------------------------
+			$tag_name = [];
+			$tags = ArticleTag::where('tid',$id)->select();
+			foreach ($tags as $key => $value) {
+				array_push($tag_name, $vv['tagname']);
+			}
+			$result['tag_name'] = $tag_name;
+			//----------------------------------------------
+		Cache::set('article'.$id,$result,14000);
+        $result = Cache::get('article'.$id);
+        }
+        return $result;
 	}
 	//首页-前台搜索功能
 	public function search($key)
@@ -218,32 +112,29 @@ class Article extends Model
 			$result = self::where('title','like','%'.$key.'%')
 			->limit(15)
 			->paginate();
+		$result = $this->tag($result);
 	   	Cache::set('search'.$key,$result,14000);
         $result = Cache::get('search'.$key);
         }
 		return $result;
+	}
 
-		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
-		// $datas = ArticleTag::select();
-		// foreach ($result as $a => $value) {
-		// 	$ls = $this -> qutag($datas,$value['id']);
-		// 	$result[$a]['tag_name'] = $ls;
-		// 	$result[$a]['searchkey'] = $key;
-
-		// }
-		// dump($result);
-
-
-		// die;
+	//本类内部调用
+	public Function tag($result){
+		foreach ($result as $key => $value) {
+			$tags = ArticleTag::where('tid',$value['id'])->select();
+			if ($tags == true) {
+				$tag_name = [];
+				foreach ($tags as $kk => $vv) {
+					array_push($tag_name, $vv['tagname']);
+				}
+				$value['tag_name'] = $tag_name;
+			}else{
+				$value['tag_name'] ='';
+			}
+			
+		}
 		return $result;
 	}
-
-	public function a()
-	{
-		//查询本模型全部数据
-		$info = self::all();
-        return $info;
-	}
-
 
 }

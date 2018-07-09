@@ -14,36 +14,19 @@ use think\Cache;
 class ArticleSort extends Model
 {
 	public function sort(){
-		// return $this->hasOne('Article','sortid','sid');
-		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
 		return $this->hasMany('Article','sortid','sid');
 	}
     //缓存-分类列表
     public function Sortlist(){
-        $cache = Cache::get('Sortlist');
-        if($cache == false){
-            $Sortlist   = $this->Sortlista();
-            Cache::set('Sortlist',$Sortlist,14000);
-            $cache = Cache::get('Sortlist');
+        $result = Cache::get('Sortlist');
+        if($result == false){
+            $result = self::withCount('sort')
+            ->where('status','=','1')
+            ->select();
+            Cache::set('Sortlist',$result,14000);
+            $result = Cache::get('Sortlist');
         }
-        return $cache;
+        return $result;
     }
-    //分了列表
-	public function Sortlista()
-    {
-    	$articlesort = self::withCount('sort')
-        ->where('status','=','1')
-        ->select();
-
-        return $articlesort;
-    }
-    //文章页 显示分类名称
-    public function sortname($id){
-    	$sort = self::where('sid',$id)
-        ->find();
-
-		return $sort;
-	}
-
 	
 }

@@ -20,41 +20,32 @@ class ArticleRecord extends Model
         $this->wenz     = new Article;
         parent::__construct();
     }
-    //缓存
-    public function nian(){
-        $cache = Cache::get('nian');
-        if($cache == false){
-            $nian   = $this->niana();
-            Cache::set('nian',$nian,14000);
-            $cache = Cache::get('nian');
+
+	public function nian()
+    {   $result = Cache::get('nian');
+        if($result == false){
+        	$result = Article::order('days','desc')
+            ->field('FROM_UNIXTIME(date,"%Y") as days,COUNT(*) as COUNT')
+            ->GROUP('days')
+            ->select();
+            Cache::set('nian',$result,14000);
+            $result = Cache::get('nian');
         }
-        return $cache;
+        return $result;
     }
 
-	public function niana()
-    {
-    	$nian = Article::order('days','desc')
-        ->field('FROM_UNIXTIME(date,"%Y") as days,COUNT(*) as COUNT')
-        ->GROUP('days')
-        ->select();
-        return $nian;
-    }
-    public function yue(){
-        $cache = Cache::get('yue');
-        if($cache == false){
-            $yue   = $this->yuea();
-            Cache::set('yue',$yue,14000);
-            $cache = Cache::get('yue');
+    public function yue()
+    {   $result = Cache::get('yue');
+        if($result == false){
+        	$result = Article::order('days','desc')
+            ->field('FROM_UNIXTIME(date,"%Y-%m") as days,COUNT(*) as COUNT')
+            ->GROUP('days')
+            ->select();
+            // return $yue;
+            Cache::set('yue',$result,14000);
+            $result = Cache::get('yue');
         }
-        return $cache;
-    }
-    public function yuea()
-    {
-    	$yue = Article::order('days','desc')
-        ->field('FROM_UNIXTIME(date,"%Y-%m") as days,COUNT(*) as COUNT')
-        ->GROUP('days')
-        ->select();
-        return $yue;
+        return $result;
     }
 
     //归档页面--文章列表 (带密码除外)
@@ -65,27 +56,8 @@ class ArticleRecord extends Model
         ->where('date','<=',$endsj)
         ->limit(15)
         ->paginate();
+        $result = $this->wenz->tag($result);
 
-        $datas = ArticleTag::select();
-        foreach ($result as $a => $value) {
-            $ls = $this->wenz->qutag($datas,$value['id']);
-            $result[$a]['tag_name'] = $ls;
-        }
-        return $result;
-    }
-    //归档页面-显示全部文章
-    public function ArticleALL($stsj,$endsj){
-        $result = Article::order('id','desc')
-        ->where('date','>=',$stsj)
-        ->where('date','<=',$endsj)
-        ->limit(15)
-        ->paginate();
-
-        $datas = ArticleTag::select();
-        foreach ($result as $a => $value) {
-            $ls = $this->wenz->qutag($datas,$value['id']);
-            $result[$a]['tag_name'] = $ls;
-        }
         return $result;
     }
 

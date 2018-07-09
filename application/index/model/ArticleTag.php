@@ -14,18 +14,23 @@ use think\Cache;
 class ArticleTag extends Model
 {
 	public function taglist(){
-    	$result = self::field('distinct tagname')->select();
-    	foreach ($result as $key => $value) {
-    		$value['tag_num'] = $this->tagsearch($value['tagname']);
-    	}
-    	return $result;
+        $result = Cache::get('taglist');
+        if ($result == false) {
+        	$result = self::field('distinct tagname')->select();
+        	foreach ($result as $key => $value) {
+        		$value['tag_num'] = $this->tagsearch($value['tagname']);
+        	}
+            Cache::set('taglist',$result,3600);
+            $result = Cache::get('taglist');
+        }
+        return $result;
     }
 
     public function tagsearch($name){
         $result = Cache::get($name);
         if ($result == false) {
             $result = self::where('tagname',$name)->count();
-            Cache::set($name,$result,160);
+            Cache::set($name,$result,3600);
             $result = Cache::get($name);
         }
     	
