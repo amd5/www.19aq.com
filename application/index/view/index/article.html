@@ -1,61 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width,initial-scale=1.33,minimum-scale=1.0,maximum-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>{$result['title']} - c32's blog</title>
-<meta name="keywords" content="站点关键词" />
-<meta name="description" content="文章描述" />
-<meta name="generator" content="emlog" />
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="xmlrpc.php?rsd订阅地址" />
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="XML订阅地址" />
-<link rel="alternate" type="application/rss+xml" title="RSS"  href="RSS地址" />
-<!-- <link href="http://www.19aq.com/content/templates/txmi/css/huang.css" rel="stylesheet" type="text/css" /> -->
-<!-- <link href="http://www.19aq.com/content/templates/txmi/css/lan.css" rel="stylesheet" type="text/css" /> -->
-<link href="/static/blog/style.css" rel="stylesheet" type="text/css" />
-<!-- <link href="{:Url('/')}static/blog/style.css" rel="stylesheet" type="text/css" /> -->
-
-<!--Ueditor代码高亮样式 -->
-<script type="text/javascript" src="/lib/ueditor/1.4.3/third-party/SyntaxHighlighter/shCore.js"></script>
-<link rel="stylesheet" type="text/css" href="/lib/ueditor/1.4.3/third-party/SyntaxHighlighter/shCoreDefault.css">
-<script type="text/javascript">
-    SyntaxHighlighter.all();
-</script>
-<!--Ueditor代码高亮样式 -->
-
-</head>
-<!--<div id="top"><dl><span><a href="http://www.19aq.com/feed.php">RSS订阅</a></span>每天学习一点点,每天进步一点点.</dl></div>-->
+{include file="index/_header" title="c32's blog" blog="" /}
 <div id="top"><dl><span><a href="{:Url('/')}admin">login</a></span>每天学习一点点,每天进步一点点.</dl></div> 
 <!--顶部左边副标题和右边登陆-->
 <div id="w980">
 <div id="head">
 <div></div>
 
-<span id="ss">
-<form name="keyform" method="get" action="#"> 
-
-	<input name="keyword" class="search" type="text"  id="edtSearch"/>
-	<input type="submit" value="搜索"  class="search-submit" id="btnPost"/> 
-	
-</form>
-</span>
+{include file="index/top_search" title="c32's blog" /}
 <a href="{:Url('/')}" class="logo" title="c32's blog">c32's blog</a>
 
 <!-- <span id="ss1">444444</span> -->
 <!--<div class="ss1">44444444</div>-->
 </div>
 
-<div id="nav"><ul>	<ul class="bar">
-			<li class="item common">
-			<a href="{:Url('/')}" ><span>首页</span></a>
-					</li>
-		</ul>
-</ul>
-</div>
+{include file="index/_nav" /}
 
 <div id="place">
-当前位置：<a href="{:Url('/')}">首页</a>
->> <a href="{:Url('/')}article-{$result.id}.html" class="secai">{$result.title}</a>
+当前位置：<a href="{:Url('/')}">首页</a> >> <a href="{:Url('/')}article-{$result.id}.html" class="secai">{$result.title}</a>
 </div>
 <div id="cennr">
 <div id="left" class="xian">
@@ -63,14 +23,11 @@
 <dt>
 <h1>{$result['title']}</h1>
 
-
-
 {$result.date|date="Y-m-d H:i:s",###}&nbsp;&nbsp;|&nbsp;&nbsp;分类：
 <a href="{:Url('/')}sort-{$sort.sortname}.html" class="secai">{$sort.sortname}</a>
 |&nbsp;&nbsp;标签：
 
 {volist name="tag" id="tag" }
-<!-- <a href="{:Url('/')}tag/{$tag.tagname}.html" class="">{$tag.tagname}</a>&nbsp; -->
 <a href="{:Url('/')}tag/{$tag.tagname}.html" class="">{$tag.tagname}</a>&nbsp;
 {/volist} 
 <span>
@@ -80,7 +37,6 @@
 
 <dd id="zi">
 {$result['content']}
-<!-- <P>推荐您阅读更多有关于“  ”的文章</P> -->
 </dd>
 
 <dd id="post_nav">
@@ -119,12 +75,11 @@
 
 
 
-<div class="clear"></div></div>
+<!-- <div class="clear"></div></div> -->
 
 <div class="clear"></div>
 
 <div  id="footer">
-<!--<p>Powered by <a href="http://www.emlog.net" title="采用emlog系统">emlog</a>,Theme By <a href="http://www.txcstx.cn">天兴工作室</a></p>-->
 
 </div>
 

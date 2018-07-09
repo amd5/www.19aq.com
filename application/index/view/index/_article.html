@@ -10,7 +10,6 @@
 			</span>
 		{$v.date|date="Y-m-d H:i:s",###}&nbsp;&nbsp;
 
-
 		{if 	condition="($v.tag_name == false)"/}
 		{else /}|&nbsp;标签：{foreach name="v.tag_name" item="vo" }<a href="{:Url('/')}tag/{$vo}.html" class="secai" title="{$vo}">{$vo}</a>&nbsp;{/foreach}
 		{/if}

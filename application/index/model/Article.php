@@ -1,18 +1,12 @@
 <?php
-# #########################################
-# #Function:    文章功能
-# #Blog:        http://www.19aq.com/
-# #Datetime:    2017-10-24 18:40:33
-# #Author:		c32
-# #Email:		amd5@qq.com
-# #感谢King east  QQ1207877378指导的模型关联
-# #感谢流年 QQ130770305指导解决后台查询300条文章产生600条语句的问题
-# #########################################
 namespace app\index\model;
 
 use think\Model;
 use think\Cache;
+use app\index\model\Link;
 use app\index\model\ArticleTag;
+use app\index\model\ArticleSort;
+use app\index\model\ArticleRecord;
 
 class Article extends Model
 {
@@ -21,108 +15,55 @@ class Article extends Model
 
     // 定义自动完成的属性
     protected $insert = ['status' => 1];
-    
-	//使用文章表sortid关联sort分类表的sid
-	// public function sort(){
-	// 	return $this->hasOne('ArticleSort','sid','sortid');
-	// 	//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
-	// }
-
-	// public function tag(){
-	// 	return $this->hasMany('ArticleTag','gid');
-	// 	//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
-	// }
 
 	//分类页面--文章列表  不是管理员显示没有密码的文章
 	public function SortArticlelist($sid){
-		$result = self::order('id','desc')
-        ->where('password','=','')
-        ->where('sortid','=',$sid)
-        ->limit(15)
-        ->paginate();
-        $result = $this->tag($result);
-		return $result;
+		return $this->tag(self::order('id','desc')->where('password','=','')->where('sortid','=',$sid)->limit(15)->cache(true,8640000)->paginate());
 	}
-
-	//分类页面--文章列表  管理员显示全部文章
-	// public function SortArticleALL($sid){
-	// 	$result = self::where('sortid','=',$sid)
- //        ->order('id','desc')
- //        ->limit(15)
- //        ->paginate();
-	// 	return $result;
-	// }
 
 	//首页-显示全部文章（带密码的除外）
 	public function Article_list(){
-        $result = self::order('id','desc')
-		->where('password','=','')
-		->paginate(15);
-		$result = $this->tag($result);
-		return $result;
+		return $this->tag(self::order('id','desc')->where('password','=','')->cache(true,8640000)->paginate(15));
 	}
 
 	//缓存-标签文章列表
 	public function tagArticle($tags){
-		$cache = Cache::get('tagArticle'.$tags);
-        if($cache == false){
-            $result = self::where('id','in',$tags)
-			->limit(15)
-			->paginate();
-			$result = $this->tag($result);
-            Cache::set('tagArticle'.$tags,$result,14000);
-            $cache = Cache::get('tagArticle'.$tags);
-        }
-		return $cache;
+		return $this->tag(self::where('id','in',$tags)->limit(15)->cache(true,8640000)->paginate());
 	}
 
 	//文章
 	public function article($id){
-		$result = Cache::get('article'.$id);
-        if($result == false){
+        //每次被访问增加阅读1
+        $view = self::where('id',$id)->setInc('views');
+        //开启缓存
 			if(Cookie('username') !== "c32"){
-				$data = self::where('id','=',$id)->where('password','')->find();
+				$data = self::where('id','=',$id)->where('password','')->cache(true,8640000)->find();
 				if (empty($data)) {
 					die('非管理员禁止访问！');
 				}
 				$result = $data;
 			}else{
-				$result = self::where('id','=',$id)->find();
+				$result = self::where('id','=',$id)->cache(true,8640000)->find();
 			}
-			//每次被访问增加阅读1
-			$view = self::where('id',$id)->setInc('views');
 			//----------------------------------------------
 			$tag_name = [];
-			$tags = ArticleTag::where('tid',$id)->select();
+			$tags = ArticleTag::where('tid',$id)->cache(true,8640000)->select();
 			foreach ($tags as $key => $value) {
 				array_push($tag_name, $vv['tagname']);
 			}
 			$result['tag_name'] = $tag_name;
 			//----------------------------------------------
-		Cache::set('article'.$id,$result,14000);
-        $result = Cache::get('article'.$id);
-        }
         return $result;
 	}
 	//首页-前台搜索功能
-	public function search($key)
-	{
-		$result = Cache::get('search'.$key);
-		if($result == false){
-			$result = self::where('title','like','%'.$key.'%')
-			->limit(15)
-			->paginate();
-		$result = $this->tag($result);
-	   	Cache::set('search'.$key,$result,14000);
-        $result = Cache::get('search'.$key);
-        }
-		return $result;
+	public function search($key){
+		return $this->tag(self::where('title','like','%'.$key.'%')->limit(15)->cache(true,8640000)->paginate());
 	}
 
 	//本类内部调用
 	public Function tag($result){
 		foreach ($result as $key => $value) {
-			$tags = ArticleTag::where('tid',$value['id'])->select();
+			$tags = ArticleTag::where('tid',$value['id'])->cache(true,8640000)->select();
 			if ($tags == true) {
 				$tag_name = [];
 				foreach ($tags as $kk => $vv) {
@@ -132,9 +73,50 @@ class Article extends Model
 			}else{
 				$value['tag_name'] ='';
 			}
-			
 		}
 		return $result;
 	}
+
+	//友情链接================================================================
+	public function links(){
+        return Link::order('id','asc')->where('hide','n')->cache(true,8640000)->select();
+	}
+
+	//tag================================================================
+	public function taglist(){
+        	$result = ArticleTag::field('distinct tagname')->cache(true,8640000)->select();
+        	foreach ($result as $key => $value) {$value['tag_num'] = $this->tagsearch($value['tagname']);}
+        return $result;
+    }
+
+    public function tagsearch($name){
+    	return ArticleTag::where('tagname',$name)->cache(true,8640000)->count();
+    }
+
+    public function articletag($id){
+        return ArticleTag::where('tid',$id)->cache(true,8640000)->select();
+    }
+
+    //sort================================================================
+    //缓存-分类列表
+    public function Sortlist(){
+        return ArticleSort::withCount('sort')->where('status','=','1')->cache(true,8640000)->select();
+    }
+
+    //Record================================================================
+    public function nian(){   
+        return Article::order('days','desc')->field('FROM_UNIXTIME(date,"%Y") as days,COUNT(*) as COUNT')->GROUP('days')->cache(true,8640000)->select();
+    }
+
+    public function yue(){   
+        return Article::order('days','desc')->field('FROM_UNIXTIME(date,"%Y-%m") as days,COUNT(*) as COUNT')->GROUP('days')->cache(true,8640000)->select();
+    }
+
+    //归档页面--文章列表 (带密码除外)
+    public function Articlelist($stsj,$endsj){
+        return $this->wenz->tag(Article::order('id','desc')->where('password','=','')->where('date','>=',$stsj)->where('date','<=',$endsj)->limit(15)->cache(true,8640000)->paginate());
+    }
+
+
 
 }
