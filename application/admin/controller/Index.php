@@ -108,13 +108,13 @@ class Index extends BaseController
 		return $this->fetch();
     }
 	
-	public function article($id)	//文章详情页
-    {
-		$result = new Article();
-		$result = $result->Article($id);
-        $this->assign('result', $result);
-        return $this->fetch();
-    }
+	// public function article($id)	//文章详情页
+ //    {
+	// 	$result = new Article();
+	// 	$result = $result->Article($id);
+ //        $this->assign('result', $result);
+ //        return $this->fetch();
+ //    }
 	
 	public function article_add()	//新建文章
     {

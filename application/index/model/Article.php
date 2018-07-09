@@ -100,7 +100,9 @@ class Article extends Model
     //sort================================================================
     //缓存-分类列表
     public function Sortlist(){
-        return ArticleSort::withCount('sort')->where('status','=','1')->cache(true,8640000)->select();
+        $result = ArticleSort::where('status','=','1')->cache(true,8640000)->select();
+        foreach ($result as $key => $value) {$value['sort_count'] = self::where('sortid',$value['sid'])->cache(true,8640000)->count();}
+        return $result;
     }
 
     //Record================================================================
