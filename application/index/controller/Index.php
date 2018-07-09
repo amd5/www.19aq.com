@@ -9,7 +9,8 @@
 # #########################################
 namespace app\index\controller;
 
-use think\Cookie;
+// use think\Cookie;
+use think\Request;    //请求IP地址等
 use think\Controller;
 /*前台模块*/
 use app\index\model\Link;
@@ -25,15 +26,9 @@ use app\extra\rss\Rss;
 
 /*后台继承*/
 use app\admin\controller\BaseController;
-// use app\index\controller\Check;
-define('DB_HOST', 'localhost');
 
 class Index	extends Controller
 {
-    //protected表示受保护的，只有本类或子类或父类中可以访问；
-    // protected $user = '';
-    //private表示私有的，只有本类内部可以使用；
-    // private $wenz = '1';
     protected $wenz;
     protected $tag;
     protected $sort;
@@ -53,19 +48,11 @@ class Index	extends Controller
     //没有加管理员权限检查
     public function index()
     {
-        // phpinfo();
-        // die;
-        // $rss = new Rss('标题','内容','描述','./static/blog/rss.png');
-        // $rss->AddItem("日志的标题","日志的地址","日志的摘要","2018-02-26"); 
-        // $rss->Display();//输出RSS内容 
-        // dump($wenz);die;
-        // die;
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
-        
+        $request = Request::instance();
         $config = SystemConfig::where('name',"Sendsms")->find();
-        // $config = SystemConfig::get(4);
-        // echo ($config->status);
+
         //如果配置开启才发送短信，否则不发送短信
         if($config->status=='1'){
             $sms = new Sendsms();
@@ -74,24 +61,60 @@ class Index	extends Controller
             //不发送短信
         }
 
-        // dump(session('username'));die;
-    	if(!Cookie('username') || Cookie('username') !== "c32")
-    	{
-    		//文章列表  不是管理员显示没有密码的文章
-            $result = $this->wenz->Articles();
-			$page = $result->render();   //获取分页显示
-    	}else
-    	{
-    		//文章列表  管理员显示全部文章
-            $result = $this->wenz->Articleall();
-			$page = $result->render();
+        //文章列表
+        $result = $this->wenz->Article_list();
+        //获取分页显示
+        $page = $result->render();   
 
-    	}
+
+
+        
+        $tag_ls = $request->param('tag');
+        if ($tag_ls == true) {
+            $data = ArticleTag::where('tagname',$tag_ls)->select();
+            foreach ($data as $key => $value) {
+                $tid = $tid.",";
+                $tid = $tid.$value['tid'];
+            }
+            $tid = substr($tid,1);
+
+            $result = $this->wenz->tagArticle($tid);
+            $page   = $result->render();
+        }
+        
+        $sort_ls = $request->param('sort');
+        if ($sort_ls == true) {
+            $sortid = ArticleSort::where('alias','=',$sort_ls)->find();
+            $sid = $sortid['sid'];
+            $result = $this->wenz->SortArticlelist($sid);
+            $page = $result->render();   //获取分页显示
+        }
+        // dump($request);die;
+		$record_ls = $request->param('record');
+        if ($record_ls == true) {
+            $nian = substr($record_ls, 0, 4);  $yue  = substr($record_ls, 4, 5);
+            $sj   = $nian.'-'.$yue.'-'.'01'.' '.'00:00:00';
+            //开始时间
+            $stsj = strtotime($sj);
+            //结束时间
+            $mdays = date( 't', strtotime($sj) );
+            $end_time = date( 'Y-m-' . $mdays . ' 23:59:59', strtotime($sj));
+            $endsj = strtotime($end_time);
+
+            //文章列表  不是管理员显示没有密码的文章
+            $result = $this->record->Articlelist($stsj,$endsj);
+            $page = $result->render();   //获取分页显示
+        }
+
+        $search_ls = $request->param('key');
+        if ($search_ls == true) {
+            $result = $this->wenz->search($search_ls);
+            $page = $result->render();
+        }
+        // dump($request);die;
 
     	//文章标签
         $tag =$this->tag->taglist();
-        //文章标签所属文章求和
-        // $tag =$this->tag->tagcount();
 
         //分类列表
         $articlesort = $this->sort->sortlist();
@@ -124,11 +147,12 @@ class Index	extends Controller
         $result = $this->wenz->article($id);
 
         //文章详情分类显示
-        $sort   = $this->sort->sortname($result['sortid']);
+        // $sort   = $this->sort->sortname($result['sortid']);
+        $sort = ArticleSort::where('sid',$result['sortid'])->find();
 
         //文章详情标签显示
-        // dump($id);die;
-        $tag =$this->tag->articletag($id);
+        // $tag =$this->tag->articletag($id);
+        $tag = ArticleTag::where('tid',$id)->select();
 
         $this->assign('tag', $tag);
         $this->assign('sort', $sort);
