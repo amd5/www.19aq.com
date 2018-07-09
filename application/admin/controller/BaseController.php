@@ -39,11 +39,6 @@ class BaseController extends Controller
 
             }
 
-            //前后台Session提示
-            // echo "Session id : " .session('id') ."</br>";
-            // echo "Session username : " .session('username') ."</br>";
-            // echo "Session last_login_ip : " .session('last_login_ip') ."</br>";
-            // echo("Session开始时间".  date("Y-m-d H-i-s",$logintime));
         }
     }
 

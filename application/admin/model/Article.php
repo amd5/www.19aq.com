@@ -35,7 +35,6 @@ class Article extends Model
 		return $this->hasOne('ManageUser','id','author')->field('id,username');
 	}
 
-
 	//后台文章列表
 	public function ArticleList($page,$limit,$key)
     {
@@ -43,9 +42,7 @@ class Article extends Model
         if($cache == false){
 	    	//使用关联预载入，解决语句N+1的查询问题
 			$result = self::with('sort,admin')
-
 			->whereOr('title&content','like','%'.$key.'%')
-
 			->page($page)
 	        ->limit($limit)
 	        ->order('id desc')
@@ -68,28 +65,6 @@ class Article extends Model
 		$result = self::where('id',$id)->select();
 		return $result;
     }
-	
-	// public function ArticleEdit($id)
- //    {
-	// 	$result = Article::where('id', $id)
-	// 		->update([
-	// 		'title' 	=> $_POST["articletitle"],
-	// 		'content' 	=> $_POST["content"],
-	// 		'sortid'	=> $_POST["brandclass"],
-	// 		'date' 		=> strtotime($_POST["datetime"]),
-			
-	// 		]);
-			
-	// 	return $result;
- //    }
-	
-	// public function ArticleDel($id,$action)  //未解决
- //    {
-	// 	echo "123";
- //    }
-	
-	
-	
-	
+
 	
 }
