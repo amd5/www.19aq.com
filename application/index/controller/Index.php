@@ -34,6 +34,8 @@ class Index	extends Controller
     public function __construct()
     {
         $this->wenz     = new Article;
+        $this->sendsms;
+        $this->setting;
         //调用父类构造方法
         parent::__construct();
     }
@@ -43,15 +45,10 @@ class Index	extends Controller
         //获取当前访问URL
         $url = "http://".$_SERVER['HTTP_HOST'];
         $request = Request::instance();
-        $config = SystemConfig::where('name',"Sendsms")->cache(true,8640000)->find();
-
-        //如果配置开启才发送短信，否则不发送短信
-        if($config->status=='1'){$sms = new Sendsms();echo $sms->mainsend();}
 
         $title = "";
         //文章列表
         $result = $this->wenz->Article_list($title);
-        
         
         if ($request->param('tag') == true) {
             $type = $request->param('tag');
@@ -66,15 +63,14 @@ class Index	extends Controller
             // return $this->fetch();
         }
         
-        // 
         if ($request->param('sort') == true) {
             $type = $request->param('sort');
             $sortid = ArticleSort::where('alias','=',$type)->cache(true,8640000)->find();
             $sid = $sortid['sid'];
+            // dump($this->wenz);die;
             $result = $this->wenz->SortArticlelist($sid);
         }
-        // dump($request);die;
-		// 
+
         if ($request->param('record') == true) {
             $type = $request->param('record');
             $nian = substr($type, 0, 4);  $yue  = substr($type, 4, 5);
@@ -87,7 +83,8 @@ class Index	extends Controller
             $endsj = strtotime($end_time);
 
             //文章列表  不是管理员显示没有密码的文章
-            $result = $this->record->Articlelist($stsj,$endsj);
+            $result = $this->wenz->Record_article($stsj,$endsj);
+
         }
 
         // 
@@ -135,9 +132,21 @@ class Index	extends Controller
         $this->assign('tag', $tag);
         $this->assign('sort', $sort);
 		$this->assign('result', $result);
-        // dump($result['title']);die;
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
+    }
+
+    public function sendsms(){
+        $config = SystemConfig::where('name',"Sendsms")->cache(true,8640000)->find();
+        //如果配置开启才发送短信，否则不发送短信
+        if($config->status=='1'){
+            $sms = new Sendsms();
+            echo $sms->mainsend();
+        }
+    }
+
+    public function setting(){
+        return dump('1');
     }
 
 
