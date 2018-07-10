@@ -19,7 +19,7 @@ return [
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace
-    'app_trace'              => true,   //页面右下角调试窗口
+    'app_trace'              => false,   //页面右下角调试窗口
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
