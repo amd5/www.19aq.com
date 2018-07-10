@@ -115,8 +115,8 @@ class Article extends Model
     }
 
     //归档页面--文章列表 (带密码除外)
-    public function Articlelist($stsj,$endsj){
-        return $this->wenz->tag(Article::order('id','desc')->where('password','=','')->where('date','>=',$stsj)->where('date','<=',$endsj)->limit(15)->cache(true,8640000)->paginate());
+    public function Record_article($stsj,$endsj){
+        return $this->tag(Article::order('id','desc')->where('password','=','')->where('date','>=',$stsj)->where('date','<=',$endsj)->limit(15)->cache(true,8640000)->paginate());
     }
 
 
