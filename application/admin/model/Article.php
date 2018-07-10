@@ -66,5 +66,53 @@ class Article extends Model
 		return $result;
     }
 
+
+
+    //获取所有分类名称并展示到发布文章页面
+	public function ArticleSort()
+	{
+		$result = ArticleSort::order('sid', 'asc')->select();
+		foreach ($result as $key => $value) {
+			switch ($value['status']) {
+				case '1':$value['status'] = '正常';break;
+				case '2':$value['status'] = '已删除';break;
+				default:
+					# code...
+					break;
+			}
+		}
+		return $result;
+	}
+	
+	public function ArticleSortAdd()
+    {
+		$data['sortname']    = $_POST["SortName"];			//分类名称
+		$data['alias']       = $_POST["SortAlias"];		//分类别名
+		$data['description'] = $_POST["SortDesc"];		//分类描述
+		$result = ArticleSort::insert($data);
+			
+		return $result;
+    }
+
+    public function article_tag($id)
+    {
+    	$result = self::where('tid',$id)->select();
+		return $result;
+    }
+
+    public function loglist($page,$limit){
+		$result = self::order('id desc')
+		->page($page)
+        ->limit($limit)
+		->select();
+		// 增加统计条数
+		$count = self::count();
+		foreach ($result as $key => $value) {
+			$value['id_count'] = $count;
+		}
+		// dump($result);
+		return $result;
+	}
+
 	
 }
