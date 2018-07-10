@@ -1,24 +1,14 @@
 <?php
 namespace app\admin\controller;
 
-//use app\admin\model\User as UserModel;  //载入模型 并设置别名
 use app\admin\model\Article;
-use app\admin\model\ArticleTag; //加载文章分类模块
-use app\admin\model\ArticleSort; //加载文章分类模块
 use app\admin\model\ManageUser;	//加载管理员模块
 use app\admin\model\SystemLog;	//加载系统日志模块
-// use think\Loader;
 use app\extra\api_demo\SmsDemo;	//载入短信类
-use app\extra\ip\IpLocation;	//载入ip类
-use app\extra;
 use think\Controller;	//继承控制器
-use think\Exception;
-// use think\Cookie;
 use think\Session;		//设置Session
 use think\Request;    //请求IP地址等
 use think\Cache;
-use think\Db;
-use extend\org\Baksql;
 
 use think\cache\driver\Redis;  //缓存用到
 
@@ -33,72 +23,48 @@ class Index extends BaseController
     {
     	Session::init();
 		$id = session_id();
-        $this->user = Cache::get($id);
+        $this->id = Cache::get($id);
         parent::__construct();
     }
 
-    public function main(){
-    	return $this->fetch();
-    }
+    
 
 	public function index()
     {
-    	// dump($this->user);die;
-		if($this->user == null)
-		{
-			echo "Cookie 空";
-			$this->redirect('./admin/login');
-		}else{
-			$result = ManageUser::where('id', $this->user)->find();
+		if ($this->id != null) {
+			$result = ManageUser::where('id', $this->id)->find();
 			$this->assign('result', $result);
 			return $this->fetch();
 		}
+			$this->redirect('./admin/login');
     }
 	
-	public function clear()
-    {
-    	//删除Cache缓存
-		Cache::clear();
-		rmdir(CACHE_PATH);
-		//删除Temp缓存
-		array_map('unlink', glob(TEMP_PATH . '/*.php'));
-		//空目录删除php文件报错，备用
-		// array_map(function($v){ if(file_exists($v)) @unlink($v); }, (array)glob(TEMP_PATH . '/*.php'));  
-		//如果Temp目录存在则删除，否则跳过
-		if (file_exists(TEMP_PATH) == true) {
-			rmdir(TEMP_PATH);
-		}
-		//清除Log缓存
-		$path = glob( LOG_PATH.'*' );
-		foreach ($path as $item) {
-		array_map( 'unlink', glob( $item.DS.'*.log' ) );
-		rmdir( $item );
-		}
-		// return $this->true;
-        // return $this->display();
-    }
+	// public function clear()
+ //    {
+ //    	//删除Cache缓存
+	// 	Cache::clear();
+	// 	rmdir(CACHE_PATH);
+	// 	//删除Temp缓存
+	// 	array_map('unlink', glob(TEMP_PATH . '/*.php'));
+	// 	//空目录删除php文件报错，备用
+	// 	// array_map(function($v){ if(file_exists($v)) @unlink($v); }, (array)glob(TEMP_PATH . '/*.php'));  
+	// 	//如果Temp目录存在则删除，否则跳过
+	// 	if (file_exists(TEMP_PATH) == true) {
+	// 		rmdir(TEMP_PATH);
+	// 	}
+	// 	//清除Log缓存
+	// 	$path = glob( LOG_PATH.'*' );
+	// 	foreach ($path as $item) {
+	// 	array_map( 'unlink', glob( $item.DS.'*.log' ) );
+	// 	rmdir( $item );
+	// 	}
+
+ //    }
 	
-	public function admin_permission()
-    {
-		$db1 = db('manage_user');
-		$result = $db1->select();
-		dump($result);
-        return $this->fetch();
-    }
 	
-	public function admin_list()   //管理员列表
-    {
-		$result = new ManageUser();
-		$result = $result->ManageUser();
-		// $this->assign('result',collection($result)->append(['Role1'])->toArray());
-		$this->assign('result', $result);
-		return $this->fetch();
-    }
 	
-	public function article_list()
-    {
-		return $this->fetch();
-    }
+	
+	
 	
 	public function article_add()	//新建文章
     {
@@ -124,12 +90,12 @@ class Index extends BaseController
 	        $update['last_login_time']	= date(time());
 	        $update['last_login_ip']	= $this->request->ip();
 	        $update['login_status']		= "4";
-	        Db::name("SystemLog")->insert($update);
+	        SystemLog::insert($update);
 
 			echo $result ? "<center><font color='red'><h1>发布成功!</h1></font></center><br />":'发布失败!<br />';  	
 			
 		} else {
-			$result = new ArticleSort();
+			$result = new Article();
 			$result = $result->ArticleSort();
 			$this->assign('sortname', $result);
 			// echo $this->request->domain();
@@ -138,10 +104,7 @@ class Index extends BaseController
 
     }
 
-	public function sort_list()	//分类列表
-    {
-        return $this->fetch();
-    }
+	
 	
 	public function sort_add()
     {
@@ -162,202 +125,93 @@ class Index extends BaseController
 		return $this->fetch();
     }
 	
-	public function yunsms()	//融联云通信
-    {
-		$code = "666666";
-		$min  = "6";
-		$phone= "15024267536";
-		$test = sendTemplateSMS("15024267536",array($code,$min . "分钟"),"178711");
-		// $test = send_verify();
-		echo "123";
-		// dump ($_POST['id']);
-    }
+	// public function yunsms()	//融联云通信
+ //    {
+	// 	$code = "666666";
+	// 	$min  = "6";
+	// 	$phone= "15024267536";
+	// 	$test = sendTemplateSMS("15024267536",array($code,$min . "分钟"),"178711");
+	// 	// $test = send_verify();
+	// 	echo "123";
+	// 	// dump ($_POST['id']);
+ //    }
 	
-	public function alisms()
-	{
-		//设置时间限制
-		set_time_limit(0);
-		echo "</br>";
-		// 调用示例：
-		header('Content-Type: text/plain; charset=utf-8');
+	// public function alisms()
+	// {
+	// 	//设置时间限制
+	// 	set_time_limit(0);
+	// 	echo "</br>";
+	// 	// 调用示例：
+	// 	header('Content-Type: text/plain; charset=utf-8');
 
-		$demo = new SmsDemo(
-		    "LTAIJ7jxMyfxE9nw",
-		    "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
-		);
+	// 	$demo = new SmsDemo(
+	// 	    "LTAIJ7jxMyfxE9nw",
+	// 	    "6QVo3Ibosh2OujQ9GUWOE4K70dOPX0"
+	// 	);
 
-		echo "SmsDemo::sendSms\n";
-		$response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>"123.456.789.666","product"=>"dsd"),
-		    "123"
-		);
-		print_r($response);
-		//查询短信接口
-		// echo "SmsDemo::queryDetails\n";
-		// $response = $demo->queryDetails(
-		//     "SMS_109355085",  // phoneNumbers 电话号码
-		//     "20170718", // sendDate 发送时间
-		//     10, // pageSize 分页大小
-		//     1 // currentPage 当前页码
-		//     // "abcd" // bizId 短信发送流水号，选填
-		// );
+	// 	echo "SmsDemo::sendSms\n";
+	// 	$response = $demo->sendSms("c32博客","SMS_113460107","15024267536",Array("ip"=>"123.456.789.666","product"=>"dsd"),
+	// 	    "123"
+	// 	);
+	// 	print_r($response);
 
-		// print_r($response);
+	// }
+	
 
-	}
-	
-	public function picture_list()        //WdatePicker日历控件报错
-    {
-        return $this->fetch();
-    }
-	
-	public function product_category()
-    {
-        return $this->fetch();
-    }
-	
-	public function product_category_add()
-    {
-        return $this->fetch();
-    }
-	
-	public function feedback_list()
-    {
-    	// echo "123";
-        return $this->fetch();
-    }
-	
-	public function member_list()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_del()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_level()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_scoreoperation()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_record_browse()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_record_download()
-    {
-        return $this->fetch();
-    }
-	
-	public function member_record_share()
-    {
-        return $this->fetch();
-    }
-	
-	public function admin_role()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_1()
-    {
-        return $this->fetch();
-    }
-	
-	
-	public function charts_3()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_4()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_5()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_6()
-    {
-        return $this->fetch();
-    }
-	
-	public function charts_7()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_base()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_category()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_data()
-    {
-        return $this->fetch();
-    }
-	
-	public function system_shielding()
-    {
-        return $this->fetch();
-    }
-
-    public function system_sql()
-    {
-    	$type=input("tp");
-        $name=input("name");
-        $sql=new \org\Baksql(\think\Config::get("database"));
-        switch ($type)
-        {
-        case "backup": //备份
-        	return $sql->backup();
-        	break;  
-        case "dowonload": //下载
-          	$sql->downloadFile($name);
-          	break;  
-        case "restore": //还原
-          	return $sql->restore($name);
-          	break; 
-        case "del": //删除
-          	return $sql->delfilename($name);
-          	break;          
-        default: //获取备份文件列表
-            return $this->fetch("system_sql",["list"=>$sql->get_filelist()]); 
+    // public function system_sql()
+    // {
+    // 	$type=input("tp");
+    //     $name=input("name");
+    //     $sql=new \org\Baksql(\think\Config::get("database"));
+    //     switch ($type)
+    //     {
+    //     case "backup": //备份
+    //     	return $sql->backup();
+    //     	break;  
+    //     case "dowonload": //下载
+    //       	$sql->downloadFile($name);
+    //       	break;  
+    //     case "restore": //还原
+    //       	return $sql->restore($name);
+    //       	break; 
+    //     case "del": //删除
+    //       	return $sql->delfilename($name);
+    //       	break;          
+    //     default: //获取备份文件列表
+    //         return $this->fetch("system_sql",["list"=>$sql->get_filelist()]); 
           
-        }
+    //     }
 
+    //     return $this->fetch();
+    // }
+
+    public function main(){
+    	return $this->fetch();
+    }
+
+    public function admin_list()   //管理员列表
+    {
+		return $this->fetch();
+    }
+
+    public function article_list()
+    {
+		return $this->fetch();
+    }
+
+	public function sort_list()	//分类列表
+    {
         return $this->fetch();
     }
 
-	
 	public function system_log()
     {
         return $this->fetch();
     }
-	
-	public function product_list()
-    {
-        return $this->fetch();
+
+    public function system_setting(){
+    	return $this->fetch();
     }
-	
-
-	
-
 
 }
 

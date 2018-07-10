@@ -3,19 +3,19 @@ namespace app\admin\controller;
 
 use think\Controller;
 use app\admin\model\Article;
-use app\admin\model\ArticleSort;
-use app\admin\model\SystemLog;
+use app\admin\model\ManageUser; //加载管理员模块
 use app\admin\model\Navs;
 
 class Json extends BaseController
 {
 	public function __construct(){
         $this->navs   = new Navs;
+        $this->wenz   = new Article;
         parent::__construct();
     }
 	public function index()
     {
-    	echo "string";
+    	echo "json";
     }
 
     public function navs()
@@ -25,9 +25,7 @@ class Json extends BaseController
 
     public function article_list($page='1' ,$limit='15' ,$key='')
     {
-    	$result = new Article();
-		$result = $result->ArticleList($page,$limit,$key);
-    	# code...
+		$result = $this->wenz->ArticleList($page,$limit,$key);
     	if ($result != false) {
             echo json_encode(array('code'=>0,'msg'=>'','count'=>$result['0']['id_count'],'data'=>$result));
         }else{
@@ -36,19 +34,22 @@ class Json extends BaseController
     }
 
     public function sort_list(){
-    	$result = new ArticleSort();
-		$result = $result->ArticleSort();
+		$result = $this->wenz->ArticleSort();
     	echo json_encode(array('code'=>0,'msg'=>'','count'=>0,'data'=>$result));
     }
 
     public function system_log($page='',$limit=''){
-    	$result = new SystemLog;
-    	$result = $result->loglist($page,$limit);
+    	$result = $this->wenz->loglist($page,$limit);
 		if ($result != false) {
             echo json_encode(array('code'=>0,'msg'=>'','count'=>$result['0']['id_count'],'data'=>$result));
         }else{
             echo json_encode(array('code'=>0,'msg'=>'','count'=>0,'data'=>$result));
         }
+    }
+
+    public function admin_list(){
+        $result = ManageUser::select();
+        echo json_encode(array('code'=>0,'msg'=>'','count'=>0,'data'=>$result));
     }
 
 }
