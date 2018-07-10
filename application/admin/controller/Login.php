@@ -3,8 +3,8 @@ namespace app\admin\controller;
 use app\admin\model\ManageUser;
 use app\admin\controller\Base;
 use think\Controller;
-// use think\Session;
-use think\Cookie;
+use think\Session;
+use think\Cache;
 use think\Request;
 use think\Db;
 // use think\log;	//系统日志使用
@@ -13,11 +13,8 @@ class Login extends Controller
 {
 	public function index()
     {
-    	// if(!Session::has('username')){
-    	if(!Cookie::has('username')){
-    		// dump(session('username'));
-			echo "Cookie null";
-			// die;
+    	if(!Session::has('username')){
+			echo "Session null";
 		}else{
 			//增加判断如果登录页面已有登陆状态直接跳转到后台
 			$this->redirect('./');
@@ -45,23 +42,11 @@ class Login extends Controller
 					//如果管理员ID=1则设置以下Session
 					if ($result['id'] == 1) 
 					{
-					// Session::set('id',$result["id"]);
-                    // Session::set('username',$result["username"]);
-					// Session::set('logintime',time());	//设置session开始时间
-					// Session::set('last_login_ip',$this->request->ip());
-					// dump($result["username"]);
-					Cookie::set('id',$result["id"],7200);  //有效期7200秒
-					Cookie::set('username',$result["username"],7200);  //有效期7200秒
-					Cookie::set('logintime',time(),7200);  //有效期7200秒
-					Cookie::set('last_login_ip',$this->request->ip(),7200);  //有效期7200秒
+					session::init();
+					$id = session_id();
+					Cache::set($id,time());
 
-					echo cookie('username');
-					// die;
-
-					// Session::delete('username',$result["username"]);
-					// $this->success('Session设置成功');
 					$data["message"] = "登录成功"; 
-					// $this->success("登录成功",U('Index/index'));
 					// 保存登录信息
 					$username = $_POST['username'];
 					$update['username'] = $username;
@@ -107,43 +92,21 @@ class Login extends Controller
 	        Db::name("SystemLog")->insert($update);
 	        $this->error('账号不存在，请联系管理员');
 		}
-		// echo json_encode($data, JSON_UNESCAPED_UNICODE);  
-		// return json_encode($data, JSON_UNESCAPED_UNICODE);  
-		// return $this->success('成功', 'Index');
+
 		return $this->redirect('Index');
 
-		// die();
-		// session('username',null); // 删除session
 	}
 	
 	public function logout(){
-		// 取值并删除Session
-        // Session::pull('username');
-        // 设置session为null
-        // $del = Session::delete('username');
-        // $del = Session::delete('id');
-        // $nul = Session('username',null);
-        // $nul = Session('id',null);
-        $del = Cookie::delete('id');
-        $del = Cookie::delete('username');
+        $del = Session::delete('id');
+        $del = Session::delete('username');
 
         if ($del = 'NULL') {
         	$this->redirect('../../');
         	// echo "1";
         }
         echo "退出错误！";
-        // elseif ($nul) {
-        // 	$this->redirect('../../');
-        // }
-        // echo "2";
-        // die;
-        // dump(session('username'));
-        // session('username',null);
-        // Session::delete('username');
-        //跳转到后台首页
-        // $this->redirect('.');
-        //跳转到网站首页
-        // $this->redirect('../../');
+
     }
 
 
@@ -222,38 +185,32 @@ class Login extends Controller
     /**
      * 验证码生成
      */
-    public function Verifys()
-    {
-        $config=array(
-            'fontSzie'	=>30,	//验证码字体大小
-            'length'	=>3,	//验证码位数
-            'useImgBg'	=>true, //验证码背景
-			'useNoise'  =>false //验证码杂点
+  //   public function Verifys()
+  //   {
+  //       $config=array(
+  //           'fontSzie'	=>30,	//验证码字体大小
+  //           'length'	=>3,	//验证码位数
+  //           'useImgBg'	=>true, //验证码背景
+		// 	'useNoise'  =>false //验证码杂点
  
-        );
+  //       );
  
-        $captcha=new Captcha();
-        $captcha->useZh=true;
+  //       $captcha=new Captcha();
+  //       $captcha->useZh=true;
  
-        $captcha->zhSet="梦起软件工作室";
-		$captcha->fontttf = '5.ttf'; 
-        $captcha->entry();
+  //       $captcha->zhSet="梦起软件工作室";
+		// $captcha->fontttf = '5.ttf'; 
+  //       $captcha->entry();
  
-    }
+  //   }
  
     /**
      * 验证码检测
      */
-    public function check_verify($code,$id="")
-    {
-		$captcha = new Captcha();
-		return $captcha->check($code, $id);
-    }
-    /**
-     * 退出登录
-     */
-    // public function out_login(){
-        // session("admin",null);
-        // redirect(U('Login/login'));
-    // }
+  //   public function check_verify($code,$id="")
+  //   {
+		// $captcha = new Captcha();
+		// return $captcha->check($code, $id);
+  //   }
+
 }

@@ -13,8 +13,8 @@ use app\extra\ip\IpLocation;	//载入ip类
 use app\extra;
 use think\Controller;	//继承控制器
 use think\Exception;
-use think\Cookie;
-// use think\Session;		//设置Session
+// use think\Cookie;
+use think\Session;		//设置Session
 use think\Request;    //请求IP地址等
 use think\Cache;
 use think\Db;
@@ -31,32 +31,25 @@ class Index extends BaseController
 
 	public function __construct()
     {
-    	//parent::tank();  //调用父类的tank方法
-    	//self::$love;     //调用本类的love方法 或 变量？
-    	//取Cookie值
-        $this->user = Cookie::get('username');
+    	Session::init();
+		$id = session_id();
+        $this->user = Cache::get($id);
         parent::__construct();
     }
-	// private $accessKeyId = 'LTAIJ7jxMyfxE9nw';
+
     public function main(){
     	return $this->fetch();
     }
 
 	public function index()
     {
-		// $user = Cookie::has('username');
-		// $user = Session::has('username');
-		// echo ($this->accessKeyId);
-		
+    	// dump($this->user);die;
 		if($this->user == null)
 		{
 			echo "Cookie 空";
 			$this->redirect('./admin/login');
-		}else
-		{
-			// echo "you Cookie";
+		}else{
 			$result = ManageUser::where('id', $this->user)->find();
-			// dump($result);
 			$this->assign('result', $result);
 			return $this->fetch();
 		}
@@ -104,17 +97,8 @@ class Index extends BaseController
 	
 	public function article_list()
     {
-    	// dump(input('post.'));die;
 		return $this->fetch();
     }
-	
-	// public function article($id)	//文章详情页
- //    {
-	// 	$result = new Article();
-	// 	$result = $result->Article($id);
- //        $this->assign('result', $result);
- //        return $this->fetch();
- //    }
 	
 	public function article_add()	//新建文章
     {
@@ -373,52 +357,7 @@ class Index extends BaseController
 	
 
 	
-	
-	
-	/**
-     * 登录检测
-     * @return \think\response\Json
-     */
-    public function checkLogin1()
-    {
-        if ($this->request->isAjax() && $this->request->isPost()) {
-            $data = $this->request->post();
-            $validate = Loader::validate('Pub');
-            if (!$validate->scene('login')->check($data)) {
-                return ajax_return_adv_error($validate->getError());
-            }
 
-            $map['account'] = $data['account'];
-            $map['status'] = 1;
-            $auth_info = \Rbac::authenticate($map);
-
-            // 使用用户名、密码和状态的方式进行认证
-            if (null === $auth_info) {
-                return ajax_return_adv_error('帐号不存在或已禁用！');
-            } else {
-                if ($auth_info['password'] != password_hash_tp($data['password'])) {
-                    return ajax_return_adv_error('密码错误！');
-                }
-
-                // 记录登录日志
-                $log['uid'] = $auth_info['id'];
-                $log['login_ip'] = $this->request->ip();
-                $log['login_location'] = implode(" ", \Ip::find($log['login_ip']));
-                $log['login_browser'] = \Agent::getBroswer();
-                $log['login_os'] = \Agent::getOs();
-                Db::name("LoginLog")->insert($log);
-
-                // 缓存访问权限
-                \Rbac::saveAccessList();
-
-                return ajax_return_adv('登录成功！', '');
-            }
-        } else {
-            // throw new Exception("非法请求");
-			echo '11111';
-        }
-    }
-	
 
 }
 
