@@ -113,4 +113,56 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
         }
     });
 
+        // 标签
+    $('.bqan').on('click',function(){
+        var bq = $('.biaoqian select').val();
+        var bq2 = $('.biaoqian2').val();
+        if(bq2 == '' && bq == ''){
+            msg('请填写标签');
+        }else{
+            if(bq2){
+                v = bq2
+            }else{
+                v = bq
+            }
+            // var yanse = ['FFB800','FF5722','009688','1E9FFF','000'];
+            var yanse = ['C0C0C0'];
+            var i = Math.floor(Math.random() * yanse.length + 1)-1;
+            var _html = '<div name="bq[]" class="textBox" style="background-color: #'+yanse[i]+';" onmousemove="showDel(this)" onmouseout="hide(this)"><span    class="textBox_content">'+v+'</span><div class="delBox" ><img src="/static/images/close.png" class="delImg" onclick="del(this)"></div></div>';
+            $('.bqlist').append(_html);
+            $('.biaoqian2').val('');
+        }
+    })
+    
+    function tag(url){
+        ajax(url,'POST',{id:$('.uid').val()},function(e){
+            if(e.code == 1 && e.data != null){
+                for(let i=0;i < e.data.length;i++){
+                    var yanse = ['FFB800','FF5722','009688','1E9FFF','000'];
+                    var n = Math.floor(Math.random() * yanse.length + 1)-1;
+                    var _html = '<div name="bq[]" class="textBox" style="background-color: #'+yanse[n]+';" onmousemove="showDel(this)" onmouseout="hide(this)"><span    class="textBox_content">'+e.data[i]+'</span><div class="delBox" ><img src="/static/images/close.png" class="delImg" onclick="del(this)"></div></div>';
+                    $('.bqlist').append(_html);
+                }
+            }
+        })
+    }
+
+
+
+
 })
+
+
+
+// 显示删除
+function showDel(obj){
+    $(obj).find('.delBox').css('display','block');
+}
+// 隐藏删除
+function hide(obj){
+    $(obj).find('.delBox').css('display','none');
+}
+// 删除
+function del(obj){
+    $(obj).parent().parent('.textBox').remove();
+}
