@@ -61,7 +61,7 @@ class Article extends Model
 	}
 
 	//本类内部调用
-	public Function tag($result){
+	public function tag($result){
 		foreach ($result as $key => $value) {
 			$tags = ArticleTag::where('tid',$value['id'])->cache(true,8640000)->select();
 			if ($tags == true) {

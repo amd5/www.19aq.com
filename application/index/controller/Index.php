@@ -47,36 +47,36 @@ class Index	extends Controller
         //如果配置开启才发送短信，否则不发送短信
         if($config->status=='1'){$sms = new Sendsms();echo $sms->mainsend();}
 
+        $title = "";
         //文章列表
-        $result = $this->wenz->Article_list();
-        //获取分页显示
-        $page = $result->render();   
+        $result = $this->wenz->Article_list($title);
         
-        $tag_ls = $request->param('tag');
-        if ($tag_ls == true) {
-            $data = ArticleTag::where('tagname',$tag_ls)->cache(true,8640000)->select();
+        
+        if ($request->param('tag') == true) {
+            $type = $request->param('tag');
+            $data = ArticleTag::where('tagname',$type)->cache(true,8640000)->select();
             foreach ($data as $key => $value) {
                 $tid = $tid.",";
                 $tid = $tid.$value['tid'];
             }
             $tid = substr($tid,1);
 
-            $result = $this->wenz->tagArticle($tid);
-            $page   = $result->render();
+            $result = $this->wenz->tagArticle($tid,$type);
             // return $this->fetch();
         }
         
-        $sort_ls = $request->param('sort');
-        if ($sort_ls == true) {
-            $sortid = ArticleSort::where('alias','=',$sort_ls)->cache(true,8640000)->find();
+        // 
+        if ($request->param('sort') == true) {
+            $type = $request->param('sort');
+            $sortid = ArticleSort::where('alias','=',$type)->cache(true,8640000)->find();
             $sid = $sortid['sid'];
             $result = $this->wenz->SortArticlelist($sid);
-            $page = $result->render();   //获取分页显示
         }
         // dump($request);die;
-		$record_ls = $request->param('record');
-        if ($record_ls == true) {
-            $nian = substr($record_ls, 0, 4);  $yue  = substr($record_ls, 4, 5);
+		// 
+        if ($request->param('record') == true) {
+            $type = $request->param('record');
+            $nian = substr($type, 0, 4);  $yue  = substr($type, 4, 5);
             $sj   = $nian.'-'.$yue.'-'.'01'.' '.'00:00:00';
             //开始时间
             $stsj = strtotime($sj);
@@ -87,15 +87,16 @@ class Index	extends Controller
 
             //文章列表  不是管理员显示没有密码的文章
             $result = $this->record->Articlelist($stsj,$endsj);
-            $page = $result->render();   //获取分页显示
         }
 
-        $search_ls = $request->param('key');
-        if ($search_ls == true) {
-            $result = $this->wenz->search($search_ls);
-            $page = $result->render();
+        // 
+        if ($request->param('key') == true) {
+            $type = $request->param('key');
+            $result = $this->wenz->search($type);
         }
 
+        //获取分页显示
+        $page = $result->render();   
     	//文章标签
         $tag =$this->wenz->taglist();
 
@@ -110,6 +111,7 @@ class Index	extends Controller
         $links = $this->wenz->links();
 
 		//输出
+        $this->assign('blog_title', $type);
         $this->assign('url', $url);
         $this->assign('tag', $tag);
 		$this->assign('links', $links);
@@ -119,7 +121,7 @@ class Index	extends Controller
 		$this->assign('result', $result);
 		$this->assign('page', $page);
 
-
+        // dump($type);die;
 		return $this->fetch();
     }
 	
@@ -132,6 +134,7 @@ class Index	extends Controller
         $this->assign('tag', $tag);
         $this->assign('sort', $sort);
 		$this->assign('result', $result);
+        // dump($result['title']);die;
 		return $this->fetch();
         // return \think\Response::create(\think\Url::build('/admin'), 'redirect');
     }
