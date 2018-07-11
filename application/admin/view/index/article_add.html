@@ -123,25 +123,21 @@
 				<label class="layui-form-label"><i class="seraph icon-biaoqian"></i> 标　签</label>
 				<div class="layui-input-block biaoqian">
 					<select name="biaoqian" >
-					<{if $tag }>
 						<option value="">选择已有标签</option>
-						<{foreach $tag as $a}>
-							<option value="<{$a.title}>"><{$a.title}></option>
-						<{/foreach}>
-					<{else}>
-						<option value="">选择已有标签</option>
-					<{/if}>
+						<option value="test">test</option>
+						<option value="tes2">tes2</option>
 					</select>
 				</div>
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label"><i class="seraph icon-biaoqian"></i> 标　签</label>
 				<div class="layui-input-block">
-					<input type="text" class="layui-input biaoqian2" lay-verify="content" placeholder="自定义添加标签">
+					<input type="text" class="layui-input tag_content" lay-verify="tag_content" placeholder="自定义添加标签">
 				</div>
 			</div>
 			<hr class="layui-bg-gray" />
-			<div class="bqlist">
+			<div class="bqlist" lay-verify="bqlist">
+					<div class="textBox" style="background-color: #C0C0C0;" onmousemove="showDel(this)" onmouseout="hide(this)"><span class="textBox_content">cccc32</span> <div class="delBox" ><img src="/static/images/close.png" class="delImg" onclick="del(this)"></div></div>
 			</div>
 			<div class="layui-right">
 				<div class="layui-btn layui-btn-sm bqan" lay-filter="bqan" lay-submit>添加</div>
