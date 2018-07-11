@@ -23,7 +23,7 @@ class Json extends BaseController
     	echo json_encode($this->navs->navs());
     }
 
-    public function article_list($page='1' ,$limit='15' ,$key='')
+    public function article_list($page='' ,$limit='' ,$key='')
     {
 		$result = $this->wenz->ArticleList($page,$limit,$key);
     	if ($result != false) {
