@@ -83,11 +83,13 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
             // classify : '999',    //文章分类
             time : $(".time").val(),  //文章标题
             sort : $('.sort select').val(),    //发布状态
+            biaoqian : $('.biaoqian select').val(),    //发布状态
             // newsStatus : $('.newsStatus select').val(),    //发布状态
             // newsTime : submitTime,    //发布时间
             // newsTop : data.filed.newsTop == "on" ? "checked" : "",    //是否置顶
         },function(res){
-            
+            //提交失败
+            console.log($('.tag_content').val());
         })
         setTimeout(function(){
             top.layer.close(index);
