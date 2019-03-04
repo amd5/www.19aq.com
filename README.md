@@ -1,5 +1,5 @@
 ThinkPHP 5.0 学习日志
-===============
+================
 
 [![Blog From](https://poser.pugx.org/topthink/think/downloads)](http://www.19aq.com/)
 [![c32's blog](https://secure.travis-ci.org/ThinkUpLLC/ThinkUp.png?branch=master)](http://www.19aq.com/)
