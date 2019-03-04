@@ -1,12 +1,18 @@
 <?php
+# #########################################
+# #Function:    文章功能
+# #Blog:        http://www.19aq.com/
+# #Datetime:    2017-10-24 18:40:33
+# #Author:		c32
+# #Email:		amd5@qq.com
+# #感谢King east  QQ1207877378指导的模型关联
+# #感谢流年 QQ130770305指导解决后台查询300条文章产生600条语句的问题
+# #########################################
 namespace app\index\model;
 
 use think\Model;
 use think\Cache;
-use app\index\model\Link;
 use app\index\model\ArticleTag;
-use app\index\model\ArticleSort;
-use app\index\model\ArticleRecord;
 
 class Article extends Model
 {
@@ -15,110 +21,224 @@ class Article extends Model
 
     // 定义自动完成的属性
     protected $insert = ['status' => 1];
+    
+	// status获取器
+    public function getStatusAttr($value,$data){
+	$status = [-1 =>'删除',0 =>'隐藏',1 => '正常',2 =>'待审核'];
+	return $status[$data['status']];
+	}
+	
+	//使用文章表sortid关联sort分类表的sid
+	public function sort(){
+		return $this->hasOne('ArticleSort','sid','sortid');
+		//hasOne('关联模型名','外键名','主键名',['模型别名定义'],'join类型');
+	}
+
+	public function tag(){
+		// $result = ArticleTag::select();
+		return $this->hasMany('ArticleTag','gid');
+		// return $result;
+		//hasMany('关联模型名','外键名','主键名',['模型别名定义']);
+	}
+
+	// public function indextag(){
+	// 	$gid = '34';
+	// 	$data = ArticleTag::select();
+	// 	$tags = new Article;
+	// 	$tagss = $tags->qutag($data,$gid);
+	// 	$ls = $this -> qutag($data,$gid);
+
+	// 	return $ls;
+	// }
+
+	//根据文章取文章标签
+	public function qutag($data,$gid)
+	{
+		if(is_array($data) && !empty($data)){
+			$_data = [];
+			foreach($data as $a){
+				if(!empty($a['gid'])){
+					$b = substr($a['gid'],1);
+					$b = substr($b,0,-1);
+					$c = explode(',',$b);
+					foreach($c as $d){
+						if($d == $gid){
+							array_push($_data,$a['tagname']);
+						}
+					}
+				}
+			}
+			return $_data;
+			// dump($_data);
+		}
+
+	}
 
 	//分类页面--文章列表  不是管理员显示没有密码的文章
 	public function SortArticlelist($sid){
-		return $this->tag(self::order('id','desc')->where('password','=','')->where('sortid','=',$sid)->limit(15)->cache(true,8640000)->paginate());
-	}
+		// $result = self::with('sort,tag')
+		$result = self::order('id','desc')
+        ->where('password','=','')
+        ->where('sortid','=',$sid)
+        ->limit(15)
+        ->paginate();
 
-	//首页-显示全部文章（带密码的除外）
-	public function Article_list(){
-		return $this->tag(self::order('id','desc')->where('password','=','')->cache(true,8640000)->paginate(15));
-	}
-
-	//缓存-标签文章列表
-	public function tagArticle($tags){
-		return $this->tag(self::where('id','in',$tags)->limit(15)->cache(true,8640000)->paginate());
-	}
-
-	//文章
-	public function article($id){
-        //每次被访问增加阅读1
-        $view = self::where('id',$id)->setInc('views');
-        //开启缓存
-			if(Cookie('username') !== "c32"){
-				$data = self::where('id','=',$id)->where('password','')->cache(true,8640000)->find();
-				if (empty($data)) {
-					die('非管理员禁止访问！');
-				}
-				$result = $data;
-			}else{
-				$result = self::where('id','=',$id)->cache(true,8640000)->find();
-			}
-			//----------------------------------------------
-			$tag_name = [];
-			$tags = ArticleTag::where('tid',$id)->cache(true,8640000)->select();
-			foreach ($tags as $key => $value) {
-				array_push($tag_name, $vv['tagname']);
-			}
-			$result['tag_name'] = $tag_name;
-			//----------------------------------------------
-        return $result;
-	}
-	//首页-前台搜索功能
-	public function search($key){
-		return $this->tag(self::where('title','like','%'.$key.'%')->limit(15)->cache(true,8640000)->paginate());
-	}
-
-	//本类内部调用
-	public function tag($result){
-		foreach ($result as $key => $value) {
-			$tags = ArticleTag::where('tid',$value['id'])->cache(true,8640000)->select();
-			if ($tags == true) {
-				$tag_name = [];
-				foreach ($tags as $kk => $vv) {
-					array_push($tag_name, $vv['tagname']);
-				}
-				$value['tag_name'] = $tag_name;
-			}else{
-				$value['tag_name'] ='';
-			}
+        //遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
 		}
+
 		return $result;
 	}
 
-	//友情链接================================================================
-	public function links(){
-        return Link::order('id','asc')->where('hide','n')->cache(true,8640000)->select();
+	//分类页面--文章列表  管理员显示全部文章
+	public function SortArticleALL($sid){
+		$result = self::where('sortid','=',$sid)
+        ->order('id','desc')
+        ->limit(15)
+        ->paginate();
+
+        //遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
+        
+		return $result;
+	}
+	//缓存-首页-显示全部文章（带密码的除外）
+	// public function Articles(){
+	// 	$cache = Cache::get('Articles');
+ //        if($cache == false){
+ //            $Articles   = $this->Articlesa();
+ //            Cache::set('Articles',$Articles,14000);
+ //            $cache = Cache::get('Articles');
+ //        }
+	// 	return $cache;
+	// }
+	//首页-显示全部文章（带密码的除外）
+	public function Articles(){
+        // $result = self::with('tag')->
+        $result = self::order('id','desc')
+		->where('password','=','')
+		->paginate(15);
+
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
+
+		return $result;
+	}
+	//缓存-首页-显示所有文章
+	// public function Articleall(){
+	// 	$cache = Cache::get('Articleall');
+ //        if($cache == false){
+ //            $Articleall   = $this->Articlealls();
+ //            Cache::set('Articleall',$Articleall,14000);
+ //            $cache = Cache::get('Articleall');
+ //        }
+	// 	return $cache;
+	// }
+	//首页-显示所有文章
+	public function Articleall(){
+        $result = self::order('id','desc')
+		->paginate(15);
+
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
+
+		return $result;
+	}
+	//缓存-标签文章列表
+	public function tagArticle($tags){
+		$cache = Cache::get('tagArticle'.$tags);
+        if($cache == false){
+            $tagArticle   = $this->tagArticlea($tags);
+            Cache::set('tagArticle'.$tags,$tagArticle,14000);
+            $cache = Cache::get('tagArticle'.$tags);
+        }
+		return $cache;
+	}
+	//标签文章列表
+	public function tagArticlea($tags){
+		// $result = self::all($tags,'',false);
+		$result = self::where('id','in',$tags)
+		->limit(15)
+		->paginate();
+		
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+		}
+
+		return $result;
+	}
+	//文章缓存
+	public function article($id){
+		$cache = Cache::get('article'.$id);
+        if($cache == false){
+            $article   = $this->articlea($id);
+            Cache::set('article'.$id,$article,14000);
+            $cache = Cache::get('article'.$id);
+        }
+		return $cache;
+	}
+	//文章
+	public function articlea($id){
+		if(Cookie('username') !== "c32"){
+			$data = self::where('id','=',$id)->where('password','')->find();
+			if (empty($data)) {
+				die('非管理员禁止访问！');
+			}
+			$result = $data;
+		}else{
+			$result = self::where('id','=',$id)->find();
+		}
+		//每次被访问增加阅读1
+		$view = self::where('id',$id)->setInc('views');
+		return $result;
+	}
+	//首页-前台搜索功能
+	public function search($key)
+	{
+		$result = self::where('title','like','%'.$key.'%')
+		->limit(15)
+		->paginate();
+
+
+		//遍历文章ID 根据文章ID取文章标签 后 赋值给文章数据
+		$datas = ArticleTag::select();
+		foreach ($result as $a => $value) {
+			$ls = $this -> qutag($datas,$value['id']);
+			$result[$a]['tag_name'] = $ls;
+			$result[$a]['searchkey'] = $key;
+
+		}
+		// dump($result);
+
+
+		// die;
+		return $result;
 	}
 
-	//tag================================================================
-	public function taglist(){
-        	$result = ArticleTag::field('distinct tagname')->cache(true,8640000)->select();
-        	foreach ($result as $key => $value) {$value['tag_num'] = $this->tagsearch($value['tagname']);}
-        return $result;
-    }
-
-    public function tagsearch($name){
-    	return ArticleTag::where('tagname',$name)->cache(true,8640000)->count();
-    }
-
-    public function articletag($id){
-        return ArticleTag::where('tid',$id)->cache(true,8640000)->select();
-    }
-
-    //sort================================================================
-    //缓存-分类列表
-    public function Sortlist(){
-        $result = ArticleSort::where('status','=','1')->cache(true,8640000)->select();
-        foreach ($result as $key => $value) {$value['sort_count'] = self::where('sortid',$value['sid'])->cache(true,8640000)->count();}
-        return $result;
-    }
-
-    //Record================================================================
-    public function nian(){   
-        return Article::order('days','desc')->field('FROM_UNIXTIME(date,"%Y") as days,COUNT(*) as COUNT')->GROUP('days')->cache(true,8640000)->select();
-    }
-
-    public function yue(){   
-        return Article::order('days','desc')->field('FROM_UNIXTIME(date,"%Y-%m") as days,COUNT(*) as COUNT')->GROUP('days')->cache(true,8640000)->select();
-    }
-
-    //归档页面--文章列表 (带密码除外)
-    public function Record_article($stsj,$endsj){
-        return $this->tag(Article::order('id','desc')->where('password','=','')->where('date','>=',$stsj)->where('date','<=',$endsj)->limit(15)->cache(true,8640000)->paginate());
-    }
-
+	public function a()
+	{
+		//查询本模型全部数据
+		$info = self::all();
+        return $info;
+	}
 
 
 }

@@ -13,15 +13,15 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'gz-cdb-3e0pcfbd.sql.tencentcdb.com',
+    'hostname'        => 'blog.19aq.com',
     // 数据库名
-    'database'        => 'www_19aq_com',
+    'database'        => 'blog_19aq_com',
     // 用户名
-    'username'        => 'www_19aq_com',
+    'username'        => 'blog_19aq_com',
     // 密码
     'password'        => 'aNWhGTKCGmT3v',
     // 端口
-    'hostport'        => '62464',
+    'hostport'        => '',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数

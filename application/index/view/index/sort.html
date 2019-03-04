@@ -2,9 +2,10 @@
 	<dt>分类</dt>
 		<dd>
 			<ul id="blogsort">
-				{volist name="sort_list" id="v" }
+				{volist name="articlesort" id="v" }
 					<span style="line-height:10px;font-size:10px;">
 						<li>
+							<!-- <a href="{:Url('/')}sort/{$v.alias}">{$v.sortname}({$v.sort_count})</a> -->
 							<a href="{:Url('/')}sort-{$v.alias}.html">{$v.sortname}({$v.sort_count})</a>
 							<a href="{:Url('/')}rss/{$v.alias}.html" target="_Blank" /><img src="/static/blog/rss.png" alt="" height="10px" /></a>
 						</li>

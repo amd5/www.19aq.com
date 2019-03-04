@@ -9,7 +9,6 @@
 namespace app\admin\model;
 
 use think\Db;
-use think\Cache;
 use think\Model;
 use think\Request;
 use think\Controller;
@@ -35,29 +34,13 @@ class Article extends Model
 		return $this->hasOne('ManageUser','id','author')->field('id,username');
 	}
 
-	//后台文章列表
-	public function ArticleList($page,$limit,$key)
-    {
-    	$cache = Cache::get('navs'.$page.$limit.$key);
-        if($cache == false){
-	    	//使用关联预载入，解决语句N+1的查询问题
-			$result = self::with('sort,admin')
-			->whereOr('title&content','like','%'.$key.'%')
-			->page($page)
-	        ->limit($limit)
-	        ->order('id desc')
-	        ->select();
 
-			//增加统计条数
-			$count = self::count();
-			foreach ($result as $key => $value) {
-				$value['id_count'] = $count;
-				$value['date'] = date('Y-m-s h:i:s',$value['date']);
-			}
-		    Cache::set('navs'.$page.$limit.$key,$result,60);
-            $cache = Cache::get('navs'.$page.$limit.$key);
-        }
-        return $cache;
+	//后台文章列表
+	public function ArticleList()
+    {
+    	//使用关联预载入，解决语句N+1的查询问题
+		$result = self::with('sort,admin')->select();
+		return $result;
     }
 	
 	public function Article($id)
@@ -65,54 +48,28 @@ class Article extends Model
 		$result = self::where('id',$id)->select();
 		return $result;
     }
-
-
-
-    //获取所有分类名称并展示到发布文章页面
-	public function ArticleSort()
-	{
-		$result = ArticleSort::order('sid', 'asc')->select();
-		foreach ($result as $key => $value) {
-			switch ($value['status']) {
-				case '1':$value['status'] = '正常';break;
-				case '2':$value['status'] = '已删除';break;
-				default:
-					# code...
-					break;
-			}
-		}
-		return $result;
-	}
 	
-	public function ArticleSortAdd()
-    {
-		$data['sortname']    = $_POST["SortName"];			//分类名称
-		$data['alias']       = $_POST["SortAlias"];		//分类别名
-		$data['description'] = $_POST["SortDesc"];		//分类描述
-		$result = ArticleSort::insert($data);
+	// public function ArticleEdit($id)
+ //    {
+	// 	$result = Article::where('id', $id)
+	// 		->update([
+	// 		'title' 	=> $_POST["articletitle"],
+	// 		'content' 	=> $_POST["content"],
+	// 		'sortid'	=> $_POST["brandclass"],
+	// 		'date' 		=> strtotime($_POST["datetime"]),
 			
-		return $result;
-    }
-
-    public function article_tag($id)
-    {
-    	$result = self::where('tid',$id)->select();
-		return $result;
-    }
-
-    public function loglist($page,$limit){
-		$result = self::order('id desc')
-		->page($page)
-        ->limit($limit)
-		->select();
-		// 增加统计条数
-		$count = self::count();
-		foreach ($result as $key => $value) {
-			$value['id_count'] = $count;
-		}
-		// dump($result);
-		return $result;
-	}
-
+	// 		]);
+			
+	// 	return $result;
+ //    }
+	
+	// public function ArticleDel($id,$action)  //未解决
+ //    {
+	// 	echo "123";
+ //    }
+	
+	
+	
+	
 	
 }

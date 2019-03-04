@@ -29,16 +29,14 @@ Route::rule('c','index/c/php');
 Route::get('article-<id>','index/index/article',['ext'=>'html']);
 // Route::rule('article-<id>','index/index/article');
 //分类页面URL
-Route::get('sort-<sort>','index/index/index',['ext'=>'html']);
+Route::get('sort-<name>','index/sort/index',['ext'=>'html']);
 //标签页面URL
-Route::get('tag/:tag','index/index/index',['ext'=>'html']);
+Route::get('tag/:name','index/tag/index',['ext'=>'html']);
 //文章归档
-Route::get('record/:record','index/index/index',['ext'=>'html']);
+Route::get('record/:name','index/record/index',['ext'=>'html']);
 //文章RSS
 Route::get('rss/:name','index/rss/index',['ext'=>'html']);
-//search
-// Route::get('search/:search','index/index/index',['ext'=>'html']);
-
+// Route::get('Tag-<id>','index/tag/index',['ext'=>'html']);
 // dump($name);
 
 //api-webhook
