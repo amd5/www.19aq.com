@@ -1,259 +1,123 @@
 <?php
 namespace app\admin\controller;
-use app\admin\model\ManageUser;
-use app\admin\controller\Base;
-use think\Controller;
-// use think\Session;
-use think\Cookie;
-use think\Request;
-use think\Db;
-// use think\log;	//系统日志使用
 
+use app\admin\model\Config as Co;
+use app\admin\model\Admin;
+use think\Controller;
+use think\facade\Env;
+use think\facade\Request;
+
+use Qiniu\Storage\UploadManager;
+use Qiniu\Auth;
+
+/**
+ * Class Login
+ * @package app\admin\controller
+ * @author:Pendant 861618191@qq.com
+ */
 class Login extends Controller
 {
-	public function index()
-    {
-    	// if(!Session::has('username')){
-    	if(!Cookie::has('username')){
-    		// dump(session('username'));
-			echo "Cookie null";
-			// die;
-		}else{
-			//增加判断如果登录页面已有登陆状态直接跳转到后台
-			$this->redirect('./');
-		}
+
+    /**
+     * 登陆页面
+     * @return mixed
+     */
+    public function index(){
+        if (session('id')) {
+             $this->redirect('/admin/index/index.html');
+             return null;
+        }
         return $this->fetch();
     }
-	 
-	public function checkLogin($username='',$password='')	//登陆检测
-	{
-		// dump(input('post.'));
-		$result = Manageuser::where('username', $username)->find();
-		$passok = password_verify($password,$result["password"]);
-		// dump($result);
-		if($result != NULL){
-			
-			if($passok == true){
-				//判断验证码是否正确
-				$verify_code = $_POST['captcha'];
-				if(!captcha_check($verify_code)){
-					$this->error('验证码错误');
-				}
-				//判断账号是否被冻结
-				if($result["status"]=="y"){
-					$data["status"] = "true";
-					//如果管理员ID=1则设置以下Session
-					if ($result['id'] == 1) 
-					{
-					// Session::set('id',$result["id"]);
-                    // Session::set('username',$result["username"]);
-					// Session::set('logintime',time());	//设置session开始时间
-					// Session::set('last_login_ip',$this->request->ip());
-					// dump($result["username"]);
-					Cookie::set('id',$result["id"],7200);  //有效期7200秒
-					Cookie::set('username',$result["username"],7200);  //有效期7200秒
-					Cookie::set('logintime',time(),7200);  //有效期7200秒
-					Cookie::set('last_login_ip',$this->request->ip(),7200);  //有效期7200秒
 
-					echo cookie('username');
-					// die;
-
-					// Session::delete('username',$result["username"]);
-					// $this->success('Session设置成功');
-					$data["message"] = "登录成功"; 
-					// $this->success("登录成功",U('Index/index'));
-					// 保存登录信息
-					$username = $_POST['username'];
-					$update['username'] = $username;
-					$update['title'] = "管理员".$username."后台登录账户";
-			        $update['last_login_time'] = time();
-			        $update['last_login_ip'] = $this->request->ip();
-			        $update['login_status'] = "1";
-			        $time['last_login_time'] = time();
-			        //保存登录信息
-			        Db::name("ManageUser")->where('username','=',$username)->update($time);
-			        //保存登录日志
-			        Db::name("SystemLog")->insert($update);
-			        //登录成功后跳转到后台首页
-					$this->success('登录成功', './admin/index');
-                	}
-
-				}else{
-					$data["status"] = "false";  
-					$data["message"] = "账号被锁定，请联系管理员！";  
-					$this->error('账号被锁定，请联系管理员！');
-				}
-				
-			}else{
-				$data["status"] = "false"; 
-				$data["message"] = "密码错误"; 
-				$update['username'] = $_POST['username'];
-				$update['title'] = "密码" .$_POST['password']. "错误";
-		        $update['last_login_time'] = time();
-		        $update['last_login_ip'] = $this->request->ip();
-		        $update['login_status'] = "2";
-		        Db::name("SystemLog")->insert($update);
-		        $this->error('密码错误');
-			}
-
-		}else{
-			$data["status"] = "false";  
-            $data["message"] = "账号不存在，请联系管理员";
-            $update['username'] = $_POST['username'];
-			$update['title'] = "密码" .$_POST['password']. "错误";
-	        $update['last_login_time'] = time();
-	        $update['last_login_ip'] = $this->request->ip();
-	        $update['login_status'] = "3";
-	        Db::name("SystemLog")->insert($update);
-	        $this->error('账号不存在，请联系管理员');
-		}
-		// echo json_encode($data, JSON_UNESCAPED_UNICODE);  
-		// return json_encode($data, JSON_UNESCAPED_UNICODE);  
-		// return $this->success('成功', 'Index');
-		return $this->redirect('Index');
-
-		// die();
-		// session('username',null); // 删除session
-	}
-	
-	public function logout(){
-		// 取值并删除Session
-        // Session::pull('username');
-        // 设置session为null
-        // $del = Session::delete('username');
-        // $del = Session::delete('id');
-        // $nul = Session('username',null);
-        // $nul = Session('id',null);
-        $del = Cookie::delete('id');
-        $del = Cookie::delete('username');
-
-        if ($del = 'NULL') {
-        	$this->redirect('../../');
-        	// echo "1";
+    /**
+     * 登陆确认
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function checkLogin(){
+        if (!$this->request->isPost()) {
+            return null;
         }
-        echo "退出错误！";
-        // elseif ($nul) {
-        // 	$this->redirect('../../');
-        // }
-        // echo "2";
-        // die;
-        // dump(session('username'));
-        // session('username',null);
-        // Session::delete('username');
-        //跳转到后台首页
-        // $this->redirect('.');
-        //跳转到网站首页
-        // $this->redirect('../../');
+        
+        $data['username'] = $this->request->post('username', '', 'trim');
+        $data['password'] = $this->request->post('password', '', 'trim');
+        $code = $this->request->post('code', '');
+
+        if ($code != date('md')) {
+        	$this->error('验证码错误');
+        }
+
+        if (empty($data['username']) || empty($data['password'])) {
+            $this->error('请输入用户名和密码');
+        }
+        
+        $data['last_ip'] = $this->request->ip();
+        $data['last_time'] = date('Y-m-d H:i:s', time());
+
+        $res = Admin::loginIn($data);
+        
+        if ($res['code']<0) {
+            $this->error($res['msg']);
+        } else {
+            $this->success($res['msg'], '/admin/index/index.html', '', 1); //跳转时间1秒
+        }
     }
 
+    public function qiniu(){
+        if (!$this->request->isPost()) {
+            return api_return('Error', '0');
+        }
+        
+        $res = Co::list();
+        $accessKey = $res[1]['content'];
+        $secretKey = $res[2]['content'];
 
-	
-	//视图显示
-    public function Login($username='',$password='')
-	{
-		echo Session::get('username');
-		echo "</br>";
-		echo "密码";
-		echo "</br>";
-		// $result = Manageuser::get([
-		// 'username'=>$username,
-		// 'password'=>$password
-		// ]);
-		$hash = password_hash($password, PASSWORD_BCRYPT);
-		echo "$hash";
-		
-		// $PHPASS = new password_hash(8, true);
-		$password = $PHPASS->password_hash($password);
-		$userData['password'] = $password;
-		
-		if (password_verify($password,'$2y$10$rH5nwLWoGo/mSWwQZS0gH.9ic2UDaMTgmPe.ac3BP5BownWAkGdp6')) 
-		{ 
-			echo "密码正确";
-			echo '</br>';
-			echo $hash;
-		} else {  
-			// return $this->error('登录失败');
-			echo $hash;
-		}
+        $image = \think\Image::open(request()->file('editormd-image-file'));
+        
+        //获取文件后缀
+        $ext = pathinfo($_FILES["editormd-image-file"]['name'], PATHINFO_EXTENSION); 
+        //分配随机文件名
+        $filename = md5(time().rand(1111,9999)).'.'.$ext;
+        //缩略图等比例缩放 原图尺寸小于缩略图尺寸则不进行缩略
+        $image->thumb(900, 900,\think\Image::THUMB_SCALING)->save("../runtime/$filename");                              //修改路径到 缓存目录
+        //获取文件路径
+        $filePath = Env::get('root_path').'runtime/'.$filename;
+        //初始化UploadManager
+        $upManager = new UploadManager();
+        //实例化鉴权对象
+        $auth = new Auth($accessKey, $secretKey);
+        //要上传的空间
+        $token = $auth->uploadToken('static');
+        $resukt = list($ret, $error) = $upManager->putFile($token, $filename, $filePath);
+        //删除临时文件
+        $del = unlink($filePath);
+        if ($resukt) {
+            if ($error !== null) {
+                // dump(['err'=> '1' ,'msg'=> $error ,'data' =>'']);
+                return api_return('Error', '0','',$error);
+            }else{
+                $url ="http://qiniu.19aq.com/".$ret['key']; 
+                $data = [
+                    'success' => 1,
+                    'message' => '上传图片至七牛成功！',
+                    'url'     => $url
+                ];
+                return json($data);
+                // return api_return('', '1','',$url);
+            }
+        }
+        return api_return('Error', '0');
+    }
 
-	
-		
+    public function pull(){
+        $dangqian = dirname(__FILE__);
+        $dir = dirname(dirname(dirname($dangqian)));
+        error_reporting ( E_ALL );
+        $handle = popen('cd '.$dir.' && git pull 2>&1','r');
+        $read = stream_get_contents($handle);
+        printf($read."</br>");
+        pclose($handle);
     }
-	// $hash = password_hash($password, PASSWORD_BCRYPT);
-	// password_verify (string $password , string $hash)
-	// 
-	// echo $hash;
-	
-	
-	
-	
-	/**
-     * 登录验证
-     */
-    // public function Check_Login(){
-        ////验证码检测
-       // $names=$_POST['Captcha'];
-        // if($this->check_verify($names)==false){
-            // $data['error']=1;
-            // $data['msg']="验证码错误";
-            // $this->ajaxReturn($data);
-        // }
-        ////用户检测
-        // $uname=I('post.username');
-        // $upasswd=I('post.password');
-        // $map['uname']=$uname;
-        // $map['state']=1;
-        // $logins=M('login')->where($map)->find();
-        // if($logins)
-        // {
-            // if($logins['upasswd']!=$upasswd)
-            // {
-                // $data['error']=1;
-                // $data['msg']="密码错误";
-                // $this->ajaxReturn($data);
-            // }
-            // session("admin",$logins);
- 
-            // var_dump($logins);
-           // redirect(U('Index/index'));
-        // }
-    // }
- 
-    /**
-     * 验证码生成
-     */
-    public function Verifys()
-    {
-        $config=array(
-            'fontSzie'	=>30,	//验证码字体大小
-            'length'	=>3,	//验证码位数
-            'useImgBg'	=>true, //验证码背景
-			'useNoise'  =>false //验证码杂点
- 
-        );
- 
-        $captcha=new Captcha();
-        $captcha->useZh=true;
- 
-        $captcha->zhSet="梦起软件工作室";
-		$captcha->fontttf = '5.ttf'; 
-        $captcha->entry();
- 
-    }
- 
-    /**
-     * 验证码检测
-     */
-    public function check_verify($code,$id="")
-    {
-		$captcha = new Captcha();
-		return $captcha->check($code, $id);
-    }
-    /**
-     * 退出登录
-     */
-    // public function out_login(){
-        // session("admin",null);
-        // redirect(U('Login/login'));
-    // }
 }

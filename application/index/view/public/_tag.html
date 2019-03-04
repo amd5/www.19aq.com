@@ -1,0 +1,12 @@
+<dl class="right_header">
+	<dt class="r_top">标签</dt>
+	<dd class="r_body">
+		<ul class="r_bj">
+			{volist name="tagList" id="data"}
+			<span style="line-height:10px;font-size:10px;">
+				<a href="/tag-{$data.tagname}.html" title="{$data.count} 篇文章">{$data.tagname}</a>
+			</span>
+			{/volist}
+		</ul>
+	</dd>
+</dl>

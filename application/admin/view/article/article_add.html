@@ -1,0 +1,129 @@
+{include file='/public/_header' title="发布文章"  nava="文章管理" navb="发布文章" /}
+<form class="layui-form" action="">
+<div class="layui-form-item">
+	<label class="layui-form-label">文章标题：</label>
+	<div class="layui-input-block" style="width: 92%">
+		<input type="text" name="title" value='' lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input">
+	</div>
+</div>
+
+<div class="layui-form-item layui-form-text">
+	<label class="layui-form-label">文章内容：</label>
+	<div id="editormd">
+		<textarea name="content" placeholder="请输入内容" class="layui-textarea">### Hello Editor.md !
+>官方网站：https://pandao.github.io/editor.md/
+>GitHub : https://github.com/pandao/editor.md/
+</textarea>
+	</div>
+</div>
+<div class="layui-form-item">
+
+	<div class="layui-inline">
+	<label class="layui-form-label">文章分类：</label>
+		<div class="layui-input-inline">
+			<select name="sort" lay-search="">
+				<option value="99">Other</option>
+				{foreach $sort as $v}
+				<option value="{$v['sid']}">{$v['sortname']}</option>
+				{/foreach}
+			</select>
+		</div>
+	</div>
+
+	<div class="layui-inline">
+		<label class="layui-form-label">选择标签：</label>
+		<div class="layui-input-block">
+			{foreach $tag as $v}
+			<input type="checkbox" name="tag[]" value= "{$v['tid']}" title="{$v['tagname']}" lay-skin="primary">
+			{/foreach}
+		</div>
+	</div>
+
+	<div class="layui-inline">
+	<label class="layui-form-label">文章标签：</label>
+	<div class="layui-input-block">
+		<input type="text" name="tags" size="158"  placeholder="请输入文章标签, 英文半角逗号','分隔" autocomplete="off" class="layui-input">
+	</div>
+	</div>
+
+	<div class="layui-inline">
+	<label class="layui-form-label">文章密码：</label>
+	<div class="layui-input-block">
+		<input type="text" name="password" placeholder="请设置访问密码" autocomplete="off" class="layui-input">
+	</div>
+	</div>
+</div>
+
+<div class="layui-form-item">
+	<div class="layui-input-block">
+		<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+		<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+	</div>
+</div>
+
+</form>
+
+
+{include file='/public/_js' /}
+
+
+<script>
+// layui.use('table', function(){
+layui.use(['form','table'], function(){
+	var table = layui.table;
+	var form = layui.form;
+
+	//监听提交
+	form.on('submit(add)', function(data){
+		// alert(data.field);
+		// console.log(data);
+		// layer.alert(JSON.stringify(data.field), {
+		// 	title: '最终的提交信息'
+		// });
+		$.ajax({
+			url: "articleadd.html",
+			type: "POST",
+			data: data.field,
+			dataType: "json",
+			success:function(data){
+				if (data.code == '1'){
+                    layer.alert('文章发布成功', {icon: 6});
+                    window.location.href='articleList';
+                }else{
+                    layer.alert('文章发布失败', {icon: 5});
+                }
+			},
+			error:function(data){
+				conslole.log(data);
+				layer.alert('发布失败', {icon: 5});
+			}
+		});
+		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+	});
+
+});
+
+	//markdown编辑器
+    $(function() {
+        var editor = editormd("editormd", {
+        	width   : "92%",
+            height  : 600,
+            emoji   : false,
+            path    : "/static/admin_css/markdown/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
+            // saveHTMLToTextarea : true,  //这个配置，方便post提交表单
+
+            /**上传图片相关配置如下*/
+            imageUpload : true,
+        	imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        	imageUploadURL : "/admin/login/qiniu.html",
+
+        	//图片上传成功后处理
+        	onload: function () {
+        		// alert('zz');
+        		// console.log('onload', this);
+        	},
+
+        });
+    });
+
+</script>

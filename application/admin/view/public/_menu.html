@@ -1,0 +1,100 @@
+<div class="layui-side layui-side-menu">
+    <div class="layui-side-scroll">
+        <div class="layui-logo" lay-href=""> 
+            <a href="javascript:;" lay-href="/admin/index/index.html">
+                <span>博客后台系统</span> 
+            </a> 
+        </div>
+        <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+
+            <li data-name="wenzhang" data-jump="" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="文章管理" lay-direction="2">
+                    <i class="layui-icon layui-icon-home"></i>  
+                    <cite>文章管理</cite>  
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="wenzhang-index" data-jump="{:url('article/articlelist')}"  class="">
+                        <a href="javascript:;" lay-href="{:url('article/articlelist')}">文章列表</a>
+                    </dd>
+                    <dd data-name="wenzhang-mold" data-jump="{:url('article/articleadd')}" class="">
+                        <a href="javascript:;" lay-href="{:url('article/articleadd')}">添加文章</a>
+                    </dd>
+                   <!--  <dd data-name="wenzhang-issue" data-jump="">
+                        <a href="javascript:;" lay-href="../wenzhang/issue.html">文章审核</a> 
+                    </dd>
+                    <dd data-name="wenzhang-issue" data-jump="">
+                        <a href="javascript:;" lay-href="../index/demo.html">DEMO</a> 
+                    </dd> -->
+                </dl>
+            </li>
+
+            <li data-name="fenlei" data-jump="" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="分类管理" lay-direction="2">
+                    <i class="layui-icon layui-icon-user"></i>  
+                    <cite>分类管理</cite>
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="fenlei-list" data-jump="{:url('sort/sortlist')}">
+                        <a href="javascript:;" lay-href="{:url('sort/sortlist')}">分类列表</a>
+                    </dd>
+<!--                     <dd data-name="fenlei-add" data-jump="">
+                        <a href="javascript:;" lay-href="{:url('sort/sortadd')}">添加分类</a>
+                    </dd> -->
+                </dl>
+            </li>
+
+            <li data-name="biaoqian" data-jump="" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="标签管理" lay-direction="2">
+                    <i class="layui-icon layui-icon-template"></i>  
+                    <cite>标签管理</cite>
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="biaoqian-list" data-jump="{:url('tag/taglist')}">
+                        <a href="javascript:;" lay-href="{:url('tag/taglist')}">标签列表</a>
+                    </dd>
+<!--                     <dd data-name="biaoqian-add" data-jump="">
+                        <a href="javascript:;" lay-href="{:url('tag/tagadd')}">添加标签</a>
+                    </dd> -->
+                </dl>
+            </li>
+            <li data-name="other" data-jump="" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="其他设置" lay-direction="2">
+                    <i class="layui-icon layui-icon-template"></i>
+                    <cite>其他设置</cite>
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="other-link" data-jump="{:url('others/friendlink')}">
+                        <a href="javascript:;" lay-href="{:url('others/friendlink')}">友链列表</a>
+                    </dd>
+                </dl>
+            </li>
+
+            <li data-name="system" data-jump="" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="系统管理" lay-direction="2">
+                    <i class="layui-icon layui-icon-set"></i>  
+                    <cite>系统管理</cite>
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="system-dd" data-jump="" class="layui-nav-itemed">
+                        <dl class="layui-nav-child">
+                            <dd data-name="system-setting" data-jump="{:url('others/Setting')}">
+                                <a href="javascript:;" lay-href="{:url('others/Setting')}">Setting</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="system-log" data-jump="{:url('others/systemLog')}">
+                                <a href="javascript:;" lay-href="{:url('others/systemLog')}">系统日志</a>
+                            </dd>
+                        </dl>
+                    </dd>
+                </dl>
+            </li>
+            <span class="layui-nav-bar" style="top: 214px; height: 0px; opacity: 0;"></span>
+        </ul>
+    </div>
+</div>

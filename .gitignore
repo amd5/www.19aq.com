@@ -1,6 +1,6 @@
-.idea
-composer.lock
+/.idea
+/.vscode
 *.log
-sftp-config.json
-thinkphp_5.0.10_full.zip
-favicon.ico
+.env
+.DS_Store
+thinkphp

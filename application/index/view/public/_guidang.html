@@ -1,0 +1,23 @@
+<dl class="right_header">
+	<dt class="r_top">归档</dt>
+	<dd class="r_body">
+		<ul class="r_bj">
+			{volist name="nian" id="data"}
+			<div class="guidang">{$data.days}年({$data.COUNT})</div>
+			<div class="yuefen">
+				<ul>
+					{volist name="yue" id="v" }
+						{eq name="$v.days|substr=0,4" value="$data.days"}
+							<span>
+								<li>
+									<a href="/record-{$v.days|substr=0,4}{$v.days|substr=5,7}.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$v.days|substr=5,7}月({$v.COUNT})</a>
+								</li>
+							</span>
+						{/eq}
+					{/volist}
+				</ul>
+			</div>
+			{/volist}
+		</ul>
+	</dd>
+</dl>

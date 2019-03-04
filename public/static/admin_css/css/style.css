@@ -1,0 +1,78 @@
+﻿/*
+author：c32
+blog：http://www.19aq.com
+email：admin@19aq.com
+2019-2-14 16:36:30;
+*/
+body{
+margin:0px;
+padding:0px;
+color:#777;
+font-size:14px;
+font-family: "Microsoft YaHei";
+background-repeat: repeat;
+}
+a{color: #556c88;text-decoration: none;}
+a:hover{color: #556c88;text-decoration: none;}
+img{max-width: 100%;border:none;}
+div, h1, h2, h3, h4, p, form, ul, label, input, textarea, img, span, dl, dt, dd{margin:0px;padding:0;}
+li{list-style-type: none;}
+
+#all{height: auto;}
+.top{line-height: 30px;background-color:#f1f1f1;height:30px;border-bottom-width:1px;border-bottom-style: solid;border-bottom-color: #CCCCCC;}
+.top_all{width: 980px;margin-right: auto;margin-left: auto;}
+.top_center{margin-top: 0px;margin-bottom: 0px;}
+/*内容模块*/
+#content{width: 980px;margin-right: auto;margin-left: auto;}
+.wzhead{font-size: 12px;}
+
+/*头部模块*/
+#header{height: 120px;}
+.header_top{height: 87px;background:url(/static/admin_css/images/top_banner.jpg);}
+.header_top_up{height: 30px;}
+.header_down_left{float: left;width: 140px;height: 57px}
+.header_down_right{float: left;}
+.title_fu{float: left;}
+.title_fu_null{float: left;width: 27px;}
+/*搜索框*/
+#search{background-color: #FFFFFF;float: left;height: 28px;width: 250px;border: 1px solid #ddd;line-height: 30px;padding-left: 11px;border-radius: 3px 0px 0px 3px;}
+#search_btn{margin-left: 10px;margin-right: 10px;color: #FFFFFF;background-color: #cc0000;float: left;height: 30px;width: 60px;border-radius: 0px 3px 3px 0px;border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px;}
+/*导航栏*/
+.nav_all{margin-top: 0px;float: none;height: 33px; background:url(/static/admin_css/images/bg_tab.jpg);}
+.nav{border-top:1px solid #E5E5E5;border-bottom:0px solid #E5E5E5;}
+.nav_ul{width: 100%;height:33px;}
+.nav_li{display:inline-block; height:33px}
+.nav_a{display:inline-block; padding:0 20px;line-height:33px;color:#777777;font-size:14px;}
+
+/*内容部分*/
+.bbody{width: 980px;height: 500px;}
+.b_left{background-color:#FFFFFF;float:left;width:705px;border-radius:5px;border:1px solid #CCCCCC;}
+.b_right{float: right;width: 260px;overflow: hidden;}
+.right_header{background-color: #FFFFFF;margin-bottom: 15px;border-radius: 5px;border:1px solid #CCCCCC;}
+
+.r_top{font-size: 14px;line-height: 35px;font-weight: 700;padding-left: 9px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #cccccc;color: #333333; background-color:#f1f1f1;}
+.r_body{font-size: 14px;padding-top: 10px;padding-right: 15px;padding-bottom: 10px;padding-left: 15px;}
+.r_bj{padding-top: 1px;padding-bottom: 5px;}
+
+.lieb{background-repeat: no-repeat;background-position: center bottom;padding: 15px;}
+.lieb dt{font-size: 12px;color: #999999;}
+.lieb dt h3{font-size:16px;}
+.lieb_line{border-top: 1px dashed #CCCCCC;}
+
+.guidang{font-size:13px;}
+.yuefen{display:none;font-size:13px;}
+.yuefen ul{padding-top: 5px;padding-bottom: 5px;}
+.yuefen ul span{line-height:10px;font-size:10px;}
+.yuefen ul span li{padding-top: 5px;padding-bottom: 5px;}
+
+.secai,#zi a{color: #cc0000;}
+.pagenavi{padding-top: 5px;padding-right: 20px;padding-bottom: 5px;padding-left: 20px;}
+.pagenavi a{padding-top: 3px;padding-right: 7px;padding-bottom: 3px;padding-left: 7px;margin-right: 5px;border: 1px solid #ddd;color: #333333;margin-top: 5px;margin-bottom: 5px;float: left;}
+.pagenavi a:hover{background-color: #f1f1f1;border: 1px solid #eeeeee;color: #333333;}
+.pagenavi span{background-color: #cc0000;padding-top: 3px;padding-right: 7px;padding-bottom: 3px;padding-left: 7px;margin-right: 5px;border: 1px solid #cc0000;color: #FFFFFF;margin-top: 5px;margin-bottom: 5px;float: left;}
+
+.link{width:978px;word-break:break-all;float:left;line-height:26px;padding:0px 0px 0px 0px;border:1px solid #CCCCCC;margin-top: 10px;border-radius: 5px;}
+.link_head{font-size: 14px;line-height: 35px;padding-left: 9px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #cccccc;color: #333333; background-color:#f1f1f1;}
+.link_body{padding:2px 15px 2px 15px;}
+.footer_null{float:left;padding: 15px;width: 949px;}
+.cnzz{float:left;padding: 15px;width: 949px;}

@@ -1,0 +1,15 @@
+<dl class="right_header">
+	<dt class="r_top">分类</dt>
+	<dd class="r_body">
+		<ul class="r_bj">
+			{volist name="sortList" id="data"}
+			<span style="line-height:10px;font-size:10px;">
+				<li style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="/sort-{$data.sortname}.html">{$data.sortname}({$data.count})</a>
+					<a href="/rss-{$data.sortname}.html" target="_Blank"><img src="/static/admin_css/images/rss.png" alt="" height="10px"></a>
+				</li>
+			</span>
+			{/volist}
+		</ul>
+	</dd>
+</dl>

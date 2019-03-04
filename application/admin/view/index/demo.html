@@ -1,0 +1,101 @@
+{include file='/index/_header' title="demo页面"/}
+
+                   <form id="layform" action="" method="post" class="layui-form">
+                   <div class="layui-card">
+                       <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+                           <ul class="findUL">
+                           <li>
+  <button class="layui-btn"  style="height:34px; margin-top:-8px; line-height:30px" onClick="edit(0)" type="button">
+  <i class="layui-icon">&#xe654;</i> 添加商户</button>
+                           </li>
+                           </ul>
+                       </div>
+                       <div class="layui-card-body widget">
+                       <!------------------------------正文----------------------------------->
+                       <table class="layui-table" lay-even="" lay-skin="row">
+                          <thead>
+                            <tr>
+                              <th>商户编号</th>
+                              <th>登录账户</th>
+                              <th>商户代码</th>
+                              <th>商户名称</th>
+                              <th>状态</th>
+                              <th>创建时间</th>
+                              <th>操作</th>
+                            </tr> 
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>测试</td>
+                              <td>001</td>
+                              <td>张三</td>
+                              <td><input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="开|关" value="1"></td>
+                              <td>2019-1-23 17:34:16</td>
+                              <td>
+                              <div class="layui-btn-group">
+                                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" onclick="edit(1)">
+                                      <i class="layui-icon layui-icon-edit"></i>
+                                    </button>
+                                  </div>
+                              </td>
+                            </tr> 
+                          </tbody>
+                        </table> 
+                         
+                       <div id="laypage"></div>
+                       <input type="hidden" name="curr" id="pagecurr"  value="{$data.currentPage|default='1'}">
+                       <input type="hidden" name="record" id="recordcount"  value="{$data.total|default='0'}">
+                       <input type="hidden" name="limit" id="pagelimit"  value="{$data.listRows|default='30'}">
+                       <!------------------------------正文--end------------------------------>
+                       </div>
+                   </div>
+                   </form>
+        <!-- 辅助元素，一般用于移动设备下遮罩 -->
+        <div class="layadmin-body-shade" layadmin-event="shade"></div>
+    </div>
+</div>
+{include file='/index/_js' /}
+    <script>
+  layui.use(['form', 'layedit', 'laydate'], function(){
+      var form = layui.form
+      ,layer = layui.layer
+      ,layedit = layui.layedit
+      ,laydate = layui.laydate;
+      laydate.render({
+      elem: '#daterange'
+      ,range: true
+      });
+      form.on("switch(switchTest)",function(data)
+      {
+       $.post("/channel/update_status",{"id":$(data.elem).val(),"status":(this.checked?"1":"0")},function(rs)
+       {
+           if(rs.status*1==1)
+           {
+             layer.alert(rs.msg,{"icon":1,closeBtn:0},function(){ window.parent.location.reload();});
+           }
+           else
+           {
+             layer.alert(rs.msg);
+           }
+       });
+      });
+  });
+    function edit(id)
+  {
+    var url="/channel/channel_edit.html?id="+id;
+    var index=layer.open({
+      type: 2,
+      title: "编辑商户",
+      shade: [0],
+      area: ['600px', '500px'],
+      content:url,
+      maxmin: true,
+      scrollbar: false
+    });
+  }
+  
+  </script>
+</body>
+
+</html>

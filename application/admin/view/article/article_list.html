@@ -1,0 +1,131 @@
+{include file='/public/_header' title="文章列表" nava="文章管理" navb="文章列表" /}
+<div class="demoTable">
+  搜索标题：
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="search">搜索</button>
+  <a class="layui-btn" lay-submit lay-filter="add"><i class="layui-icon">&#xe654;</i>发布文章</a>
+</div>
+
+
+<!-- <a class="layui-btn" lay-submit lay-filter="reload"><i class="layui-icon">&#xe669;</i></a> -->
+
+<table class="layui-hide" id="test" lay-filter="biaoge"></table>
+
+<script type="text/html" id="barDemo">
+  <!-- 这里的 checked 的状态只是演示 -->
+	<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" href="/article-{{d.id}}.html" target="_blank">查看</a>
+	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+{include file='/public/_js' /}
+
+<script>
+// layui.use('table', function(){
+layui.use(['form','table'], function(){
+	var table = layui.table;
+	var form = layui.form;
+	// var element = layui.element;
+
+	table.render({
+		elem: '#test'
+		,url:'/admin/article/articlelistdata.html'
+		,id: 'searchReload'
+		,page: true
+		,limit: 15
+		,limits : [15,30,50,100]
+		// ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+		,cols: [[
+			{type:'numbers'}
+			,{field:'id', width:80, title: 'ID', sort: true}
+			,{field:'title', width:600, title: '标题', align: 'center' , minWidth: 150}
+			,{field:'sortname', width:120, title: '分类'}
+			,{field:'view', width:80, title: '阅读量', sort: true}
+			,{field:'addtime', width:200, title: '发布时间', sort: true}
+			,{field:'password', width:80, title: '文章密码'}
+			,{field:'action', width:380, title: '操作', toolbar: '#barDemo'}
+			// ,{field:'wealth', width:135, title: '财富', sort: true}
+		]]
+	});
+
+	//监听事件
+	table.on('tool(biaoge)', function(obj){
+		var data = obj.data;
+		var Event = obj.event;
+		switch(Event){
+		case 'edit':
+			edit(data);
+			break;
+		case 'del':
+			del(data);
+			break;
+		case 'update':
+			layer.msg('编辑');
+			break;
+		};
+	});
+
+	function edit(e){
+		location.href='articleedit.html?id='+e.id;
+	}
+
+	function del(e){
+		layer.confirm('确定要继续删除吗？',function(index){
+		    let  id = e.id;
+			layer.close(index);
+            $.ajax({
+				url: "delArticle",
+				data: {aid: id},
+            	type: "post",
+				success: function(data){
+                   if (data.code ==1){
+                       layer.msg('删除成功');
+                       table.reload('test');
+				   }else{
+                       layer.msg('删除失败');
+				   }
+                },
+                error: function(request) {
+                    layer.msg('删除失败');
+                }
+            });
+
+		});
+	}
+
+	form.on('submit(add)', function(data){
+		location.href='articleadd.html'
+	});
+
+	form.on('submit(reload)', function(data){
+		table.reload('searchReload');  //增加了表格搜索，所以这里的id变更了
+	});
+
+
+	var $ = layui.$, active = {
+		search: function(){
+			var demoReload = $('#demoReload');
+			// layer.msg(demoReload.val());
+			//执行重载
+			table.reload('searchReload', {
+				page: {
+					curr: 1 //重新从第 1 页开始
+				}
+				,where: {
+					title: demoReload.val()
+				}
+			});
+		}
+	};
+  
+  $('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+
+
+});
+</script>
+

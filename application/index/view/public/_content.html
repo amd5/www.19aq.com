@@ -1,0 +1,33 @@
+<div class="b_left">
+	{if empty($article)}
+		<h1>没有数据</h1>
+	{/if}
+	{volist name="article" id="data"}
+	<dl class="lieb">
+		<dt>
+			<h3>
+				<a href="/article-{$data.id}.html">{$data.title}</a>
+			</h3>
+			<div>
+				<span>{$data.addtime}&nbsp;&nbsp;|&nbsp;
+				{if !empty($data.tag)}
+					标签：</span>
+					{volist name="data.tag" id="vv"}
+						<a href="/tag-{$vv}.html" class="secai" title="{$vv}">{$vv}</a>
+					{/volist}
+					<span>&nbsp;&nbsp;|&nbsp;</span>
+				{/if}
+				<span>浏览：{$data.view}&nbsp;&nbsp;&nbsp;留言：{$data.lycount} </span>
+			</div>
+		</dt>
+	</dl>
+	<div class="lieb_line"></div>
+	{/volist}
+
+	<!--分页start-->
+	<div class="pagenavi">
+		{$page|raw}
+	</div>
+	<!--分页end-->
+
+</div>	<!--内部部分 左侧end-->

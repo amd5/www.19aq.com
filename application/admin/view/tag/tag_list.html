@@ -1,0 +1,121 @@
+{include file='/public/_header' title="标签列表" nava="标签管理" navb="标签列表" /}
+
+<form class="layui-form">
+	<div class="layui-inline">
+    	<label class="layui-form-label" style="text-align:left;">添加标签：</label>
+    	<div class="layui-input-block">
+			<input type="text" name="tagname" placeholder="请输入标签名称" autocomplete="off" class="layui-input">
+  		</div>
+	</div>
+
+	<a class="layui-btn" lay-submit="" lay-filter="add">立即提交</a>
+	<!-- <a class="layui-btn" lay-submit lay-filter="reload"><i class="layui-icon">&#xe669;</i></a> -->
+</form>
+
+
+
+<table class="layui-hide" id="test" lay-filter="biaoge"></table>
+
+<script type="text/html" id="barDemo">
+  <!-- 这里的 checked 的状态只是演示 -->
+	<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" href="/tag-{{d.tagname}}.html" target="_blank">查看</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+{include file='/public/_js' /}
+
+<script>
+// layui.use('table', function(){
+layui.use(['form','table'], function(){
+	var table = layui.table;
+	var form = layui.form;
+	// var element = layui.element;
+
+	table.render({
+		elem: '#test'
+		,url:'/admin/tag/taglistdata.html'
+		,page: true
+		,limit: 15
+		,limits : [15,30,50,100]
+		// ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+		,cols: [[
+			{type:'numbers'}
+			// ,{field:'id', width:80, title: 'ID', sort: true}
+			,{field:'tid', width:80, title: '标签ID', sort: true}
+			,{field:'tagname', width:120, title: '分类名称', align: 'center' , minWidth: 150}
+			,{field:'gid', width:200, title: '文章ID'}
+			,{field:'addtime', width:180, title: '标签创建时间'}
+			,{field:'action', width:380, title: '操作', toolbar: '#barDemo'}
+			// ,{field:'wealth', width:135, title: '财富', sort: true}
+		]]
+	});
+
+	//监听事件
+	table.on('tool(biaoge)', function(obj){
+		var data = obj.data;
+		var Event = obj.event;
+		switch(Event){
+		case 'edit':
+			edit(data);
+			break;
+		case 'del':
+			del(data);
+			break;
+		case 'update':
+			layer.msg('编辑');
+			break;
+		};
+	});
+
+	function edit(e){
+		alert('v');
+		layer.msg('编辑');
+	};
+
+	function del(e){
+		layer.confirm('确定要继续删除吗？',function(index){
+            let  id = e.tid;
+            layer.close(index);
+            $.ajax({
+                url: "delTag",
+                data: {tid: id},
+                type: "post",
+                success: function(data){
+                    if (data.code ==1){
+                        layer.msg('删除成功');
+                        table.reload('test');
+                    }else{
+                        layer.msg('删除失败');
+                    }
+                },
+                error: function(request) {
+                    layer.msg('失败');
+                }
+            });
+		});
+	};
+
+	form.on('submit(add)', function(data){
+		layer.msg(JSON.stringify(data.field));
+		// location.href='tagadd.html'
+        $.ajax({
+            url: "tagAdd",
+            data: data.field,
+            type: "post",
+            success: function(data){
+                layer.msg('添加成功');
+                table.reload('test');
+            },
+            error: function(request) {
+                layer.msg('添加失败');
+            }
+        });
+	});
+
+	form.on('submit(reload)', function(data){
+		table.reload('test');
+	});
+
+});
+</script>
+

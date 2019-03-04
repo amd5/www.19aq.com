@@ -1,0 +1,95 @@
+<div class="layui-header">
+    <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item layadmin-flexible" lay-unselect="">
+            <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+            </a>
+        </li>
+<!--         <li class="layui-nav-item layui-this layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+            <a lay-href="" title="">控制台</a>
+        </li> -->
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+            <a href="javascript:;" target="_blank" title="清除缓存" onclick="delCache()">
+                <i class="layui-icon layui-icon-fonts-clear"></i>
+            </a>
+        </li>
+        <li class="layui-nav-item" lay-unselect="">
+            <!-- <a href="javascript:;" layadmin-event="refresh" title="刷新"> <i class="layui-icon layui-icon-refresh-3"></i> -->
+            <a href="javascript:;" lay-submit lay-filter="reload" title="重载表格"><i class="layui-icon">&#xe669;</i></a>
+            </a>
+        </li>
+        <span class="layui-nav-bar" style="left: 38px; top: 48px; width: 0px; opacity: 0;"></span>
+    </ul>
+
+    <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+        <li class="layui-nav-item" lay-unselect="">
+            <a lay-href="app/message/" layadmin-event="message"> <i class="layui-icon layui-icon-notice"></i>
+                <!-- 如果有新消息，则显示小圆点 -->
+               <span class="layui-badge-dot"></span> 
+            </a>
+        </li>
+
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="" style="display:none">
+            <a href="javascript:;" layadmin-event="theme"> <i class="layui-icon layui-icon-theme"></i>
+            </a>
+        </li>
+
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="" style="display:none">
+            <a href="javascript:;" layadmin-event="note"> <i class="layui-icon layui-icon-note"></i>
+            </a>
+        </li>
+
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+            <a href="javascript:;" layadmin-event="fullscreen"> <i class="layui-icon layui-icon-screen-full"></i>
+            </a>
+        </li>
+
+        <li class="layui-nav-item" lay-unselect="" id="admin-info">
+            <a href="javascript:;">
+                <cite>c32's blog</cite>
+                <span class="layui-nav-more"></span>
+            </a>
+            <dl class="layui-nav-child layui-anim layui-anim-upbit" style="top:35px">
+                <dd>
+                    <a lay-href="javascript:void(0)" onclick="delCache()">清空缓存</a>
+                </dd>
+                <hr>
+                <dd layadmin-event="" style="text-align: center;">
+                    <a lay-href="{:url('index/loginOut')}">退出登录</a>
+                </dd>
+            </dl>
+        </li>
+
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+            <a href="javascript:;" layadmin-event="about">
+                <i class="layui-icon layui-icon-more-vertical"></i>
+            </a>
+        </li>
+
+        <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect="">
+            <a href="javascript:;" layadmin-event="more">
+                <i class="layui-icon layui-icon-more-vertical"></i>
+            </a>
+        </li>
+        
+        <span class="layui-nav-bar" style="left: 56px; top: 48px; width: 0px; opacity: 0;"></span>
+    </ul>
+</div>
+<script type="text/javascript">
+    function delCache(){
+        $.ajax({
+            url: "/admin/others/delCache",
+            type: "get",
+            success: function(data){
+                if (data.code == '1'){
+                    layer.msg('缓存已清空');
+                }else{
+                    layer.msg('缓存已清空无需再次清空');
+                }
+            },
+            error: function(data){
+                layer.msg('执行失败');
+            }
+        });
+    }
+</script>

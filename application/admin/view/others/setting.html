@@ -1,0 +1,97 @@
+{include file='/public/_header' title="系统设置" nava="系统管理" navb="系统配置" /}
+
+<fieldset class="layui-elem-field layui-field-title" >
+  <legend>系统配置参数</legend>
+</fieldset>
+ 
+<form class="layui-form" action="" lay-filter="example">
+	<div class="layui-form-item" style="width: 880px">
+		<label class="layui-form-label">CNZZ</label>
+		<div class="layui-input-block">
+			<input type="text" name="cnzz" lay-verify="title" autocomplete="off" placeholder="请输入CNZZ代码" class="layui-input">
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-inline" style="width: 580px">
+			<label class="layui-form-label">七牛AK</label>
+			<div class="layui-input-block">
+				<input type="text" name="qiniuAccessKey" placeholder="请输入七牛AK" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-inline" style="width: 580px">
+			<label class="layui-form-label">七牛SK</label>
+			<div class="layui-input-block">
+				<input type="text" name="qiniuSecretKey" placeholder="请输入七牛SK" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+		</div>
+	</div>
+</form>
+
+
+
+{include file='/public/_js' /}
+
+<script>
+// layui.use('table', function(){
+layui.use(['form','table'], function(){
+	var table = layui.table;
+	var form = layui.form;
+	// var element = layui.element;
+
+
+
+	$.ajax({
+        url: "settingData",
+        type: "get",
+        success: function(data){
+            // layer.msg('更新成功');
+			//表单初始赋值
+			// console.log(data.data);
+			form.val('example', {
+				"cnzz": data.data.cnzz
+				,"qiniuAccessKey": data.data.qiniuAccessKey
+				,"qiniuSecretKey": data.data.qiniuSecretKey
+				// ,"like[write]": true //复选框选中状态
+				// ,"close": true //开关状态
+				// ,"sex": "女"
+				// ,"desc": "我爱 layui"
+			})
+        },
+        error: function(request) {
+            layer.msg('获取数据失败');
+        }
+    });
+
+
+	form.on('submit(add)', function(data){
+        $.ajax({
+            url: "settingAdd",
+            data: data.field,
+            type: "post",
+            success: function(data){
+                layer.msg('更新成功');
+            },
+            error: function(request) {
+                layer.msg('更新失败');
+            }
+        });
+	});
+
+
+
+
+
+
+});
+</script>
+
