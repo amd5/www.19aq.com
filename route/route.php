@@ -17,10 +17,13 @@ Route::get('hello/:name', 'index/hello');
 Route::rule('article-<id>','index/index/article','GET|POST',['ext'=>'html']);
 Route::get('sort-<id>','index/index/dataList?type=sort',['ext'=>'html']);
 Route::get('tag-<id>','index/index/dataList?type=tag',['ext'=>'html']);
-// Route::get('tag-<id>','index/index/dataList?type=tag',['ext'=>'html']);
 Route::get('record-<id>','index/index/dataList?type=record',['ext'=>'html']);
-
 Route::get('search','index/index/dataList?type=search');
+
+#webhook
+Route::rule('pull','admin/login/pull','GET|POST',['ext'=>'html']);
+Route::rule('pullf','admin/login/pullf','GET|POST',['ext'=>'html']);
+
 return [
 
 ];

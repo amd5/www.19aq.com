@@ -120,4 +120,13 @@ class Login extends Controller
         printf($read."</br>");
         pclose($handle);
     }
+    public function pullf(){
+        $dangqian = dirname(__FILE__);
+        $dir = dirname(dirname(dirname($dangqian)));
+        error_reporting ( E_ALL );
+        $handle = popen('cd '.$dir.' && git checkout -f && git pull','r');
+        $read = stream_get_contents($handle);
+        printf($read."</br>");
+        pclose($handle);
+    }
 }
