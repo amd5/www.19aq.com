@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>{if !empty($title)}{$title}{/if}c32's blog</title>
+    <title>{if !empty($result.title)}{$result.title}{/if}_c32's blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.33,minimum-scale=1.0,maximum-scale=1.0">
-    <meta name="keywords" content="c32的个人博客" />
-    <meta name="description" content="c32的个人博客" />
+    <meta name="keywords" content="{$result.title}" />
+    <meta name="description" content="{$result.title}" />
     <link href="/static/admin_css/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/static/admin_css/markdown/css/editormd.preview.css" rel="stylesheet" type="text/css" />
     <link href="/static/admin_css/layui/css/layui.css" rel="stylesheet" media="all">
@@ -34,7 +34,7 @@
 
                     <div class="header_down_right"><!--title 内容部分-->
                         <div> <!--上面部分-->
-                            <h1>c32's blog</h1><!--大标题-->
+                            <div style="font-size:28px;">c32's blog</div><!--大标题-->
                         </div>
                         <div>
                             <div class="title_fu_null">&nbsp;</div>
@@ -77,7 +77,7 @@
                     <dl style="background-repeat: no-repeat;background-position: center bottom;padding: 15px;">
                         <dl>
                             <dt class="wzhead">
-                                <h2>{$result.title}</h2>
+                                <h1>{$result.title}</h1>
                                 {$result.addtime|date="Y-m-d H:i:s"}&nbsp;&nbsp;|&nbsp;&nbsp;分类：
                                 <a href="{:Url('/')}sort-{$result.sorts}.html" class="secai">{$result.sorts}</a>
                                 |&nbsp;&nbsp;标签：
