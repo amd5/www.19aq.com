@@ -80,15 +80,22 @@
                             <dt class="wzhead">
                                 <h1>{$result.title}</h1>
                                 {$result.addtime|date="Y-m-d H:i:s"}&nbsp;&nbsp;|&nbsp;&nbsp;分类：
-                                <a href="/" class="secai">游戏攻略</a>
-                                |&nbsp;&nbsp;标签：
-                                {if !empty($result.tagname)}
-                                    {volist name="result.tagname" id="data"}
-                                        <a href="{:Url('/')}tag-{$data}.html" class="secai">{$data}</a>&nbsp;
-                                    {/volist}
-                                {else /}
-                                无
-                                {/if}
+                                <?php
+                                $cname[1] = '角色扮演';
+                                $cname[2] = '动作格斗';
+                                $cname[3] = '休闲益智';
+                                $cname[4] = '飞行射击';
+                                $cname[5] = '冒险解谜';
+                                $cname[6] = '策略塔防';
+                                $cname[7] = '赛车竞速';
+                                $cname[8] = '棋牌卡牌';
+                                $cname[9] = '音乐游戏';
+                                $cname[10] = '模拟经营';
+                                $cname[11] = '体育竞技';
+                                $result['cname'] = $cname[$result['cid']];
+?>
+                                <a href="/" class="secai">{$result.cname}</a>
+                                |&nbsp;&nbsp;游戏大小：{$result.size} | 游戏语言：简体中文
                                 <span style="float: right;">
                                     阅读({$result.view})&nbsp;&nbsp;&nbsp;&nbsp;评论(0)
                                 </span>

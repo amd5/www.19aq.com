@@ -14,6 +14,11 @@ class News extends Controller
 {
 	//初始化
 	public function initialize(){
+        if(isset($_SERVER['HTTP_USER_AGENT'])){
+            if(!strstr($_SERVER['HTTP_USER_AGENT'],'spider')){
+//                abort(404,'请重新访问!');
+            }
+        }
 	}
 
     public function index()

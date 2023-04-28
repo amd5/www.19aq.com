@@ -14,6 +14,11 @@ class Games extends Controller
 {
 	//初始化
 	public function initialize(){
+        if(isset($_SERVER['HTTP_USER_AGENT'])){
+            if(!strstr($_SERVER['HTTP_USER_AGENT'],'spider')){
+//                abort(404,'请重新访问!');
+            }
+        }
 	}
 
     public function index()
@@ -51,6 +56,8 @@ class Games extends Controller
         Db::name('games_data')->where('id',$data['id'])->delete();
         unset($data['id']);
         if($data) {
+            $data['cid']  = rand(1,11);
+            $data['size'] = rand(11,99).'.'.rand(11,99).'MB';
             Db::name('games')->insert($data);
         }
         // 自动写入数据
@@ -86,7 +93,6 @@ class Games extends Controller
         }else{
             $page   = '';
         }
-
         $tagList    = Ta::qiantai();
         $sortList   = So::qiantai();
         $nian       = Ar::nian();

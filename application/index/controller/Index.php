@@ -71,6 +71,7 @@ class Index extends Controller
     }
 
     public function dataList(){
+        
         $type = $this->request->param('type');
         $id   = $this->request->param('id');
 
@@ -113,7 +114,7 @@ class Index extends Controller
 
     // public function aa(){
     //     //迁移博客使用
-    //     set_time_limit(0); 
+    //     set_time_limit(0);
     //     $res = Db::table('think_aaaaa')->select();
     //     $rrrr = Db::table('think_article')->select();
 
