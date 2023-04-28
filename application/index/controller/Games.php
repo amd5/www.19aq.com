@@ -57,6 +57,7 @@ class Games extends Controller
         unset($data['id']);
         if($data) {
             $data['cid']  = rand(1,11);
+            $data['addtime']  = time();
             $data['size'] = rand(11,99).'.'.rand(11,99).'MB';
             Db::name('games')->insert($data);
         }
