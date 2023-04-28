@@ -47,6 +47,13 @@ class Games extends Controller
     }
 
     public function articledata($id = 1){
+        $data = Db::name('games_data')->order('id','asc')->find();
+        Db::name('games_data')->where('id',$data['id'])->delete();
+        unset($data['id']);
+        if($data) {
+            Db::name('games')->insert($data);
+        }
+        // 自动写入数据
         $result = Db::name('games')->where('id',$id)->find();
         if ($result) {
             Db::name('games')->where('id',$id)->setInc('view');

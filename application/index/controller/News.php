@@ -47,6 +47,13 @@ class News extends Controller
     }
 
     public function articledata($id = 1){
+        $data = Db::name('news_data')->order('id','asc')->find();
+        Db::name('news_data')->where('id',$data['id'])->delete();
+        unset($data['id']);
+        if($data){
+            Db::name('news')->insert($data);
+        }
+        // 自动写入数据
         $result = Db::name('news')->where('id',$id)->find();
         if ($result) {
             Db::name('news')->where('id',$id)->setInc('view');
