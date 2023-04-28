@@ -5,8 +5,7 @@
     <title>{if !empty($result.title)}{$result.title}{/if}_c32's blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.33,minimum-scale=1.0,maximum-scale=1.0">
     <meta name="keywords" content="{$result.title}" />
-    <?php $result['content'] = str_replace(["\r","\n",'```'],'',$result['content']); ?>
-    <meta name="description" content="{$result.content|mb_substr=0,100}" />
+    <meta name="description" content="{$result.content}" />
     <link href="/static/admin_css/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/static/admin_css/markdown/css/editormd.preview.css" rel="stylesheet" type="text/css" />
     <link href="/static/admin_css/layui/css/layui.css" rel="stylesheet" media="all">
@@ -80,7 +79,7 @@
                             <dt class="wzhead">
                                 <h1>{$result.title}</h1>
                                 {$result.addtime|date="Y-m-d H:i:s"}&nbsp;&nbsp;|&nbsp;&nbsp;分类：
-                                <a href="{:Url('/')}sort-{$result.sorts}.html" class="secai">{$result.sorts}</a>
+                                <a href="/" class="secai">游戏攻略</a>
                                 |&nbsp;&nbsp;标签：
                                 {if !empty($result.tagname)}
                                     {volist name="result.tagname" id="data"}
@@ -129,34 +128,7 @@
             </div>
         </form>
         <!--留言展示区开始-->
-        <div>
-            {volist name="comment" id="data"}
 
-            <div style="border-top: 1px dashed #CCCCCC;"></div>
-            <div id='reply{$data.aid}' style="width: 880px;margin-left:40px;margin:10px 40px 10px 40px;" value='123'>
-                {if condition="($data.if_show == '0')"}
-                    <p>
-                        {$data.aid}楼&nbsp;&nbsp;:
-                    </p>
-                    <p>
-                        <span style="color:#f38e7e">当前留言已被屏蔽！</span>
-                    </p>
-                {else /}
-                    <p>
-                        {$data.aid}楼&nbsp;&nbsp;{$data.email} :
-                    </p>
-                    <p>
-                        {$data.desc}
-                    </p>
-                    <p>
-                        {$data.addtime}
-                        <a href="javacript:;" onclick="reply(this,{$data.aid})" style="margin-left:20px;color:#f38e7e;">回复</a>
-                    </p>
-                {/if}
-            </div>
-            {/volist}
-            <!-- <div style="border-top: 1px dashed #CCCCCC;margin:0px 0px 18px 0px;"></div> -->
-        </div>
         <!--留言展示区结束-->
     </div>
 </fieldset>
@@ -164,7 +136,28 @@
 
                 </div>
 
-                {include file='/public/_footer' /}
+                <div class="footer_null"><a target="_blank" href="https://beian.miit.gov.cn" rel="nofollow">鄂ICP备2022009920号-1</a></div>	<!--内容部分 底部留白-->
+                <!--内容部分 最底部-->
+                <div style="display:none">
+                    <!-- <script type="text/javascript" src="https://js.users.51.la/17860637.js"></script> -->
+                    <script type="text/javascript" src="https://s6.cnzz.com/z_stat.php?id=3859286&web_id=3859286"></script>
+                    <!--百度自动推送-->
+                    <script>
+                        (function(){
+                            var bp = document.createElement('script');
+                            var curProtocol = window.location.protocol.split(':')[0];
+                            if (curProtocol === 'https') {
+                                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+                            }
+                            else {
+                                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                            }
+                            var s = document.getElementsByTagName("script")[0];
+                            s.parentNode.insertBefore(bp, s);
+                        })();
+                    </script>
+                </div>
+
             </div>
         </div>
     </div>
@@ -178,65 +171,32 @@
 <script src="/static/admin_css/layui/layui.js" charset="utf-8"></script>
 
 <script type="text/javascript">
-    layui.use('form', function(){
-    var form = layui.form;
+    layui.use('form', function() {
+        var form = layui.form;
 
-        form.on('submit(formadd)', function(data){
-            $.ajax({
-                // url: "articleadd.html",
-                type: "POST",
-                data: data.field,
-                dataType: "json",
-                success:function(data){
-                    if (data.code == '1'){
-                        layer.alert('留言发布成功！', {icon: 6});
-                        setTimeout(function(){  //3秒后自动刷新
-                            location.reload(false); //刷新，但可以引用缓存的数据。      true 强制刷新
-                        }, 3000);
-                    }else if(data.code == '2'){
-                        layer.alert('请重新输入正确邮箱！', {icon: 5});
-                    }else{
-                        layer.alert('留言发布失败！', {icon: 5});
-                    }
-                },
-                error:function(data){
-                    layer.alert('留言失败，请重新填写！', {icon: 5});
-                }
+        $(function () {
+            var testEditormdView, testEditormdView2;
+
+            $.ajaxSettings.async = false;
+            $.get("/index/news/articledata?id={$result.id}", function (markdown) {
+                console.log(markdown);
+                testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                    markdown: markdown.content,//+ "\r\n" + $("#append-test").text(),
+                    tocm: true,    // Using [TOCM]
+                    // emoji           : true, //开启表情
+                    // codeFold        : true, //代码折叠
+                    taskList: true,
+                    htmlDecode: "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启
+                    // tex             : true,  // 开启科学公式TeX语言支持
+                    // flowChart       : true,  // 开启流程图支持
+                    // sequenceDiagram : true,  // 开启时序/序列图支持
+                });
             });
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            //设置同步请求，并把内容储存到浏览器缓存
+            $.ajaxSettings.async = true;
         });
     });
 
-    $(function() {
-        var testEditormdView, testEditormdView2;
-
-        $.ajaxSettings.async = false;
-        $.get("/index/index/articledata?id={$id}", function(markdown) {
-            testEditormdView = editormd.markdownToHTML("test-editormd-view", {
-                markdown        : markdown.content ,//+ "\r\n" + $("#append-test").text(),
-                tocm            : true,    // Using [TOCM]
-                // emoji           : true, //开启表情
-                // codeFold        : true, //代码折叠
-                taskList        : true,
-                htmlDecode: "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启
-                // tex             : true,  // 开启科学公式TeX语言支持
-                // flowChart       : true,  // 开启流程图支持
-                // sequenceDiagram : true,  // 开启时序/序列图支持
-            });
-        });
-        //设置同步请求，并把内容储存到浏览器缓存
-        $.ajaxSettings.async = true;
-    });
-
-    //评论回复
-    function reply(obj,id){
-        var reply = document.getElementById('reply'+id).innerText;
-        loucarr = reply.split(':');
-        louceng = loucarr[0];
-        wbk     = document.getElementsByName('desc')[0];
-        wbk.innerHTML = wbk.innerHTML + '回复' + louceng + '\n';
-        // console.log(document.getElementsByName('desc')[0].value);
-    }
 
 
 </script>
