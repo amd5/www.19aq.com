@@ -10,7 +10,7 @@ use app\admin\model\Link as Li;
 use app\admin\model\Comment as Co;
 use think\Db;
 
-class News extends Controller
+class Games extends Controller
 {
 	//初始化
 	public function initialize(){
@@ -38,7 +38,7 @@ class News extends Controller
 
     public function article($id = 1)
     {
-        $result = Db::name('news')->where('id',$id)->find();
+        $result = Db::name('games')->where('id',$id)->find();
         if($result){
             $this->assign('result', $result);
             return $this->fetch();
@@ -47,9 +47,9 @@ class News extends Controller
     }
 
     public function articledata($id = 1){
-        $result = Db::name('news')->where('id',$id)->find();
+        $result = Db::name('games')->where('id',$id)->find();
         if ($result) {
-            Db::name('news')->where('id',$id)->setInc('view');
+            Db::name('games')->where('id',$id)->setInc('view');
             return $result;
         }else{
             $this->error('请重新访问！');    //走404
@@ -93,7 +93,7 @@ class News extends Controller
         $this->assign('nian', $nian);
         $this->assign('yue', $yue);
         $this->assign('links', $links);
-        $title = "游戏攻略  - ";
+        $title = "手机游戏  - ";
         $this->assign('title', $title);
         return $this->fetch('index');
     }

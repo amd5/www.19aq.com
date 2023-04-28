@@ -23,8 +23,8 @@ Route::get('search','index/index/dataList?type=search');
     
     Route::rule('news/<id>','index/News/article','GET|POST',['ext'=>'html']);
     Route::rule('news','index/News/dataList?type=sort','GET|POST');
-//    Route::rule('games/<id>','index/News/article','GET|POST',['ext'=>'html']);
-//    Route::rule('games','index/News/article','GET|POST',['ext'=>'html']);
+    Route::rule('games/<id>','index/Games/article','GET|POST',['ext'=>'html']);
+    Route::rule('games','index/Games/dataList?type=sort','GET|POST');
 
 
 

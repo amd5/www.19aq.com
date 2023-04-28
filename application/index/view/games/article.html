@@ -179,7 +179,7 @@
             var testEditormdView, testEditormdView2;
 
             $.ajaxSettings.async = false;
-            $.get("/index/news/articledata?id={$result.id}", function (markdown) {
+            $.get("/index/games/articledata?id={$result.id}", function (markdown) {
                 console.log(markdown);
                 testEditormdView = editormd.markdownToHTML("test-editormd-view", {
                     markdown: markdown.content,//+ "\r\n" + $("#append-test").text(),
