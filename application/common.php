@@ -22,7 +22,7 @@ function curl_func($url,$data='',$method='GET',$encode='UTF-8',$ssl='')
     //     "Content-Type: application/json;charset=utf-8",
     // );
 
-    // curl_setopt($curl, CURLOPT_HTTPHEADER, $header); 
+    // curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
     if ($ssl = 'ssl') {
     	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
     }
@@ -54,3 +54,26 @@ function api_return($message='', $code='', $count=0 , $data=[])
     ];
     return json($return);
 };
+function baidupush($domain,$token,$urls){
+    $api    = BaiduApi($domain,$token);
+    // $urls   = explode("\n",$urls);
+    
+    $ch         = curl_init();
+    
+    $options    = array(
+        CURLOPT_URL            => $api,
+        CURLOPT_POST           => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POSTFIELDS     => $urls,
+        CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
+    );
+    curl_setopt_array($ch, $options);
+    $result = curl_exec($ch);
+    $result = json_decode($result,true);
+    $result = json_encode($result,JSON_UNESCAPED_UNICODE);
+    $log = env('runtime_path').'push_baidu.log';
+    file_put_contents($log,$result."\r\n",FILE_APPEND);
+}
+function BaiduApi($url,$token){
+    return 'http://data.zz.baidu.com/urls?site='.$url.'&token='.$token;
+}

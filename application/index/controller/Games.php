@@ -59,7 +59,11 @@ class Games extends Controller
             $data['cid']  = rand(1,11);
             $data['addtime']  = time();
             $data['size'] = rand(11,99).'.'.rand(11,99).'MB';
-            Db::name('games')->insert($data);
+            $new_id = Db::name('games')->insertGetId($data);
+            $url = 'https://www.19aq.com/games/'.$new_id.'.html';
+            baidupush('www.19aq.com','KI6byVy3nKT4U2i1',$url);
+            $url = 'https://m.19aq.com/games/'.$new_id.'.html';
+            baidupush('m.19aq.com','KI6byVy3nKT4U2i1',$url);
         }
         // 自动写入数据
         $result = Db::name('games')->where('id',$id)->find();
