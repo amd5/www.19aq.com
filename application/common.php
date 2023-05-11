@@ -70,7 +70,7 @@ function baidupush($domain,$token,$urls){
     curl_setopt_array($ch, $options);
     $result = curl_exec($ch);
     $result = json_decode($result,true);
-    $result = json_encode($result,);
+    $result = json_encode($result,JSON_UNESCAPED_UNICODE);
     $log = env('runtime_path').'push_baidu_'.date('Ymd',time()).'.log';
     $str = date('Y-m-d H:i:s',time()).' '.json_encode($urls,JSON_UNESCAPED_SLASHES).$result."\r\n";
     file_put_contents($log,$str,FILE_APPEND);
