@@ -17,7 +17,7 @@
 								<a href="/news/{$data.id}.html">{$data.title}</a>
 							</h3>
 							<div>
-				<span>{$data.addtime}&nbsp;&nbsp;|&nbsp;
+				<span>{$data.addtime|date='Y-m-d H:i:s'}&nbsp;&nbsp;|&nbsp;
 				{if !empty($data.tag)}
 					标签：</span>
 								{volist name="data.tag" id="vv"}
