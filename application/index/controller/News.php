@@ -50,13 +50,18 @@ class News extends Controller
         }
         
     }
-
     public function articledata($id = 1){
         $data = Db::name('news_data')->order('id','asc')->find();
         Db::name('news_data')->where('id',$data['id'])->delete();
         unset($data['id']);
-        if($data){
-            Db::name('news')->insert($data);
+        if($data) {
+            $data['cid']  = rand(1,11);
+            $data['addtime']  = time();
+            $new_id = Db::name('news')->insertGetId($data);
+            $url = 'https://www.19aq.com/news/'.$new_id.'.html';
+            baidupush('www.19aq.com','KI6byVy3nKT4U2i1',$url);
+            $url = 'https://m.19aq.com/news/'.$new_id.'.html';
+            baidupush('m.19aq.com','KI6byVy3nKT4U2i1',$url);
         }
         // 自动写入数据
         $result = Db::name('news')->where('id',$id)->find();
