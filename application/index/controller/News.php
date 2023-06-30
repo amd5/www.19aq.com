@@ -51,6 +51,7 @@ class News extends Controller
         
     }
     public function articledata($id = 1){
+        // news
         $data = Db::name('news_data')->order('id','asc')->find();
         Db::name('news_data')->where('id',$data['id'])->delete();
         unset($data['id']);
@@ -61,6 +62,20 @@ class News extends Controller
             $url = 'https://www.19aq.com/news/'.$new_id.'.html';
             baidupush('www.19aq.com','KI6byVy3nKT4U2i1',$url);
             $url = 'https://m.19aq.com/news/'.$new_id.'.html';
+            baidupush('m.19aq.com','KI6byVy3nKT4U2i1',$url);
+        }
+        // game
+        $data = Db::name('games_data')->order('id','asc')->find();
+        Db::name('games_data')->where('id',$data['id'])->delete();
+        unset($data['id']);
+        if($data) {
+            $data['cid']  = rand(1,11);
+            $data['addtime']  = time();
+            $data['size'] = rand(11,99).'.'.rand(11,99).'MB';
+            $new_id = Db::name('games')->insertGetId($data);
+            $url = 'https://www.19aq.com/games/'.$new_id.'.html';
+            baidupush('www.19aq.com','KI6byVy3nKT4U2i1',$url);
+            $url = 'https://m.19aq.com/games/'.$new_id.'.html';
             baidupush('m.19aq.com','KI6byVy3nKT4U2i1',$url);
         }
         // 自动写入数据
