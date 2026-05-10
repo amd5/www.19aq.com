@@ -84,7 +84,7 @@ class Article extends Model
     	return $result;
     }
     #前台-标签页文章列表
-    public static function taglists($id){
+    public static function taglists($id, $paginate = []){
     	$tagname = Tag::where('tagname',$id)->cache(true,8640000)->find();
     	if (!$tagname) {return;}
     	$taga = Taga::where('tid',$tagname['tid'])->cache(true,8640000)->select();
@@ -96,17 +96,17 @@ class Article extends Model
     	}
     	$data = trim($data,",");
     	#根据ID 查询文章
-    	$result = self::where('id','in',$data)->order('id desc')->limit(15)->cache(true,8640000)->paginate();
+    	$result = self::where('id','in',$data)->order('id desc')->limit(15)->cache(true,8640000)->paginate(array_merge(['list_rows' => 15], $paginate));
 
     	$result = self::gongyong($result);
 
     	return $result;
     }
     #前台-分类页文章列表
-    public static function sortlists($id){
+    public static function sortlists($id, $paginate = []){
         $sid = Sort::where('sortname',$id)->cache('sid'.$id,2592000)->find();
         if (!$sid) {return;}
-        $result = self::where('sort',$sid['sid'])->order('id desc')->limit(15)->cache(true,8640000)->paginate();
+        $result = self::where('sort',$sid['sid'])->order('id desc')->limit(15)->cache(true,8640000)->paginate(array_merge(['list_rows' => 15], $paginate));
         $result = self::gongyong($result);
         return $result;
     }

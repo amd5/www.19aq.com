@@ -149,19 +149,19 @@ class Index extends Controller
 
         $type = $this->request->param('type');
         $id   = $this->request->param('id');
+        $pageNo = $this->request->param('page', 1, 'intval');
 
         if ($type == 'tag') {
-            $article    = Ar::taglists($id);
+            $article    = Ar::taglists($id, ['page' => $pageNo, 'path' => '/tag-'.rawurlencode($id).'-[PAGE].html']);
         }
         if ($type == 'sort') {
-            $article    = Ar::sortlists($id);
+            $article    = Ar::sortlists($id, ['page' => $pageNo, 'path' => '/sort-'.rawurlencode($id).'-[PAGE].html']);
         }
         if ($type == 'record') {
             $article    = Ar::recordlists($id);
         }
         if ($type == 'search') {
             if (empty($id)) {$id   = $this->request->param('key','','addslashes,htmlspecialchars,quotemeta');}
-            $pageNo = $this->request->param('page', 1, 'intval');
             $article    = Ar::searchlist($id, ['page' => $pageNo, 'path' => '/search-'.rawurlencode($id).'-[PAGE].html']);
         }
         if ($article) {
