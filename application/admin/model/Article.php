@@ -77,8 +77,8 @@ class Article extends Model
     }
 
     #前台-首页文章列表
-    public static function lists(){
-        $result = self::order('id desc')->limit(15)->cache(true,8640000)->paginate();
+    public static function lists($paginate = []){
+        $result = self::order('id desc')->limit(15)->cache(true,8640000)->paginate($paginate);
 
     	$result = self::gongyong($result);
     	return $result;
@@ -128,16 +128,13 @@ class Article extends Model
     }
 
     #前台-搜索页文章列表
-    public static function searchlist($id){
+    public static function searchlist($id, $paginate = []){
         $id      = trim($id," ");
         if ($id === '') {return;}
         $result = self::where("title LIKE :id ", ['id' => '%'.$id.'%'])
         ->cache(true,8640000)
-        ->paginate(15);
-        foreach ($result as $key => $value) {
-            $lycount = Comment::where('pid',$value['id'])->cache(true,8640000)->count();
-            $value['lycount'] = $lycount;
-        }
+        ->paginate(array_merge(['list_rows' => 15], $paginate));
+        $result = self::gongyong($result);
         return $result;
     }
 

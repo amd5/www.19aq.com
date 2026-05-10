@@ -18,7 +18,7 @@ class Index extends Controller
 
     public function index()
     {
-        $article    = Ar::lists();
+        $article    = Ar::lists(['page' => $this->request->param('page', 1, 'intval'), 'path' => '/list-[PAGE].html']);
         $page       = $article->render();
         $tagList    = Ta::qiantai();
         $sortList   = So::qiantai();
@@ -161,10 +161,8 @@ class Index extends Controller
         }
         if ($type == 'search') {
             if (empty($id)) {$id   = $this->request->param('key','','addslashes,htmlspecialchars,quotemeta');}
-            $article    = Ar::searchlist($id);
-            if ($article) {
-                $article->appends(['key' => $id]);
-            }
+            $pageNo = $this->request->param('page', 1, 'intval');
+            $article    = Ar::searchlist($id, ['page' => $pageNo, 'path' => '/search-'.rawurlencode($id).'-[PAGE].html']);
         }
         if ($article) {
             $page   = $article->render();

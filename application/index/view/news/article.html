@@ -45,10 +45,21 @@
                     </div>
                     <div style="float: right;">
                         <!--搜索框-->
-                        <form name="keyform" method="get" action="search">
+                        <form name="keyform" method="get" action="/search" onsubmit="return goSearch(this);">
                             <input type="text" name="key" value="" id="search" />
                             <input type="submit" value="搜索" id="search_btn">
                         </form>
+                        <script>
+                        function goSearch(form){
+                            var key = form.key.value.replace(/^\s+|\s+$/g, '');
+                            if (!key) {
+                                window.location.href = '/search';
+                                return false;
+                            }
+                            window.location.href = '/search-' + encodeURIComponent(key) + '-1.html';
+                            return false;
+                        }
+                        </script>
                     </div>
                 </div> <!--整个LOGO标题部分-->
                 <div class="nav_all">   <!--中间内容 导航栏-->
