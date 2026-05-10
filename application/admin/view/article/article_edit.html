@@ -59,7 +59,7 @@
 	<div class="layui-inline">
 	<label class="layui-form-label">文章密码：</label>
 	<div class="layui-input-block">
-		<input type="text" name="password" placeholder="请设置访问密码" autocomplete="off" class="layui-input">
+		<input type="text" name="password" value="{$result.password}" placeholder="请设置访问密码" autocomplete="off" class="layui-input">
 	</div>
 	</div>
 </div>
@@ -93,7 +93,7 @@ layui.use(['form','table'], function(){
 		$.ajax({
 			url: "articleEdit",
 			type: "POST",
-			data: data.field,
+			data: $(data.form).serialize(),
 			dataType: "json",
 			success:function(data){
 				layer.alert('文章发布成功', {icon: 6});

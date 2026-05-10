@@ -74,51 +74,49 @@ class Article extends Common
                 //标签数据处理
                 if (!empty($tags)) {
                     $tags_arr = explode(',', $tags);
-                    foreach ($tags_arr as &$v) {
-                        if (empty($v)){
+                    foreach ($tags_arr as $v) {
+                        $tagname = strtolower(trim($v));
+                        if (empty($tagname)){
                             continue;
                         }
-                        $res = Tag::create(['tagname' => strtolower($v), 'addtime'=>time()]);
+                        $res = Tag::where('tagname', $tagname)->find();
+                        if (!$res) {
+                            $res = Tag::create(['tagname' => $tagname, 'addtime'=>time()]);
+                        }
                         array_push($add_tags_id, $res->id);
                     }
                 }
 
-                // 标签整合
-                if ($tag_check = $this->request->post('tag')){
-                    $tag = array_merge($tag_check, $add_tags_id);
-                }elseif ($add_tags_id) {
-                    $tag = $add_tags_id;
-                }else{
-                    $tag = [];
-                }
-                // 更新文章的标签处理
+                $tag_check = $this->request->post('tag/a', []);
+                $tag = array_merge($tag_check, $add_tags_id);
+                $tag = array_values(array_unique(array_filter(array_map('intval', $tag))));
+
                 if ($update) {
                     $old_tags = $this->request->post('oldtags', '', 'trim');
-                    if (!empty($old_tags)) {
-                        $old_tags = explode(',', $old_tags);
-                        $tmp = array_diff($tag, $old_tags);
-                        $del = array_diff($old_tags, $tag);
-                        if ($del) {
-                            Taga::where('tid', "in", $del)->where('gid', $aid)->delete();
-                        }
-                    }else{
-                        $tmp = $tag;
+                    $old_tags = empty($old_tags) ? [] : explode(',', $old_tags);
+                    $old_tags = array_values(array_unique(array_filter(array_map('intval', $old_tags))));
+                    $tmp = array_diff($tag, $old_tags);
+                    $del = array_diff($old_tags, $tag);
+                    if ($del) {
+                        Taga::where('tid', 'in', $del)->where('gid', $aid)->delete();
                     }
+                } else {
+                    $tmp = $tag;
                 }
 
                 // 存入标签
-                if (isset($tmp) && !empty($tmp)) {
+                if (!empty($tmp)) {
                     foreach ($tmp as $v) {
                         $arr[] = ['gid'=>$aid, 'tid'=>$v];
                     }
                     $taga = new Taga;
                     $taga->saveAll($arr);
                 }
-                
-                # 清空缓存
-                Ot::delCache();
+
                 # 提交事务
                 Db::commit();
+                # 清空缓存
+                Ot::delCache();
 
             }catch (Exception $e) {
                 echo 1;die;

@@ -1,8 +1,8 @@
 {include file='/public/_header' title="文章列表" nava="文章管理" navb="文章列表" /}
 <div class="demoTable">
-  搜索标题：
+  搜索ID/标题：
   <div class="layui-inline">
-    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    <input class="layui-input" name="keyword" id="demoReload" placeholder="输入ID精确搜索，或输入标题模糊搜索" autocomplete="off">
   </div>
   <button class="layui-btn" data-type="search">搜索</button>
   <a class="layui-btn" lay-submit lay-filter="add"><i class="layui-icon">&#xe654;</i>发布文章</a>
@@ -120,6 +120,13 @@ layui.use(['form','table'], function(){
 		}
 	};
   
+  $('#demoReload').on('keydown', function(e){
+    if (e.keyCode === 13) {
+      active.search();
+      return false;
+    }
+  });
+
   $('.demoTable .layui-btn').on('click', function(){
     var type = $(this).data('type');
     active[type] ? active[type].call(this) : '';

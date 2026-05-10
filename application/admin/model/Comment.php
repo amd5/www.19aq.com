@@ -2,6 +2,7 @@
 namespace app\admin\model;
 
 use think\Model;
+use think\facade\Cache;
 use think\facade\Validate;
 
 class Comment extends Model
@@ -15,8 +16,8 @@ class Comment extends Model
 	}
 
 	public static function coadd($id){
-		$count = self::cache(true,8640000)->count();
-		$num   = $count+1;
+		$articleId = (int)$id['id'];
+		$num   = self::where('pid', $articleId)->max('aid') + 1;
 		$mail  = $id['email'];
 		$des   = $id['desc'];
 
@@ -27,9 +28,9 @@ class Comment extends Model
 		$email = str_replace('@', '#', $mail);
 		$desc  = str_replace('@', '#', $des);
 		#删除缓存
-		Cache::rm('CommentList'.$id); 
+		Cache::rm('CommentList'.$articleId);
 		$res = self::insert([
-			'pid' 		=> (int)$id['id'],
+			'pid' 		=> $articleId,
 			'aid' 		=> $num,
 			'email' 	=> $email,
 			'desc' 		=> $desc,

@@ -7,16 +7,25 @@ class Article extends Model
 {
 	public static function list($page, $limit, $title=false){
 
-		$where = $title ? "a.title like '%$title%'" : '';
-		$result = self::alias('a')->page($page)->join('sort s', 's.sid = a.sort', 'left')
+		$query = self::alias('a')->join('sort s', 's.sid = a.sort', 'left');
+		$countQuery = self::alias('a');
+		if ($title !== false && $title !== '') {
+			if (ctype_digit((string)$title)) {
+				$query->where('a.id', (int)$title);
+				$countQuery->where('id', (int)$title);
+			} else {
+				$query->where('a.title', 'like', '%'.$title.'%');
+				$countQuery->where('title', 'like', '%'.$title.'%');
+			}
+		}
+		$result = $query->page($page)
 		->field('a.*,s.sortname')
-		->where($where)
 		->limit($limit)
 		->order('id desc')
 		->cache(true,8640000)
 		->select();
 
-		$count = self::cache(true,8640000)->count();
+		$count = $countQuery->cache(true,8640000)->count();
 		foreach ($result as $key => $value) {
 			$value['id_count'] = $count;
 			$value['addtime'] = date('Y-m-d H:i:s', $value['addtime'] ?: time());
@@ -27,12 +36,15 @@ class Article extends Model
 
 	# web=false 后台文章  web=true 前台文章
 	public static function details($id ,$web=false){
-		//每次被访问增加阅读1
-		self::where('id',$id)->setInc('view');
 		$result = self::where('id',$id)->cache(true,8640000)->find();
 		if ($web) {
 			$result = self::where('id',$id)->where('password','')->cache(true,8640000)->find();
 		}
+		if (!$result) {
+			return false;
+		}
+		//每次被访问增加阅读1
+		self::where('id',$id)->setInc('view');
         $result['tagname'] = false;
         #查询文章所属分类
         if (isset($result['sort'])) {
@@ -47,7 +59,7 @@ class Article extends Model
             if (count($taga) > 0) {
                 foreach ($taga as $key => $value) {
                     $tag = Tag::where('tid',$value['tid'])->cache(true,8640000)->find();
-                    $tags[] = $tag['tagname']; 
+                    $tags[] = $tag['tagname'];
                 }
                 $result['tagname'] = $tags;
             }
@@ -56,34 +68,25 @@ class Article extends Model
 	}
 
 
-	public static function nian(){   
+	public static function nian(){
         return self::order('days','desc')->field('FROM_UNIXTIME(addtime,"%Y") as days,COUNT(*) as COUNT')->GROUP('days')->cache(true,8640000)->select();
     }
 
-    public static function yue(){   
+    public static function yue(){
         return self::order('days','desc')->field('FROM_UNIXTIME(addtime,"%Y-%m") as days,COUNT(*) as COUNT')->GROUP('days')->cache(true,8640000)->select();
     }
 
     #前台-首页文章列表
     public static function lists(){
-        // $result = Cache('indexlists');
-        // if (!$result) {
-            if (session('id')) {
-                $result = self::order('id desc')->limit(15)->cache(true,8640000)->paginate();
-            }else{
-                $result = self::where('password','')->order('id desc')->limit(15)->cache(true,8640000)->paginate();
-            }
-            // Cache::set('indexlists',$result,2592000);
-        // }
-        // dump(Cache('1'));
-    	
+        $result = self::order('id desc')->limit(15)->cache(true,8640000)->paginate();
+
     	$result = self::gongyong($result);
     	return $result;
     }
     #前台-标签页文章列表
     public static function taglists($id){
     	$tagname = Tag::where('tagname',$id)->cache(true,8640000)->find();
-    	if (count($tagname) == 0 ) {return;}
+    	if (!$tagname) {return;}
     	$taga = Taga::where('tid',$tagname['tid'])->cache(true,8640000)->select();
     	if (count($taga) == 0 ) {return;}
     	#处理整合标签为where in格式
@@ -94,9 +97,6 @@ class Article extends Model
     	$data = trim($data,",");
     	#根据ID 查询文章
     	$result = self::where('id','in',$data)->order('id desc')->limit(15)->cache(true,8640000)->paginate();
-    	if (!session('id')) {
-    		$result = self::where('id','in',$data)->where('password','')->order('id desc')->limit(15)->cache(true,8640000)->paginate();
-    	}
 
     	$result = self::gongyong($result);
 
@@ -105,10 +105,8 @@ class Article extends Model
     #前台-分类页文章列表
     public static function sortlists($id){
         $sid = Sort::where('sortname',$id)->cache('sid'.$id,2592000)->find();
+        if (!$sid) {return;}
         $result = self::where('sort',$sid['sid'])->order('id desc')->limit(15)->cache(true,8640000)->paginate();
-        if (!session('id')) {
-            $result = self::where('sort',$sid['sid'])->where('password','')->order('id desc')->limit(15)->cache(true,8640000)->paginate();
-        }
         $result = self::gongyong($result);
         return $result;
     }
@@ -124,9 +122,6 @@ class Article extends Model
         $endsj = strtotime($end_time);
 
         $result = self::where('addtime','>=',$stsj)->where('addtime','<=',$endsj)->limit(15)->cache(true,8640000)->paginate();
-        if (!session('id')) {
-            $result = self::where('addtime','>=',$stsj)->where('addtime','<=',$endsj)->where('password','')->limit(15)->cache(true,8640000)->paginate();
-        }
 
         $result = self::gongyong($result);
         return $result;
@@ -135,6 +130,7 @@ class Article extends Model
     #前台-搜索页文章列表
     public static function searchlist($id){
         $id      = trim($id," ");
+        if ($id === '') {return;}
         $result = self::where("title LIKE :id ", ['id' => '%'.$id.'%'])
         ->cache(true,8640000)
         ->paginate(15);
@@ -151,6 +147,9 @@ class Article extends Model
     	foreach ($result as $k => $v) {
             # 修改时间戳
             $v['addtime'] = date('Y-m-d H:i:s', $v['addtime'] ?: time());
+
+            $sort = Sort::where('sid',$v['sort'])->field('sortname')->cache(true,8640000)->find();
+            $v['sorts'] = $sort ? $sort['sortname'] : '';
 
 			$res = Taga::where('gid',$v['id'])->cache(true,8640000)->select();
 			$data = [];

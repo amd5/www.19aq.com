@@ -120,6 +120,15 @@
                     <textarea name="desc" required lay-verify="required" placeholder="请输入您所需要的留言的内容" class="layui-textarea" style="width: 818px;"></textarea>
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:50px;text-align:center;">验证码：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="captcha" required lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid">
+                    <img src="{:captcha_src()}" id="comment-captcha" alt="验证码" title="点击刷新验证码" style="height:38px;cursor:pointer;" onclick="refreshCommentCaptcha()">
+                </div>
+            </div>
             <!--提交按钮-->
             <div class="layui-form-item">
                 <div class="layui-input-block" style="margin-left:80px;margin-top: 20px;">
@@ -133,24 +142,24 @@
             {volist name="comment" id="data"}
 
             <div style="border-top: 1px dashed #CCCCCC;"></div>
-            <div id='reply{$data.aid}' style="width: 880px;margin-left:40px;margin:10px 40px 10px 40px;" value='123'>
+            <div id='reply{$key+1}' style="width: 880px;margin-left:40px;margin:10px 40px 10px 40px;" value='123'>
                 {if condition="($data.if_show == '0')"}
                     <p>
-                        {$data.aid}楼&nbsp;&nbsp;:
+                        {$key+1}楼&nbsp;&nbsp;:
                     </p>
                     <p>
                         <span style="color:#f38e7e">当前留言已被屏蔽！</span>
                     </p>
                 {else /}
                     <p>
-                        {$data.aid}楼&nbsp;&nbsp;{$data.email} :
+                        {$key+1}楼&nbsp;&nbsp;{$data.email} :
                     </p>
                     <p>
                         {$data.desc}
                     </p>
                     <p>
                         {$data.addtime}
-                        <a href="javacript:;" onclick="reply(this,{$data.aid})" style="margin-left:20px;color:#f38e7e;">回复</a>
+                        <a href="javacript:;" onclick="reply(this,{$key+1})" style="margin-left:20px;color:#f38e7e;">回复</a>
                     </p>
                 {/if}
             </div>
@@ -203,8 +212,14 @@
                         }, 3000);
                     }else if(data.code == '2'){
                         layer.alert('请重新输入正确邮箱！', {icon: 5});
+                        refreshCommentCaptcha();
+                    }else if(data.code == '3'){
+                        layer.alert('验证码错误，请重新输入！', {icon: 5});
+                        $('input[name="captcha"]').val('');
+                        refreshCommentCaptcha();
                     }else{
                         layer.alert('留言发布失败！', {icon: 5});
+                        refreshCommentCaptcha();
                     }
                 },
                 error:function(data){
@@ -235,6 +250,10 @@
         //设置同步请求，并把内容储存到浏览器缓存
         $.ajaxSettings.async = true;
     });
+
+    function refreshCommentCaptcha(){
+        $('#comment-captcha').attr('src', '{:captcha_src()}?t=' + new Date().getTime());
+    }
 
     //评论回复
     function reply(obj,id){

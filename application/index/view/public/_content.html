@@ -9,9 +9,14 @@
 				<a href="/article-{$data.id}.html">{$data.title}</a>
 			</h3>
 			<div>
-				<span>{$data.addtime|date='Y-m-d H:i:s'}&nbsp;&nbsp;|&nbsp;
+				<span>{$data.addtime|date='Y-m-d H:i:s'}&nbsp;&nbsp;|&nbsp;</span>
+				{if !empty($data.sorts)}
+					<span>分类：</span>
+					<a href="/sort-{$data.sorts}.html" class="secai" title="{$data.sorts}">{$data.sorts}</a>
+					<span>&nbsp;&nbsp;|&nbsp;</span>
+				{/if}
 				{if !empty($data.tag)}
-					标签：</span>
+					<span>标签：</span>
 					{volist name="data.tag" id="vv"}
 						<a href="/tag-{$vv}.html" class="secai" title="{$vv}">{$vv}</a>
 					{/volist}

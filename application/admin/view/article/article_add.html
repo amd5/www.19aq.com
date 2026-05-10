@@ -83,7 +83,7 @@ layui.use(['form','table'], function(){
 		$.ajax({
 			url: "articleadd.html",
 			type: "POST",
-			data: data.field,
+			data: $(data.form).serialize(),
 			dataType: "json",
 			success:function(data){
 				if (data.code == '1'){

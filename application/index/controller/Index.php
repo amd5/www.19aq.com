@@ -38,21 +38,56 @@ class Index extends Controller
 
     public function article($id = 1)
     {
+        if ($this->request->param('id')){
+            $id = $this->request->param('id');
+        }
+
+        if ($this->request->isPost() && $this->request->post('type') == 'password') {
+            $result = Ar::details($id);
+            if (!$result) {
+                $this->error('请重新访问！');
+            }
+            if ($this->request->post('article_password', '', 'trim') === $result['password']) {
+                session('article_password_'.$id, true);
+                $this->redirect('/article-'.$id.'.html');
+                return;
+            }
+            $links = Li::links();
+            $this->assign('id', $id);
+            $this->assign('links', $links);
+            $this->assign('result', $result);
+            $this->assign('error', '文章密码错误');
+            return $this->fetch('article_password');
+        }
+
         if ($this->request->isPost()) {
             # 调用留言请求处理方法
-            $id = $this->request->param();
-            $res = Co::coadd($id);
+            $params = $this->request->param();
+            if (!isset($params['captcha']) || !captcha_check($params['captcha'])) {
+                return api_return('验证码错误！', '3');
+            }
+            unset($params['captcha']);
+            $res = Co::coadd($params);
             return $res;
             // dump($this->request->param());die;
         }
-        if ($this->request->param('id')){
-            $id = $this->request->param('id');
-            $this->assign('id', $id);
+
+        $result = Ar::details($id);
+        if (!$result) {
+            $this->error('请重新访问！');
         }
-        $result = self::articledata($id);
+        if (!$this->canReadArticle($result)) {
+            $links = Li::links();
+            $this->assign('id', $id);
+            $this->assign('links', $links);
+            $this->assign('result', $result);
+            $this->assign('error', '');
+            return $this->fetch('article_password');
+        }
         $comment = Co::list($id);
 
         $links      = Li::links();
+        $this->assign('id', $id);
         $this->assign('links', $links);
         $this->assign('result', $result);
         $this->assign('comment', $comment);
@@ -62,16 +97,56 @@ class Index extends Controller
 
     public function articledata($id = 1){
         $result = Ar::details($id);
-        if ($result) {
+        if ($result && $this->canReadArticle($result)) {
             return $result;
         }else{
             $this->error('请重新访问！');    //走404
         }
-        
+
+    }
+
+    private function canReadArticle($article)
+    {
+        if (session('id')) {
+            return true;
+        }
+        if (empty($article['password'])) {
+            return true;
+        }
+        return session('article_password_'.$article['id']) === true;
+    }
+
+    public function rss($id = ''){
+        $id = $this->request->param('id', $id, 'trim');
+        $sort = So::where('sortname', $id)->find();
+        if (!$sort) {
+            abort(404, '请重新访问！');
+        }
+
+        $article = Ar::where('sort', $sort['sid'])->where('password','')->order('id desc')->limit(20)->select();
+        $host = $this->request->domain();
+        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml .= "<rss version=\"2.0\">\n<channel>\n";
+        $xml .= '<title>'.htmlspecialchars($id.' - c32\'s blog', ENT_XML1, 'UTF-8')."</title>\n";
+        $xml .= '<link>'.$host.'/sort-'.rawurlencode($id).".html</link>\n";
+        $xml .= '<description>'.htmlspecialchars($id.' 分类文章', ENT_XML1, 'UTF-8')."</description>\n";
+        foreach ($article as $value) {
+            $link = $host.'/article-'.$value['id'].'.html';
+            $xml .= "<item>\n";
+            $xml .= '<title>'.htmlspecialchars($value['title'], ENT_XML1, 'UTF-8')."</title>\n";
+            $xml .= '<link>'.$link."</link>\n";
+            $xml .= '<guid>'.$link."</guid>\n";
+            $xml .= '<pubDate>'.date(DATE_RSS, $value['addtime'])."</pubDate>\n";
+            $xml .= '<description>'.htmlspecialchars(mb_substr(strip_tags($value['content']), 0, 200), ENT_XML1, 'UTF-8')."</description>\n";
+            $xml .= "</item>\n";
+        }
+        $xml .= "</channel>\n</rss>";
+
+        return response($xml, 200, ['Content-Type' => 'application/rss+xml; charset=utf-8']);
     }
 
     public function dataList(){
-        
+
         $type = $this->request->param('type');
         $id   = $this->request->param('id');
 
@@ -87,6 +162,9 @@ class Index extends Controller
         if ($type == 'search') {
             if (empty($id)) {$id   = $this->request->param('key','','addslashes,htmlspecialchars,quotemeta');}
             $article    = Ar::searchlist($id);
+            if ($article) {
+                $article->appends(['key' => $id]);
+            }
         }
         if ($article) {
             $page   = $article->render();
@@ -111,27 +189,4 @@ class Index extends Controller
         $this->assign('title', $title);
         return $this->fetch('index');
     }
-
-    // public function aa(){
-    //     //迁移博客使用
-    //     set_time_limit(0);
-    //     $res = Db::table('think_aaaaa')->select();
-    //     $rrrr = Db::table('think_article')->select();
-
-    //     foreach ($res as $key => $value) {
-    //         // dump($value['views']);die;
-    //         foreach ($rrrr as $kk => $vv) {
-    //             // dump($vv['view']);die;
-    //             if ($value['id'] == $vv['id']) {
-    //                 # code...
-    //                 Db::table('think_article')->where('id', $vv['id'])->update(['view' => $value['views']]);
-    //             }
-    //         }
-    //     }
-
-    //     echo "ok";
-    //     die;
-    // }
-
-
 }
