@@ -15,6 +15,8 @@
 
 Route::get('hello/:name', 'index/hello');
 Route::rule('article-<id>','index/index/article','GET|POST',['ext'=>'html']);
+Route::get('list-<page>','index/index/index',['ext'=>'html'], ['page' => '\d+']);
+Route::get('search-<id>-<page>','index/index/dataList?type=search',['ext'=>'html'], ['id' => '[^\/]+', 'page' => '\d+']);
 Route::get('sort-<id>','index/index/dataList?type=sort',['ext'=>'html'], ['id' => '[^\/]+']);
 Route::get('tag-<id>','index/index/dataList?type=tag',['ext'=>'html'], ['id' => '[^\/]+']);
 Route::get('record-<id>','index/index/dataList?type=record',['ext'=>'html'], ['id' => '[^\/]+']);
