@@ -55,6 +55,7 @@ class Others extends Common
             $res = Link::destroy($lid);
             Link::where('id', $lid)->delete();
             if ($res){
+                Cache::clear();
                 return api_return('', '1');
             }else{
                 return api_return('Error', '0');
@@ -67,25 +68,44 @@ class Others extends Common
      * @return [type] [description]
      */
     public function linkAdd(){
-        $sitename = $this->request->post('sitename');
-        $sitelink = $this->request->post('sitelink');
-        $contact = $this->request->post('contact');
-        if (!empty($sitename) || !empty($sitename)){
+        $sitename = $this->request->post('sitename', '', 'trim');
+        $sitelink = $this->request->post('sitelink', '', 'trim');
+        $contact = $this->request->post('contact', '', 'trim');
+        if (!empty($sitename) && !empty($sitelink) && !empty($contact)){
             Db::startTrans();
             try{
-                $res = Link::create([
-                    'sitename' => $sitename, 
-                    'siteurl' => $sitelink, 
+                Link::create([
+                    'sitename' => $sitename,
+                    'siteurl' => $sitelink,
                     'Contact' => $contact,
-                    'addtime' => time()
+                    'addtime' => time(),
+                    'status' => Link::STATUS_APPROVED
                 ]);
                 Db::commit();
             }catch (Exception $e) {
                 Db::rollback();
                 return api_return($e, '0');
             }
+            Cache::clear();
             return api_return('Success', '1');
         }
+        return api_return('请完整填写信息', '0');
+    }
+
+    public function approveLink()
+    {
+        $ids = $this->request->post('ids/a', []);
+        $ids = array_filter(array_map('intval', $ids));
+        if (empty($ids)) {
+            return api_return('请选择要审核的友链', '0');
+        }
+
+        $res = Link::where('id', 'in', $ids)->update(['status' => Link::STATUS_APPROVED]);
+        if ($res !== false) {
+            Cache::clear();
+            return api_return('审核成功', '1');
+        }
+        return api_return('审核失败', '0');
     }
 
     /**

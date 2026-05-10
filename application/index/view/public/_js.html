@@ -1,8 +1,62 @@
 <script src="/static/admin_css/js/jquery.js" charset="utf-8"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".guidang").click(function(){ 
+	$(".guidang").click(function(){
 		$(this).next("div").slideToggle("slow").siblings(".yuefen:visible").slideUp("slow");
 	});
+
+	$('#applyFriendLink').click(function(){
+		$('#friendLinkFormWrap').show();
+	});
+
+	$('#friendLinkCancel, #friendLinkFormWrap').click(function(e){
+		if (e.target.id === 'friendLinkFormWrap' || e.target.id === 'friendLinkCancel') {
+			$('#friendLinkFormWrap').hide();
+		}
+	});
+
+	$('#friendLinkSubmit').click(function(){
+		var sitename = $.trim($('#friendLinkSitename').val());
+		var siteurl = $.trim($('#friendLinkSiteurl').val());
+		var contact = $.trim($('#friendLinkContact').val());
+		var captcha = $.trim($('#friendLinkCaptcha').val());
+		if (!sitename || !siteurl || !contact || !captcha) {
+			alert('请完整填写站点名称、站点url、联系方式和验证码');
+			return;
+		}
+		$.ajax({
+			url: '/friend-link/apply',
+			type: 'post',
+			dataType: 'json',
+			data: {
+				sitename: sitename,
+				siteurl: siteurl,
+				contact: contact,
+				captcha: captcha
+			},
+			success: function(res){
+				alert(res.msg);
+				if (res.code == 1) {
+					$('#friendLinkSitename').val('');
+					$('#friendLinkSiteurl').val('');
+					$('#friendLinkContact').val('');
+					$('#friendLinkCaptcha').val('');
+					$('#friendLinkFormWrap').hide();
+				} else {
+					$('#friendLinkCaptcha').val('');
+				}
+				refreshFriendLinkCaptcha();
+			},
+			error: function(){
+				alert('提交失败');
+				$('#friendLinkCaptcha').val('');
+				refreshFriendLinkCaptcha();
+			}
+		});
+	});
 });
+
+function refreshFriendLinkCaptcha(){
+	$('#friend-link-captcha').attr('src', '{:captcha_src()}?t=' + new Date().getTime());
+}
 </script>

@@ -1,33 +1,52 @@
 <div class="link">
-	<dt class="link_head">
-		<b>友情链接</b>
-		<!-- <a href="https://www.51.la/?comId=17860637" target="_blank">.</a> -->
-		<a href="https://www.cnzz.com/stat/website.php?web_id=3859286" target="_blank">.</a>
-	</dt>
-	<div class="link_body">
-		{volist name="links" id="data"}
-		<a href="{$data.siteurl}" target="_blank" style="color:#556c88;text-decoration: none;">{$data.sitename}</a>　
-		{/volist}
-	</div>
+    <dt class="link_head">
+        <b>友情链接</b>
+        <span style="float:right;padding-right:15px;font-weight:normal;">
+            <a href="javascript:void(0);" id="applyFriendLink">申请友链</a>
+            <!-- <a href="https://www.51.la/?comId=17860637" target="_blank">.</a> -->
+            <a href="https://www.cnzz.com/stat/website.php?web_id=3859286" target="_blank">.</a>
+        </span>
+    </dt>
+    <div class="link_body">
+        {volist name="links" id="data"}
+        <a href="{$data.siteurl}" target="_blank" style="color:#556c88;text-decoration: none;">{$data.sitename}</a>
+        {/volist}
+    </div>
 </div>	<!--内容部分 底部友情链接-->
+<div id="friendLinkFormWrap" style="display:none;position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:9999;">
+    <div style="width:360px;background:#fff;border-radius:5px;padding:20px;position:absolute;left:50%;top:50%;margin-left:-200px;margin-top:-170px;box-shadow:0 2px 12px rgba(0,0,0,.2);">
+        <div style="font-size:18px;color:#333;margin-bottom:15px;">申请友链</div>
+        <div style="margin-bottom:12px;"><input type="text" id="friendLinkSitename" placeholder="站点名称" style="width:338px;height:34px;line-height:34px;border:1px solid #ddd;padding:0 10px;border-radius:3px;"></div>
+        <div style="margin-bottom:12px;"><input type="text" id="friendLinkSiteurl" placeholder="站点url" style="width:338px;height:34px;line-height:34px;border:1px solid #ddd;padding:0 10px;border-radius:3px;"></div>
+        <div style="margin-bottom:12px;"><input type="text" id="friendLinkContact" placeholder="联系方式" style="width:338px;height:34px;line-height:34px;border:1px solid #ddd;padding:0 10px;border-radius:3px;"></div>
+        <div style="margin-bottom:12px;overflow:hidden;">
+            <input type="text" id="friendLinkCaptcha" placeholder="验证码" style="float:left;width:160px;height:34px;line-height:34px;border:1px solid #ddd;padding:0 10px;border-radius:3px;">
+            <img src="{:captcha_src()}" id="friend-link-captcha" alt="验证码" title="点击刷新验证码" style="float:right;height:36px;cursor:pointer;border-radius:3px;" onclick="refreshFriendLinkCaptcha()">
+        </div>
+        <div style="text-align:right;">
+            <a href="javascript:void(0);" id="friendLinkCancel" style="display:inline-block;margin-right:10px;padding:8px 16px;border:1px solid #ddd;border-radius:3px;color:#666;">取消</a>
+            <a href="javascript:void(0);" id="friendLinkSubmit" style="display:inline-block;padding:8px 16px;background:#cc0000;border-radius:3px;color:#fff;">提交</a>
+        </div>
+    </div>
+</div>
 <div class="footer_null"><a target="_blank" href="https://beian.miit.gov.cn" rel="nofollow">鄂ICP备2022009920号-1</a></div>	<!--内容部分 底部留白-->
 <!--内容部分 最底部-->
 <div style="display:none">
-	<!-- <script type="text/javascript" src="https://js.users.51.la/17860637.js"></script> -->
-	<script type="text/javascript" src="https://s6.cnzz.com/z_stat.php?id=3859286&web_id=3859286"></script>
-	<!--百度自动推送-->
-	<script>
-	(function(){
-	    var bp = document.createElement('script');
-	    var curProtocol = window.location.protocol.split(':')[0];
-	    if (curProtocol === 'https') {
-	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-	    }
-	    else {
-	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-	    }
-	    var s = document.getElementsByTagName("script")[0];
-	    s.parentNode.insertBefore(bp, s);
-	})();
-	</script>
+    <!-- <script type="text/javascript" src="https://js.users.51.la/17860637.js"></script> -->
+    <script type="text/javascript" src="https://s6.cnzz.com/z_stat.php?id=3859286&web_id=3859286"></script>
+    <!--百度自动推送-->
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
 </div>

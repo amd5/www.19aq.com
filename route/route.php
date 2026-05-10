@@ -24,8 +24,9 @@ Route::get('tag-<id>','index/index/dataList?type=tag',['ext'=>'html'], ['id' => 
 Route::get('record-<id>','index/index/dataList?type=record',['ext'=>'html'], ['id' => '[^\/]+']);
 Route::get('rss-<id>','index/index/rss',['ext'=>'html'], ['id' => '[^\/]+']);
 Route::get('search','index/index/dataList?type=search');
-    
-    
+Route::post('friend-link/apply','index/index/applyLink');
+
+
     Route::rule('news/<id>','index/News/article','GET|POST',['ext'=>'html']);
     Route::rule('news','index/News/dataList?type=sort','GET|POST');
     Route::rule('games/<id>','index/Games/article','GET|POST',['ext'=>'html']);

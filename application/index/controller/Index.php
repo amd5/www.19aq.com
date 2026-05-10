@@ -9,6 +9,7 @@ use app\admin\model\Sort as So;
 use app\admin\model\Link as Li;
 use app\admin\model\Comment as Co;
 use think\Db;
+use think\Exception;
 
 class Index extends Controller
 {
@@ -103,6 +104,47 @@ class Index extends Controller
             $this->error('请重新访问！');    //走404
         }
 
+    }
+
+    public function applyLink()
+    {
+        if (!$this->request->isPost()) {
+            return api_return('Error', '0');
+        }
+
+        $sitename = $this->request->post('sitename', '', 'trim');
+        $siteurl = $this->request->post('siteurl', '', 'trim');
+        $contact = $this->request->post('contact', '', 'trim');
+        $captcha = $this->request->post('captcha', '', 'trim');
+
+        if (empty($sitename) || empty($siteurl) || empty($contact) || empty($captcha)) {
+            return api_return('请完整填写站点名称、站点url、联系方式和验证码', '0');
+        }
+
+        if (!captcha_check($captcha)) {
+            return api_return('验证码错误！', '3');
+        }
+
+        if (!filter_var($siteurl, FILTER_VALIDATE_URL)) {
+            return api_return('站点url格式不正确', '0');
+        }
+
+        Db::startTrans();
+        try {
+            Li::create([
+                'sitename' => $sitename,
+                'siteurl' => $siteurl,
+                'Contact' => $contact,
+                'addtime' => time(),
+                'status' => Li::STATUS_PENDING,
+            ]);
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            return api_return('提交失败', '0');
+        }
+
+        return api_return('提交成功，请等待审核', '1');
     }
 
     private function canReadArticle($article)
