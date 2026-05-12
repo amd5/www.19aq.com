@@ -3,6 +3,7 @@ namespace Qiniu\Storage;
 
 use Qiniu\Config;
 use Qiniu\Http\HttpClient;
+use Qiniu\Http\RequestOptions;
 use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\FormUploader;
 
@@ -14,26 +15,40 @@ use Qiniu\Storage\FormUploader;
 final class UploadManager
 {
     private $config;
+    /**
+     * @var RequestOptions
+     */
+    private $reqOpt;
 
-    public function __construct(Config $config = null)
+    /**
+     * @param Config|null $config
+     * @param RequestOptions|null $reqOpt
+     */
+    public function __construct(Config $config = null, RequestOptions $reqOpt = null)
     {
         if ($config === null) {
             $config = new Config();
         }
         $this->config = $config;
+
+        if ($reqOpt === null) {
+            $reqOpt = new RequestOptions();
+        }
+
+        $this->reqOpt = $reqOpt;
     }
 
     /**
      * 上传二进制流到七牛
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $data       上传二进制流
-     * @param $params     自定义变量，规格参考
+     * @param string $upToken 上传凭证
+     * @param string $key 上传文件名
+     * @param string $data 上传二进制流
+     * @param array<string, string> $params 自定义变量，规格参考
      *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
-     * @param $mime       上传数据的mimeType
-     * @param $checkCrc   是否校验crc32
-     *
+     * @param string $mime 上传数据的mimeType
+     * @param string $fname
+     * @param RequestOptions $reqOpt
      * @return array    包含已上传文件的信息，类似：
      *                                              [
      *                                                  "hash" => "<Hash string>",
@@ -46,9 +61,11 @@ final class UploadManager
         $data,
         $params = null,
         $mime = 'application/octet-stream',
-        $fname = null
+        $fname = "default_filename",
+        $reqOpt = null
     ) {
-    
+        $reqOpt = $reqOpt === null ? $this->reqOpt : $reqOpt;
+
         $params = self::trimParams($params);
         return FormUploader::put(
             $upToken,
@@ -57,7 +74,8 @@ final class UploadManager
             $this->config,
             $params,
             $mime,
-            $fname
+            $fname,
+            $reqOpt
         );
     }
 
@@ -65,19 +83,23 @@ final class UploadManager
     /**
      * 上传文件到七牛
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $filePath   上传文件的路径
-     * @param $params     自定义变量，规格参考
-     *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
-     * @param $mime       上传数据的mimeType
-     * @param $checkCrc   是否校验crc32
+     * @param string $upToken 上传凭证
+     * @param string $key 上传文件名
+     * @param string $filePath 上传文件的路径
+     * @param array<string, mixed> $params 定义变量，规格参考
+     *                                     http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
+     * @param boolean $mime 上传数据的mimeType
+     * @param string $checkCrc 是否校验crc32
+     * @param string $resumeRecordFile 断点续传文件路径 默认为null
+     * @param string $version 分片上传版本 目前支持v1/v2版本 默认v1
+     * @param int $partSize 分片上传v2字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
      *
-     * @return array    包含已上传文件的信息，类似：
+     * @return array<string, mixed> 包含已上传文件的信息，类似：
      *                                              [
      *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>"
      *                                              ]
+     * @throws \Exception
      */
     public function putFile(
         $upToken,
@@ -85,9 +107,14 @@ final class UploadManager
         $filePath,
         $params = null,
         $mime = 'application/octet-stream',
-        $checkCrc = false
+        $checkCrc = false,
+        $resumeRecordFile = null,
+        $version = 'v1',
+        $partSize = config::BLOCK_SIZE,
+        $reqOpt = null
     ) {
-    
+        $reqOpt = $reqOpt === null ? $this->reqOpt : $reqOpt;
+
         $file = fopen($filePath, 'rb');
         if ($file === false) {
             throw new \Exception("file can not open", 1);
@@ -108,7 +135,8 @@ final class UploadManager
                 $this->config,
                 $params,
                 $mime,
-                basename($filePath)
+                basename($filePath),
+                $reqOpt
             );
         }
 
@@ -119,7 +147,11 @@ final class UploadManager
             $size,
             $params,
             $mime,
-            $this->config
+            $this->config,
+            $resumeRecordFile,
+            $version,
+            $partSize,
+            $reqOpt
         );
         $ret = $up->upload(basename($filePath));
         fclose($file);

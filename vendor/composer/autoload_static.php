@@ -8,6 +8,7 @@ class ComposerStaticInit5094bae583c3c52eddfa63a9fb425b45
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
+        '5dd19d8a547b7318af0c3a93c8bd6565' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Http/Middleware/Middleware.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
     );
 
@@ -25,6 +26,10 @@ class ComposerStaticInit5094bae583c3c52eddfa63a9fb425b45
         'Q' => 
         array (
             'Qiniu\\' => 6,
+        ),
+        'M' => 
+        array (
+            'MyCLabs\\Enum\\' => 13,
         ),
     );
 
@@ -48,6 +53,10 @@ class ComposerStaticInit5094bae583c3c52eddfa63a9fb425b45
         'Qiniu\\' => 
         array (
             0 => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu',
+        ),
+        'MyCLabs\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
         ),
     );
 
