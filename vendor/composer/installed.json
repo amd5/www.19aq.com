@@ -140,17 +140,17 @@
                 },
                 {
                         "name": "topthink/framework",
-                        "version": "v5.1.42",
-                        "version_normalized": "5.1.42.0",
+                        "version": "5.1.x-dev",
+                        "version_normalized": "5.1.9999999.9999999-dev",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/top-think/framework.git",
-                                "reference": "ecf1a90d397d821ce2df58f7d47e798c17eba3ad"
+                                "reference": "88f842f9cd34a85c5d83e931746e29531c67a8b5"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/top-think/framework/zipball/ecf1a90d397d821ce2df58f7d47e798c17eba3ad",
-                                "reference": "ecf1a90d397d821ce2df58f7d47e798c17eba3ad",
+                                "url": "https://api.github.com/repos/top-think/framework/zipball/88f842f9cd34a85c5d83e931746e29531c67a8b5",
+                                "reference": "88f842f9cd34a85c5d83e931746e29531c67a8b5",
                                 "shasum": "",
                                 "mirrors": [
                                         {
@@ -172,7 +172,7 @@
                                 "sebastian/phpcpd": "2.*",
                                 "squizlabs/php_codesniffer": "2.*"
                         },
-                        "time": "2022-10-25T15:04:49+00:00",
+                        "time": "2024-01-09T10:16:22+00:00",
                         "type": "think-framework",
                         "installation-source": "dist",
                         "notification-url": "https://packagist.org/downloads/",
@@ -198,7 +198,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/top-think/framework/issues",
-                                "source": "https://github.com/top-think/framework/tree/v5.1.42"
+                                "source": "https://github.com/top-think/framework/tree/5.1"
                         },
                         "install-path": "../../thinkphp"
                 },

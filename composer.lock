@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bd465d907c9a3d2364545f327ca4634",
+    "content-hash": "9a74270864b64241fe126f49ce0bfbb2",
     "packages": [
         {
             "name": "myclabs/php-enum",
@@ -140,16 +140,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v5.1.42",
+            "version": "5.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "ecf1a90d397d821ce2df58f7d47e798c17eba3ad"
+                "reference": "88f842f9cd34a85c5d83e931746e29531c67a8b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/ecf1a90d397d821ce2df58f7d47e798c17eba3ad",
-                "reference": "ecf1a90d397d821ce2df58f7d47e798c17eba3ad",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/88f842f9cd34a85c5d83e931746e29531c67a8b5",
+                "reference": "88f842f9cd34a85c5d83e931746e29531c67a8b5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -195,9 +195,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/framework/issues",
-                "source": "https://github.com/top-think/framework/tree/v5.1.42"
+                "source": "https://github.com/top-think/framework/tree/5.1"
             },
-            "time": "2022-10-25T15:04:49+00:00"
+            "time": "2024-01-09T10:16:22+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -353,7 +353,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "topthink/framework": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
